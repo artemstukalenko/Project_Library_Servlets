@@ -1,6 +1,8 @@
 package com.artemstukalenko.project.library.dao;
 
 import com.artemstukalenko.project.library.entity.User;
+
+import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
@@ -15,7 +17,7 @@ public interface UserDAO {
 
     public boolean registerUser(User user) throws SQLIntegrityConstraintViolationException;
 
-    public User findUserByUsername(String username);
+    public User findUserByUsername(String username) throws SQLException;
 
     public boolean updateUser(User user);
 

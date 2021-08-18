@@ -1,6 +1,7 @@
 package com.artemstukalenko.project.library.controller;
 
 import com.artemstukalenko.project.library.dao.UserDAOImpl;
+import com.artemstukalenko.project.library.entity.User;
 
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -11,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.time.Period;
 
 @WebServlet("/LoginController")
 public class LoginController extends HttpServlet {
@@ -43,12 +46,15 @@ public class LoginController extends HttpServlet {
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException {
 
-//        if (userDAO.findUserByUsername(request.getParameter("username")) != null) {
-//            getHomepage(request, response);
-//        }
-        System.out.println("ABCABCABC");
+        try {
+            User currentUser = userDAO.findUserByUsername(request.getParameter("username"));
+            request.setAttribute("currentUser", currentUser);
+            getHomepage(request, response);
+        } catch (SQLException e) {
+            System.out.println("SQL EXCEPTION CAUGHT");
+            showLoginPage(request, response);
+        }
 
-        getHomepage(request, response);
     }
 
     private void getHomepage(HttpServletRequest request,
