@@ -53,7 +53,7 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
 
     @Override
     public UserDetails getDetailsByUsername(String username) throws SQLException {
-        System.out.println("USERNAME " + username);
+
         UserDetails soughtDetails = null;
 
         Connection connectionForDetailsSearch = null;
@@ -66,7 +66,7 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
             statementForDetailsSearch = connectionForDetailsSearch.prepareStatement(sqlStatement);
             statementForDetailsSearch.setString(1, username);
             resultSet = statementForDetailsSearch.executeQuery();
-            System.out.println("QUERY EXECUTED");
+
             if (resultSet.next()) {
                 String foundUsername = resultSet.getString("username");
                 String firstName = resultSet.getString("first_name");
@@ -79,7 +79,7 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
 
                 soughtDetails = new UserDetails(foundUsername, firstName, lastName, email, phoneNumber,
                         address, penalty, authorityString);
-                System.out.println("DETAILS CREATED " + soughtDetails);
+
             } else {
                 throw new SQLException();
             }

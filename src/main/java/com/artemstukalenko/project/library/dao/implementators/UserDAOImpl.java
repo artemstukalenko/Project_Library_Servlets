@@ -53,13 +53,39 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public boolean blockUser(String username) {
-        return false;
+    public boolean blockUser(String username) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = userDataSource.getConnection();
+            String sqlStatement = "update users set enabled=0 where username=?";
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setString(1, username);
+            statement.executeUpdate();
+
+            return true;
+        } finally {
+            close(connection, statement, null);
+        }
     }
 
     @Override
-    public boolean unblockUser(String username) {
-        return false;
+    public boolean unblockUser(String username) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = userDataSource.getConnection();
+            String sqlStatement = "update users set enabled=1 where username=?";
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setString(1, username);
+            statement.executeUpdate();
+
+            return true;
+        } finally {
+            close(connection, statement, null);
+        }
     }
 
     @Override

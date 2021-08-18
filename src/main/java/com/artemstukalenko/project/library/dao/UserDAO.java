@@ -9,9 +9,9 @@ import java.util.List;
 public interface UserDAO {
     public List<User> getAllUsers() throws SQLException;
 
-    public boolean blockUser(String username);
+    public boolean blockUser(String username) throws SQLException;
 
-    public boolean unblockUser(String username);
+    public boolean unblockUser(String username) throws SQLException;
 
     public String getUserRole(String username);
 

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet("/UserManipulationController")
 public class UserManipulationController extends HttpServlet {
@@ -32,11 +33,22 @@ public class UserManipulationController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response) throws ServletException, IOException {
-
+        String processedUserUsername = request.getParameter("userName");
+        System.out.println("IN MANIPULTOR: " + processedUserUsername);
         switch (request.getParameter("command")) {
             case "BLOCK":
+                try {
+                    userDAO.blockUser(processedUserUsername);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 break;
             case "UNBLOCK":
+                try {
+                    userDAO.unblockUser(processedUserUsername);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 break;
             case "DELETE":
                 break;
