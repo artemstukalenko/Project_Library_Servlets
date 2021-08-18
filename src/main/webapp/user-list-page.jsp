@@ -28,6 +28,23 @@
     </tr>
 
     <c:forEach var="user" items="${allUsers}">
+
+        <c:url var="blockButton" value="/blockUser">
+            <c:param name="userName" value="${user.username}"/>
+        </c:url>
+        <c:url var="unblockButton" value="/unblockUser">
+            <c:param name="userName" value="${user.username}"/>
+        </c:url>
+        <c:url var="deleteButton" value="/deleteUser">
+            <c:param name="userName" value="${user.username}"/>
+        </c:url>
+        <c:url var="makeLibrarianButton" value="/makeUserLibrarian">
+            <c:param name="userName" value="${user.username}"/>
+        </c:url>
+        <c:url var="depriveLibrarianPrivilegesButton" value="/depriveLibrarianRole">
+            <c:param name="userName" value="${user.username}"/>
+        </c:url>
+
         <tr>
             <td>${user.username}</td>
             <td>${user.enabled}</td>
@@ -38,6 +55,14 @@
             <td>${user.userDetails.userAddress}</td>
             <td>${user.userDetails.userPenalty}</td>
             <td>${user.userDetails.authorityString}</td>
+
+            <td>
+                <input type="button" value="${textInfo.blockButton}" onclick="window.location.href = '${blockButton}'"/>
+                <input type="button" value="${textInfo.unblockButton}" onclick="window.location.href = '${unblockButton}'"/>
+                <input type="button" value="${textInfo.deleteUserButton}" onclick="window.location.href = '${deleteButton}'">
+                <input type="button" value="${textInfo.makeLibrarianButton}" onclick="window.location.href = '${makeLibrarianButton}'">
+                <input type="button" value="${textInfo.makeNotLibrarianButton}" onclick="window.location.href = '${depriveLibrarianPrivilegesButton}'">
+            </td>
         </tr>
     </c:forEach>
 
