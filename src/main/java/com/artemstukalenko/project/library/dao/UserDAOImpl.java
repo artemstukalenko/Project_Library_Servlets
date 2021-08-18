@@ -50,13 +50,10 @@ public class UserDAOImpl implements UserDAO {
 
         try {
             findUserConnection = userDataSource.getConnection();
-            System.out.println("CONNECTION DONE");
             String sqlStatement = "select * from users where username=?";
             findUserStatement = findUserConnection.prepareStatement(sqlStatement);
             findUserStatement.setString(1, username);
-            System.out.println("EXECUTING QUERY");
             findUserResultSet = findUserStatement.executeQuery();
-            System.out.println("QUERY EXECUTED: " + findUserResultSet);
 
             if(findUserResultSet.next()) {
                 String foundUsername = findUserResultSet.getString("username");

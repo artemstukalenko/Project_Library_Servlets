@@ -59,7 +59,7 @@ public class LoginController extends HttpServlet {
                     break;
             }
 
-        request.setAttribute("textInfo", textInfo);
+        request.getSession().setAttribute("textInfo", textInfo);
         showLoginPage(request, response);
     }
 
@@ -69,7 +69,7 @@ public class LoginController extends HttpServlet {
 
         try {
             User currentUser = userDAO.findUserByUsername(request.getParameter("username"));
-            request.setAttribute("currentUser", currentUser);
+            request.getSession().setAttribute("currentUser", currentUser);
             getHomepage(request, response);
         } catch (SQLException e) {
             showLoginPage(request, response);
