@@ -1,5 +1,6 @@
-package com.artemstukalenko.project.library.dao;
+package com.artemstukalenko.project.library.dao.implementators;
 
+import com.artemstukalenko.project.library.dao.UserDAO;
 import com.artemstukalenko.project.library.entity.User;
 import com.mysql.cj.conf.ConnectionPropertiesTransform;
 

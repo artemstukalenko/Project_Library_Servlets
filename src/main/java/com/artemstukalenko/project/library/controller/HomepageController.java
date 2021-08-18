@@ -1,8 +1,7 @@
 package com.artemstukalenko.project.library.controller;
 
 import com.artemstukalenko.project.library.dao.AuthorityDAO;
-import com.artemstukalenko.project.library.dao.AuthorityDAOImpl;
-import com.artemstukalenko.project.library.dao.UserDAOImpl;
+import com.artemstukalenko.project.library.dao.implementators.AuthorityDAOImpl;
 import com.artemstukalenko.project.library.entity.User;
 
 import javax.annotation.Resource;
@@ -44,7 +43,6 @@ public class HomepageController extends HttpServlet {
         System.out.println("USERNAME: " + currentUser.getUsername());
         try {
             currentUserAuthority = authorityDAO.getUsersAuthority(currentUser.getUsername());
-            System.out.println("AUTHORITY: " + currentUserAuthority);
             request.setAttribute("currentUserAuthority", currentUserAuthority);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -53,8 +51,16 @@ public class HomepageController extends HttpServlet {
         getHomePage(request, response);
     }
 
-    private void getHomePage(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void getHomePage(HttpServletRequest request,
+                             HttpServletResponse response) throws ServletException, IOException {
+
         RequestDispatcher dispatcher = request.getRequestDispatcher("/homepage.jsp");
+
+        if (currentUserAuthority.equals("ROLE_ADMIN")) {
+            dispatcher = request.getRequestDispatcher("admin-homepage.jsp");
+        }
+
+
         dispatcher.forward(request, response);
     }
 }

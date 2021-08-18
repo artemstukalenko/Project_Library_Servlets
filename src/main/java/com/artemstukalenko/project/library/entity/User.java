@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class User {
 
-//    private UserDetails userDetails;
+    private UserDetails userDetails;
 //
 //
 //    private List<Subscription> subscriptionList;

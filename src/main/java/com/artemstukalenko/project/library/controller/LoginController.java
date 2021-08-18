@@ -1,6 +1,6 @@
 package com.artemstukalenko.project.library.controller;
 
-import com.artemstukalenko.project.library.dao.UserDAOImpl;
+import com.artemstukalenko.project.library.dao.implementators.UserDAOImpl;
 import com.artemstukalenko.project.library.entity.User;
 import com.artemstukalenko.project.library.view.FirstView;
 

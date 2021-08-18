@@ -1,4 +1,6 @@
-package com.artemstukalenko.project.library.dao;
+package com.artemstukalenko.project.library.dao.implementators;
+
+import com.artemstukalenko.project.library.dao.AuthorityDAO;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
