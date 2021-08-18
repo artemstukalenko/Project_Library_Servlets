@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
 
 <head>
@@ -7,15 +8,15 @@
 
 <body>
 
-<h2>Welcome To The Library!</h2>
+<h2>${textInfo.loginWelcome}</h2>
 
 <br/><br/><br/>
 
 <form action="LoginController" method="post">
 
-    Login: <input type="text" name="username"/>
-    <br/>
-    Password: <input type="password" name="password"/>
+    ${textInfo.loginUsername}: <input type="text" name="username"/>
+        <br/>
+        ${textInfo.loginPassword}: <input type="password" name="password"/>
     <br/><br/>
     <input type="submit" value="login">
 

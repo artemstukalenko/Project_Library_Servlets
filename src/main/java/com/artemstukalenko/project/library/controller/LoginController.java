@@ -2,6 +2,7 @@ package com.artemstukalenko.project.library.controller;
 
 import com.artemstukalenko.project.library.dao.UserDAOImpl;
 import com.artemstukalenko.project.library.entity.User;
+import com.artemstukalenko.project.library.view.FirstView;
 
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.Period;
 
 @WebServlet("/LoginController")
 public class LoginController extends HttpServlet {
@@ -39,6 +39,7 @@ public class LoginController extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response) throws ServletException, IOException {
+        request.getSession().setAttribute("textInfo", new FirstView());
         showLoginPage(request, response);
     }
 
