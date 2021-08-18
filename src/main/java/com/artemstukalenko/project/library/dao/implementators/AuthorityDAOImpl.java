@@ -45,6 +45,42 @@ public class AuthorityDAOImpl implements AuthorityDAO {
         }
     }
 
+    @Override
+    public boolean makeUserLibrarian(String username) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = authorityDataSource.getConnection();
+            String sqlStatement = "update authorities set authority='ROLE_LIBRARIAN' where username=?";
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setString(1, username);
+
+            statement.executeUpdate();
+            return true;
+        } finally {
+            close(connection, statement, null);
+        }
+    }
+
+    @Override
+    public boolean depriveLibrarianPrivileges(String username) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = authorityDataSource.getConnection();
+            String sqlStatement = "update authorities set authority='ROLE_USER' where username=?";
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setString(1, username);
+
+            statement.executeUpdate();
+            return true;
+        } finally {
+            close(connection, statement, null);
+        }
+    }
+
     private void close(Connection findUserConnection,
                        PreparedStatement findUserStatement, ResultSet findUserResultSet) {
         try {

@@ -9,5 +9,7 @@ public interface UserDetailsDAO {
     public UserDetails getDetailsByUsername(String username) throws SQLException;
 
     public List<UserDetails> getAllDetails() throws SQLException;
+
+    public boolean updateAuthorityInfo(String username, String authorityString) throws SQLException;
 }
 

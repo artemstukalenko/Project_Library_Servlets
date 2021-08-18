@@ -90,6 +90,25 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
         }
     }
 
+    @Override
+    public boolean updateAuthorityInfo(String username, String authorityString) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = userDetailsDataSource.getConnection();
+            String sqlStatement = "update user_details set authority_string=? where username=?";
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setString(1, authorityString);
+            statement.setString(2, username);
+
+            statement.executeUpdate();
+            return true;
+        } finally {
+            close(connection, statement, null);
+        }
+    }
+
     private void close(Connection findUserConnection,
                        PreparedStatement findUserStatement, ResultSet findUserResultSet) {
         try {

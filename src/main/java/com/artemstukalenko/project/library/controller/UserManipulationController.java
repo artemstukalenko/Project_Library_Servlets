@@ -1,6 +1,10 @@
 package com.artemstukalenko.project.library.controller;
 
+import com.artemstukalenko.project.library.dao.AuthorityDAO;
+import com.artemstukalenko.project.library.dao.UserDetailsDAO;
+import com.artemstukalenko.project.library.dao.implementators.AuthorityDAOImpl;
 import com.artemstukalenko.project.library.dao.implementators.UserDAOImpl;
+import com.artemstukalenko.project.library.dao.implementators.UserDetailsDAOImpl;
 
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -18,6 +22,10 @@ public class UserManipulationController extends HttpServlet {
 
     private UserDAOImpl userDAO;
 
+    private AuthorityDAO authorityDAO;
+
+    private UserDetailsDAO userDetailsDAO;
+
     @Resource(name = "jdbc/library_db")
     private DataSource userDataSource;
 
@@ -25,6 +33,8 @@ public class UserManipulationController extends HttpServlet {
     public void init() throws ServletException {
         try {
             userDAO = new UserDAOImpl(userDataSource);
+            authorityDAO = new AuthorityDAOImpl(userDataSource);
+            userDetailsDAO = new UserDetailsDAOImpl(userDataSource);
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -34,7 +44,7 @@ public class UserManipulationController extends HttpServlet {
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response) throws ServletException, IOException {
         String processedUserUsername = request.getParameter("userName");
-        System.out.println("IN MANIPULTOR: " + processedUserUsername);
+
         switch (request.getParameter("command")) {
             case "BLOCK":
                 try {
@@ -53,8 +63,20 @@ public class UserManipulationController extends HttpServlet {
             case "DELETE":
                 break;
             case "MAKE LIBRARIAN":
+                try {
+                    authorityDAO.makeUserLibrarian(processedUserUsername);
+                    userDetailsDAO.updateAuthorityInfo(processedUserUsername, "LIBRARIAN");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 break;
             case "MAKE NOT LIBRARIAN":
+                try {
+                    authorityDAO.depriveLibrarianPrivileges(processedUserUsername);
+                    userDetailsDAO.updateAuthorityInfo(processedUserUsername, "USER");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 break;
         }
 

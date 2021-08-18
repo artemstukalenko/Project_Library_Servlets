@@ -112,6 +112,7 @@ public class UserDetails {
     }
 
 //    public String getAuthorityString() {
+//        System.out.println("IN GET AUTHORITY STRING");
 //        switch (authorityString) {
 //            case "ROLE_ADMIN":
 //                return  "ADMIN";

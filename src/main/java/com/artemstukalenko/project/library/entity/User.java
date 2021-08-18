@@ -89,13 +89,13 @@ public class User {
 //        this.subscriptionList.add(subscriptionToAdd);
 //    }
 
-//    public String getAuthorityString() {
-//        return this.userDetails.getAuthorityString();
-//    }
+    public String getAuthorityString() {
+        return this.userDetails.getAuthorityString();
+    }
 
-//    public void setAuthorityString(String authorityString) {
-//        this.getUserDetails().setAuthorityString(authorityString);
-//    }
+    public void setAuthorityString(String authorityString) {
+        this.getUserDetails().setAuthorityString(authorityString);
+    }
 
 
     @Override
