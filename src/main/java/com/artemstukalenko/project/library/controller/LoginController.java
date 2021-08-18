@@ -39,6 +39,25 @@ public class LoginController extends HttpServlet {
         showLoginPage(request, response);
     }
 
+    @Override
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response) throws ServletException, IOException {
+
+//        if (userDAO.findUserByUsername(request.getParameter("username")) != null) {
+//            getHomepage(request, response);
+//        }
+        System.out.println("ABCABCABC");
+
+        getHomepage(request, response);
+    }
+
+    private void getHomepage(HttpServletRequest request,
+                             HttpServletResponse response) throws ServletException, IOException {
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/HomepageController");
+        dispatcher.forward(request, response);
+    }
+
     private void showLoginPage(HttpServletRequest request,
                                HttpServletResponse response) throws ServletException, IOException {
 
