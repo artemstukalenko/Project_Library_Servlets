@@ -29,19 +29,19 @@
 
     <c:forEach var="user" items="${allUsers}">
 
-        <c:url var="blockButton" value="/blockUser">
+        <c:url var="blockButton" value="UserManipulationController">
             <c:param name="userName" value="${user.username}"/>
         </c:url>
-        <c:url var="unblockButton" value="/unblockUser">
+        <c:url var="unblockButton" value="UserManipulationController">
             <c:param name="userName" value="${user.username}"/>
         </c:url>
-        <c:url var="deleteButton" value="/deleteUser">
+        <c:url var="deleteButton" value="UserManipulationController">
             <c:param name="userName" value="${user.username}"/>
         </c:url>
-        <c:url var="makeLibrarianButton" value="/makeUserLibrarian">
+        <c:url var="makeLibrarianButton" value="UserManipulationController">
             <c:param name="userName" value="${user.username}"/>
         </c:url>
-        <c:url var="depriveLibrarianPrivilegesButton" value="/depriveLibrarianRole">
+        <c:url var="depriveLibrarianPrivilegesButton" value="UserManipulationController">
             <c:param name="userName" value="${user.username}"/>
         </c:url>
 
