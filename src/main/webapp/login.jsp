@@ -8,6 +8,8 @@
 
 <body>
 
+<jsp:include page="change-language-header.jsp"/>
+
 <h2>${textInfo.loginWelcome}</h2>
 
 <br/><br/><br/>

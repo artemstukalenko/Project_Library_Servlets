@@ -22,6 +22,8 @@ public class LoginController extends HttpServlet {
 
     private UserDAOImpl userDAO;
 
+    private FirstView textInfo = new FirstView();
+
     @Resource(name = "jdbc/library_db")
     private DataSource userDataSource;
 
@@ -39,7 +41,26 @@ public class LoginController extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response) throws ServletException, IOException {
-        request.getSession().setAttribute("textInfo", new FirstView());
+        System.out.println("LANG " + request.getParameter("lang"));
+        String desiredLanguage = request.getParameter("lang");
+
+        if (desiredLanguage == null) {
+            desiredLanguage = "en";
+        }
+
+        switch (desiredLanguage) {
+                case "en":
+                    textInfo.changeLanguageToEn();
+                    break;
+                case "ua":
+                    textInfo.changeLanguageToUa();
+                    break;
+                default:
+                    textInfo.changeLanguageToEn();
+                    break;
+            }
+
+        request.setAttribute("textInfo", textInfo);
         showLoginPage(request, response);
     }
 

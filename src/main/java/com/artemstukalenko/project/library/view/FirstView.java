@@ -7,7 +7,7 @@ import static com.artemstukalenko.project.library.view.TextConstants.*;
 public class FirstView {
 
     public static final String RESOURCE_BUNDLE_NAME = "messages";
-    public static ResourceBundle bundle = ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME, new Locale("ua", "UA"));
+    public static ResourceBundle bundle = ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME, new Locale("en", "EN"));
 
     public static String usersListString = bundle.getString(USERS_LIST_STRING);
     public static String seeUsersList = bundle.getString(SEE_USERS_LIST);
@@ -169,16 +169,20 @@ public class FirstView {
         loginIsTaken = bundle.getString(LOGIN_IS_TAKEN);
     }
 
-    public FirstView() {}
+    public FirstView() {
+        System.out.println("IN FIRST VIEW CONSTRUCTOR, LOCALE: " + bundle.getLocale());
+    }
 
     public static void changeLanguageToUa() {
         bundle = ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME, new Locale("ua", "UA"));
+        System.out.println("LANGUAGE CHANGED TO UA");
 
         initStringFields(bundle);
     }
 
     public static void changeLanguageToEn() {
         bundle = ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME, new Locale("en", "EN"));
+        System.out.println("LANGUAGE CHANGED TO EN");
 
         initStringFields(bundle);
     }
@@ -423,5 +427,9 @@ public class FirstView {
 
     public String getLoginIsTaken() {
         return loginIsTaken;
+    }
+
+    public static ResourceBundle getBundle() {
+        return bundle;
     }
 }
