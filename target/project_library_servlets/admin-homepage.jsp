@@ -13,7 +13,7 @@
 
 <br/><br/><br/>
 
-<input type="button" value="See user list" onclick="window.location.href = 'UserListController'"/>
+<input type="button" value="${textInfo.seeUsersList}" onclick="window.location.href = 'UserListController'"/>
 
 </body>
 

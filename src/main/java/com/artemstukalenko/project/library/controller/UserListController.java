@@ -20,11 +20,7 @@ import java.util.List;
 @WebServlet("/UserListController")
 public class UserListController extends HttpServlet {
 
-//    UserDetailsDAO userDetailsDAO;
-
     UserDAO userDAO;
-
-//    private FirstView textInfo = new FirstView();
 
     @Resource(name = "jdbc/library_db")
     private DataSource userDataSource;

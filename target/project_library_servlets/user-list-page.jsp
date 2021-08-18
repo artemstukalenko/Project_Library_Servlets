@@ -4,11 +4,11 @@
 <html>
 
 <head>
-    <title>Homepage</title>
+    <title>User List</title>
 </head>
 
 <body>
-<h1>USER LIST PAGE</h1>
+<h2>${textInfo.usersListString}</h2>
 
 
 <br/><br/><br/>
