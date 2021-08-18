@@ -20,7 +20,7 @@
         <br/>
         ${textInfo.loginPassword}: <input type="password" name="password"/>
     <br/><br/>
-    <input type="submit" value="login">
+    <input type="submit" value="${textInfo.loginButton}">
 
 </form>
 

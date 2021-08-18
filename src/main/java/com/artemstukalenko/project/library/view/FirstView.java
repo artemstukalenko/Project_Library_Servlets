@@ -169,20 +169,16 @@ public class FirstView {
         loginIsTaken = bundle.getString(LOGIN_IS_TAKEN);
     }
 
-    public FirstView() {
-        System.out.println("IN FIRST VIEW CONSTRUCTOR, LOCALE: " + bundle.getLocale());
-    }
+    public FirstView() {}
 
     public static void changeLanguageToUa() {
         bundle = ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME, new Locale("ua", "UA"));
-        System.out.println("LANGUAGE CHANGED TO UA");
 
         initStringFields(bundle);
     }
 
     public static void changeLanguageToEn() {
         bundle = ResourceBundle.getBundle(RESOURCE_BUNDLE_NAME, new Locale("en", "EN"));
-        System.out.println("LANGUAGE CHANGED TO EN");
 
         initStringFields(bundle);
     }

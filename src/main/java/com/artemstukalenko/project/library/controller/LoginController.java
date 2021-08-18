@@ -41,7 +41,6 @@ public class LoginController extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("LANG " + request.getParameter("lang"));
         String desiredLanguage = request.getParameter("lang");
 
         if (desiredLanguage == null) {
@@ -73,7 +72,6 @@ public class LoginController extends HttpServlet {
             request.setAttribute("currentUser", currentUser);
             getHomepage(request, response);
         } catch (SQLException e) {
-            System.out.println("SQL EXCEPTION CAUGHT");
             showLoginPage(request, response);
         }
 
