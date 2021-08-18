@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class UserDetailsDAOImpl implements UserDetailsDAO {
 
@@ -18,7 +19,41 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
     }
 
     @Override
+    public List<UserDetails> getAllDetails() throws SQLException {
+        List<UserDetails> allUserInfo = null;
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = userDetailsDataSource.getConnection();
+            String sqlStatement = "select * from user_details order by username";
+            statement = connection.prepareStatement(sqlStatement);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String foundUsername = resultSet.getString("username");
+                String firstName = resultSet.getString("first_name");
+                String lastName = resultSet.getString("last_name");
+                String email = resultSet.getString("email");
+                String phoneNumber = resultSet.getString("phone_number");
+                String address = resultSet.getString("address");
+                int penalty = resultSet.getInt("penalty");
+                String authorityString = resultSet.getString("authority_string");
+
+                allUserInfo.add(new UserDetails(foundUsername, firstName, lastName, email, phoneNumber,
+                        address, penalty, authorityString));
+            }
+            return allUserInfo;
+        } finally {
+            close(connection, statement, resultSet);
+        }
+    }
+
+    @Override
     public UserDetails getDetailsByUsername(String username) throws SQLException {
+        System.out.println("USERNAME " + username);
         UserDetails soughtDetails = null;
 
         Connection connectionForDetailsSearch = null;
@@ -31,7 +66,7 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
             statementForDetailsSearch = connectionForDetailsSearch.prepareStatement(sqlStatement);
             statementForDetailsSearch.setString(1, username);
             resultSet = statementForDetailsSearch.executeQuery();
-
+            System.out.println("QUERY EXECUTED");
             if (resultSet.next()) {
                 String foundUsername = resultSet.getString("username");
                 String firstName = resultSet.getString("first_name");
@@ -44,6 +79,7 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
 
                 soughtDetails = new UserDetails(foundUsername, firstName, lastName, email, phoneNumber,
                         address, penalty, authorityString);
+                System.out.println("DETAILS CREATED " + soughtDetails);
             } else {
                 throw new SQLException();
             }

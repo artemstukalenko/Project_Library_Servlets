@@ -7,7 +7,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 public interface UserDAO {
-    public List<User> getAllUsers();
+    public List<User> getAllUsers() throws SQLException;
 
     public boolean blockUser(String username);
 

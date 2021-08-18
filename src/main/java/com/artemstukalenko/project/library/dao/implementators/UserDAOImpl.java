@@ -1,24 +1,55 @@
 package com.artemstukalenko.project.library.dao.implementators;
 
 import com.artemstukalenko.project.library.dao.UserDAO;
+import com.artemstukalenko.project.library.dao.UserDetailsDAO;
 import com.artemstukalenko.project.library.entity.User;
 import com.mysql.cj.conf.ConnectionPropertiesTransform;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAOImpl implements UserDAO {
 
     private DataSource userDataSource;
 
+    private UserDetailsDAO userDetailsDAO;
+
     public UserDAOImpl(DataSource userDataSource) {
         this.userDataSource = userDataSource;
+        this.userDetailsDAO = new UserDetailsDAOImpl(userDataSource);
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return null;
+    public List<User> getAllUsers() throws SQLException {
+        List<User> allUsers = new ArrayList<>();
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = userDataSource.getConnection();
+            String sqlStatement = "select * from users";
+            statement = connection.prepareStatement(sqlStatement);
+
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                String username = resultSet.getString("username");
+                int enabled = resultSet.getInt("enabled");
+
+                User tempUser = new User(username, enabled);
+                tempUser.setUserDetails(userDetailsDAO.getDetailsByUsername(username));
+                allUsers.add(tempUser);
+            }
+
+            return allUsers;
+        } finally {
+            close(connection, statement, resultSet);
+        }
+
     }
 
     @Override
@@ -62,6 +93,7 @@ public class UserDAOImpl implements UserDAO {
                 int foundEnabledStatus = findUserResultSet.getInt("enabled");
 
                 soughtUser = new User(foundUsername, foundPassword, foundEnabledStatus);
+                soughtUser.setUserDetails(userDetailsDAO.getDetailsByUsername(username));
             } else {
                 throw new SQLException();
             }

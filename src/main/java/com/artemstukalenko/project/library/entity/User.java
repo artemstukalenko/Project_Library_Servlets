@@ -35,6 +35,11 @@ public class User {
         this.enabled = enabled;
     }
 
+    public User(String username, int enabled) {
+        this.username = username;
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -60,21 +65,21 @@ public class User {
         this.password = password;
     }
 
-//    public String getEnabled() {
-//        return enabled == 0 ? FirstView.userBlocked : FirstView.userNotBlocked;
-//    }
+    public int getEnabled() {
+        return enabled;
+    }
 
     public void setEnabled(int enabled) {
         this.enabled = enabled;
     }
 
-//    public UserDetails getUserDetails() {
-//        return userDetails;
-//    }
+    public UserDetails getUserDetails() {
+        return userDetails;
+    }
 
-//    public void setUserDetails(UserDetails userDetails) {
-//        this.userDetails = userDetails;
-//    }
+    public void setUserDetails(UserDetails userDetails) {
+        this.userDetails = userDetails;
+    }
 
 //    public List<Subscription> getSubscriptionList() {
 //        return subscriptionList;

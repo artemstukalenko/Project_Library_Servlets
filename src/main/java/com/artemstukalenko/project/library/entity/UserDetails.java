@@ -111,15 +111,20 @@ public class UserDetails {
         }
     }
 
+//    public String getAuthorityString() {
+//        switch (authorityString) {
+//            case "ROLE_ADMIN":
+//                return  "ADMIN";
+//            case "ROLE_LIBRARIAN":
+//                return  "LIBRARIAN";
+//            default:
+//                return  "";
+//        }
+//    }
+
+
     public String getAuthorityString() {
-        switch (authorityString) {
-            case "ROLE_ADMIN":
-                return  "ADMIN";
-            case "ROLE_LIBRARIAN":
-                return  "LIBRARIAN";
-            default:
-                return  "";
-        }
+        return authorityString;
     }
 
     public boolean isHasPenalty() {
