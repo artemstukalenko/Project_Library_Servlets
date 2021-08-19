@@ -46,10 +46,10 @@ public class HomepageController extends HttpServlet {
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException {
         currentUser = (User) request.getSession().getAttribute("currentUser");
-        System.out.println("USERNAME: " + currentUser.getUsername());
         try {
             currentUserAuthority = authorityDAO.getUsersAuthority(currentUser.getUsername());
             request.setAttribute("currentUserAuthority", currentUserAuthority);
+            request.getSession().setAttribute("currentUserUsername", currentUser.getUsername());
         } catch (SQLException e) {
             e.printStackTrace();
         }

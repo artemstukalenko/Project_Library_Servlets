@@ -13,7 +13,7 @@ public interface BookDAO {
 
     public boolean addNewBook(Book bookToAdd);
 
-    public Book findBookById(int bookId);
+    public Book findBookById(int bookId) throws SQLException;
 
     public boolean setTaken(int id, boolean taken);
 

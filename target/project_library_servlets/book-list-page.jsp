@@ -31,7 +31,8 @@
             <td>${book.bookYearOfPublishing}</td>
             <td>
                 <c:if test="${isUser}">
-                    <input type="button" value="arrange subscription" onclick="window.location.href = '${arrangeSubscriptionButton}">
+<%--                    <input type="button" value="arrange subscription" onclick="window.location.href = '${arrangeSubscriptionButton}"/>--%>
+                    <a href="${arrangeSubscriptionButton}">arrangeSubscription</a>
                 </c:if>
             </td>
         </tr>
