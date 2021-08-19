@@ -7,7 +7,7 @@
 </head>
 
 <body>
-<jsp:include page="change-language-header.jsp"/>
+
 <h2>${textInfo.bookTitle}: ${currentBook.bookTitle}</h2>
 <h2>${textInfo.bookAuthor}: ${currentBook.bookAuthor}</h2>
 <h3>${textInfo.requestChoosePeriod}</h3>
