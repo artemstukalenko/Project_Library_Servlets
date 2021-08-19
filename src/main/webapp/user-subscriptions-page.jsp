@@ -24,6 +24,11 @@
 
     <c:forEach var="subscription" items="${currentUserSubscriptions}">
 
+        <c:url var="returnBookButton" value="SubscriptionController">
+            <c:param name="subscriptionId" value="${subscription.subscriptionId}"/>
+            <c:param name="command" value="RETURN BOOK"/>
+        </c:url>
+
         <tr>
             <td>${subscription.subscriptionId}</td>
             <td>${subscription.username}</td>
@@ -35,6 +40,9 @@
             <td>
                 <c:if test="${subscription.expired}"><c:out value="+"/></c:if>
                 <c:if test="${!subscription.expired}"><c:out value="-"/></c:if>
+            </td>
+            <td>
+                <input type="button" value="${textInfo.returnBook}" onclick="window.location.href = '${returnBookButton}'">
             </td>
         </tr>
 

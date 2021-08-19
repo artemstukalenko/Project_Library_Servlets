@@ -95,8 +95,22 @@ public class BookDAOImpl implements BookDAO {
     }
 
     @Override
-    public boolean setTaken(int id, boolean taken) {
-        return false;
+    public boolean setTaken(int id, boolean taken) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = bookDataSource.getConnection();
+            String updateStatement = "update books set taken = ? where id = ?";
+            statement = connection.prepareStatement(updateStatement);
+            statement.setBoolean(1, taken);
+            statement.setInt(2, id);
+
+            statement.executeUpdate();
+            return taken;
+        } finally {
+            close(connection, statement, null);
+        }
     }
 
     private void close(Connection findUserConnection,

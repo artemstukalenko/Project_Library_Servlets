@@ -15,6 +15,6 @@ public interface BookDAO {
 
     public Book findBookById(int bookId) throws SQLException;
 
-    public boolean setTaken(int id, boolean taken);
+    public boolean setTaken(int id, boolean taken) throws SQLException;
 
 }

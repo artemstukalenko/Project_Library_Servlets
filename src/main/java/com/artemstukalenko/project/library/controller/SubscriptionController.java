@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.Period;
 import java.util.List;
 
 @WebServlet("/SubscriptionController")
@@ -56,6 +57,9 @@ public class SubscriptionController extends HttpServlet {
             case "SHOW USER SUBSCRIPTIONS":
                 showUserSubscriptions(request, response);
                 break;
+            case "RETURN BOOK":
+                processBookReturn(request, response);
+                break;
             default:
                 showSubscriptionList(request, response);
                 break;
@@ -63,6 +67,28 @@ public class SubscriptionController extends HttpServlet {
 
 
 
+    }
+
+    private void processBookReturn(HttpServletRequest request,
+                                   HttpServletResponse response) throws ServletException, IOException {
+
+        int subscriptionIdForDeletion = Integer.parseInt(request.getParameter("subscriptionId"));
+        Subscription subscriptionForDeletion;
+
+        try {
+            subscriptionForDeletion = subscriptionDAO.findSubscriptionById(subscriptionIdForDeletion);
+        } catch (SQLException e) {
+            throw new ServletException(e);
+        }
+
+        try {
+            subscriptionDAO.deleteSubscriptionFromDB(subscriptionIdForDeletion);
+            bookDAO.setTaken(subscriptionForDeletion.getBookId(), false);
+        } catch (SQLException e) {
+            throw new ServletException(e);
+        }
+
+        showUserSubscriptions(request, response);
     }
 
     private void showUserSubscriptions(HttpServletRequest request,

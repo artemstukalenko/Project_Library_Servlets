@@ -1,6 +1,7 @@
 package com.artemstukalenko.project.library.dao.implementators;
 
 import com.artemstukalenko.project.library.dao.SubscriptionDAO;
+import com.artemstukalenko.project.library.entity.Book;
 import com.artemstukalenko.project.library.entity.Subscription;
 
 import javax.sql.DataSource;
@@ -99,7 +100,6 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
 
             while (resultSet.next()) {
                 int id = resultSet.getInt("id");
-//                String username = resultSet.getString("username");
                 int bookId = resultSet.getInt("book_id");
                 String bookTitle = resultSet.getString("book_title");
                 String bookAuthor = resultSet.getString("book_author");
@@ -121,13 +121,60 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
     }
 
     @Override
-    public Subscription findSubscriptionById(int id) {
-        return null;
+    public Subscription findSubscriptionById(int id) throws SQLException {
+        Subscription soughtSubscription = null;
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+
+            connection = subscriptionDataSource.getConnection();
+            String sqlStatement = "select * from subscriptions where id=?";
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setInt(1, id);
+
+            resultSet = statement.executeQuery();
+
+            if(resultSet.next()) {
+                String username = resultSet.getString("username");
+                int bookId = resultSet.getInt("book_id");
+                String bookTitle = resultSet.getString("book_title");
+                String bookAuthor = resultSet.getString("book_author");
+                LocalDate startOfThePeriod = resultSet.getDate("start_of_the_period").toLocalDate();
+                LocalDate endOfThePeriod = resultSet.getDate("end_of_the_period").toLocalDate();
+                boolean expired = resultSet.getBoolean("expired");
+                boolean fined = resultSet.getBoolean("fined");
+
+                soughtSubscription = new Subscription(id, username, bookId, bookTitle, bookAuthor,
+                        startOfThePeriod, endOfThePeriod, expired, fined);
+            } else {
+                throw new SQLException();
+            }
+
+            return soughtSubscription;
+        } finally {
+            close(connection, statement, resultSet);
+        }
     }
 
     @Override
-    public boolean deleteSubscriptionFromDB(int id) {
-        return false;
+    public boolean deleteSubscriptionFromDB(int id) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = subscriptionDataSource.getConnection();
+            String deletionStatement = "delete from subscriptions where id=?";
+            statement = connection.prepareStatement(deletionStatement);
+            statement.setInt(1, id);
+
+            statement.executeUpdate();
+            return true;
+        } finally {
+            close(connection, statement, null);
+        }
     }
 
     @Override
