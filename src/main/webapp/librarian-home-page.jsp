@@ -15,6 +15,10 @@
 
 <input type="button" value="${textInfo.seeSubscriptionsList}" onclick="window.location.href = 'SubscriptionController'"/>
 
+<br/><br/>
+
+<input type="button" value="${textInfo.showAllBooksButton}" onclick="window.location.href = 'BookListController'"/>
+
 </body>
 
 </html>
