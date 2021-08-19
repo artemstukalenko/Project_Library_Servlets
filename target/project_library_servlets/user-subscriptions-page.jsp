@@ -50,5 +50,9 @@
 
 </table>
 
+<br/><br/>
+
+<input type="button" value="${textInfo.toHomePage}" onclick="window.location.href = 'HomepageController'"/>
+
 </body>
 </html>

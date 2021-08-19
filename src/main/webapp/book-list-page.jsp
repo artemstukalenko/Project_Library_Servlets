@@ -32,8 +32,9 @@
             <td>${book.bookYearOfPublishing}</td>
             <td>
                 <c:if test="${isUser}">
-<%--                    <input type="button" value="arrange subscription" onclick="window.location.href = '${arrangeSubscriptionButton}"/>--%>
-                    <a href="${arrangeSubscriptionButton}">arrangeSubscription</a>
+                    <input type="button" value="${textInfo.arrangeSubscriptionButton}"
+                        <c:if test="${book.taken}"><c:out value="disabled='disabled'"/></c:if>
+                           onclick="window.location.href = '${arrangeSubscriptionButton}'">
                 </c:if>
             </td>
         </tr>
@@ -41,6 +42,9 @@
 
 </table>
 
+<br/><br/>
+
+<input type="button" value="${textInfo.toHomePage}" onclick="window.location.href = 'HomepageController'"/>
 
 </body>
 

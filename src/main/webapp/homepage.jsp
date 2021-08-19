@@ -15,7 +15,7 @@
 <br/>
 <br/>
 
-<input type="button" value="Book list" onclick="window.location.href = 'BookListController'"/>
+<input type="button" value="${textInfo.showAllBooksButton}" onclick="window.location.href = 'BookListController'"/>
 
 <br/>
 <br/>
