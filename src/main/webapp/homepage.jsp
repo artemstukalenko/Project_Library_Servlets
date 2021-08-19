@@ -24,7 +24,12 @@
     <c:param name="command" value="SHOW USER SUBSCRIPTIONS"/>
 </c:url>
 
-<input type="button" value="${textInfo.viewSubscriptionsButton}" onclick="window.location.href = '${viewSubscriptionButton}'">
+<input type="button" value="${textInfo.viewSubscriptionsButton}" onclick="window.location.href = '${viewSubscriptionButton}'"/>
+
+<br/><br/>
+<br/><br/>
+
+<input type="button" value="${textInfo.logoutButton}" onclick="window.location.href = 'LogoutController'"/>
 
 </body>
 

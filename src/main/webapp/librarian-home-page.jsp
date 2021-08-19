@@ -19,6 +19,11 @@
 
 <input type="button" value="${textInfo.showAllBooksButton}" onclick="window.location.href = 'BookListController'"/>
 
+<br/><br/>
+<br/><br/>
+
+<input type="button" value="${textInfo.logoutButton}" onclick="window.location.href = 'LogoutController'"/>
+
 </body>
 
 </html>
