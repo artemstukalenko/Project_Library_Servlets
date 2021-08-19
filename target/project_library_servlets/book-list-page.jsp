@@ -28,7 +28,10 @@
             <c:param name="bookId" value="${book.bookId}"/>
             <c:param name="command" value="ARRANGE CUSTOM REQUEST"/>
         </c:url>
-
+        <c:url var="deleteBookButton" value="BookListController">
+            <c:param name="bookId" value="${book.bookId}"/>
+            <c:param name="command" value="DELETE BOOK"/>
+        </c:url>
 
         <tr>
             <td>${book.bookId}</td>
@@ -44,13 +47,24 @@
             </td>
             <td>
                 <c:if test="${isUser}">
-                    <input type="button" value="${textInfo.arrangeCustomRequest}" onclick="window.location.href = '${arrangeCustomRequestButton}'"
+                    <input type="button" value="${textInfo.arrangeCustomRequest}" onclick="window.location.href = '${arrangeCustomRequestButton}'"/>
+                </c:if>
+            </td>
+            <td>
+                <c:if test="${isAdmin}">
+                    <input type="button" value="${textInfo.deleteBook}" onclick="window.location.href = '${deleteBookButton}'"/>
                 </c:if>
             </td>
         </tr>
     </c:forEach>
 
 </table>
+
+<br/><br/>
+
+<c:if test="${isAdmin}">
+    <input type="button" value="${textInfo.addNewBook}" onclick="window.location.href = 'enter-info-for-new-book.jsp'"/>
+</c:if>
 
 <br/><br/>
 

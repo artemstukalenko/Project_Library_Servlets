@@ -9,9 +9,9 @@ public interface BookDAO {
 
     public List<Book> getAllBooks() throws SQLException;
 
-    public boolean deleteBook(int bookId);
+    public boolean deleteBook(int bookId) throws SQLException;
 
-    public boolean addNewBook(Book bookToAdd);
+    public boolean addNewBook(Book bookToAdd) throws SQLException;
 
     public Book findBookById(int bookId) throws SQLException;
 

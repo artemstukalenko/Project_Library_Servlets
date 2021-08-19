@@ -37,7 +37,44 @@ public class BookListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response) throws ServletException, IOException {
+        String command = request.getParameter("command") == null ? "" : request.getParameter("command");
+        int currentBookId = request.getParameter("bookId") == null ? -1 :
+                Integer.parseInt(request.getParameter("bookId"));
 
+        switch (command) {
+            case "DELETE BOOK":
+                try {
+                    bookDAO.deleteBook(currentBookId);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            default:
+                showAllBooks(request, response);
+                break;
+        }
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response) throws ServletException, IOException {
+        String newBookTitle = request.getParameter("bookTitle");
+        String newBookAuthor = request.getParameter("bookAuthor");
+        String newBookYear = request.getParameter("bookYearOfPublishing");
+
+        Book newBook = new Book(newBookTitle, newBookAuthor, newBookYear);
+
+        try {
+            bookDAO.addNewBook(newBook);
+        } catch (SQLException e) {
+            throw new ServletException(e);
+        }
+
+        showAllBooks(request, response);
+    }
+
+    private void showAllBooks(HttpServletRequest request,
+                              HttpServletResponse response) throws ServletException, IOException {
         List<Book> allBooks;
 
         try {
@@ -48,6 +85,7 @@ public class BookListController extends HttpServlet {
         }
         User currentTempUser = (User) request.getSession().getAttribute("currentUser");
         request.setAttribute("isUser", currentTempUser.getAuthorityString().equals("USER"));
+        request.setAttribute("isAdmin", currentTempUser.getAuthorityString().equals("ADMIN"));
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/book-list-page.jsp");
         dispatcher.forward(request, response);

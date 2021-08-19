@@ -50,13 +50,43 @@ public class BookDAOImpl implements BookDAO {
     }
 
     @Override
-    public boolean deleteBook(int bookId) {
-        return false;
+    public boolean deleteBook(int bookId) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = bookDataSource.getConnection();
+            String deletionStatement = "delete from books where id = ?";
+            statement = connection.prepareStatement(deletionStatement);
+            statement.setInt(1, bookId);
+
+            statement.executeUpdate();
+            return true;
+        } finally {
+            close(connection, statement, null);
+        }
     }
 
     @Override
-    public boolean addNewBook(Book bookToAdd) {
-        return false;
+    public boolean addNewBook(Book bookToAdd) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = bookDataSource.getConnection();
+            String addNewBookStatement = "insert into books (title, author, year_of_publishing, taken) "
+                    + "values (?, ?, ?, ?)";
+            statement = connection.prepareStatement(addNewBookStatement);
+            statement.setString(1, bookToAdd.getBookTitle());
+            statement.setString(2, bookToAdd.getBookAuthor());
+            statement.setString(3, bookToAdd.getBookYearOfPublishing());
+            statement.setBoolean(4, false);
+
+            statement.executeUpdate();
+            return true;
+        } finally {
+            close(connection, statement, null);
+        }
     }
 
     @Override
