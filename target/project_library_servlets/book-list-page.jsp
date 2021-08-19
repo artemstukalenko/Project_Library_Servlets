@@ -19,11 +19,21 @@
     </tr>
 
     <c:forEach var="book" items="${allBooks}">
+
+        <c:url var="arrangeSubscriptionButton" value="SubscriptionController">
+            <c:param name="bookId" value="${book.bookId}"/>
+        </c:url>
+
         <tr>
             <td>${book.bookId}</td>
             <td>${book.bookTitle}</td>
             <td>${book.bookAuthor}</td>
             <td>${book.bookYearOfPublishing}</td>
+            <td>
+                <c:if test="${isUser}">
+                    <input type="button" value="arrange subscription" onclick="window.location.href = '${arrangeSubscriptionButton}">
+                </c:if>
+            </td>
         </tr>
     </c:forEach>
 

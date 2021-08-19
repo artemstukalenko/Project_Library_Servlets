@@ -3,6 +3,7 @@ package com.artemstukalenko.project.library.controller;
 import com.artemstukalenko.project.library.dao.BookDAO;
 import com.artemstukalenko.project.library.dao.implementators.BookDAOImpl;
 import com.artemstukalenko.project.library.entity.Book;
+import com.artemstukalenko.project.library.entity.User;
 
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -45,6 +46,8 @@ public class BookListController extends HttpServlet {
         } catch (SQLException e) {
             throw new ServletException(e);
         }
+        User currentTempUser = (User) request.getSession().getAttribute("currentUser");
+        request.setAttribute("isUser", currentTempUser.getAuthorityString().equals("USER"));
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/book-list-page.jsp");
         dispatcher.forward(request, response);
