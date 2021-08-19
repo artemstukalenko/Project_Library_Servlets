@@ -43,8 +43,21 @@ public class CustomRequestDAOImpl implements CustomRequestDAO {
     }
 
     @Override
-    public boolean deleteCustomSubscriptionRequestFromDB(int id) {
-        return false;
+    public boolean deleteCustomSubscriptionRequestFromDB(int id) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = dataSource.getConnection();
+            String deletionStatement = "delete from custom_subscription_requests where id = ?";
+            statement = connection.prepareStatement(deletionStatement);
+            statement.setInt(1, id);
+
+            statement.executeUpdate();
+            return true;
+        } finally {
+            close(connection, statement, null);
+        }
     }
 
     @Override

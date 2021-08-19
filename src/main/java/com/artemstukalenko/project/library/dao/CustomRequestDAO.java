@@ -9,7 +9,7 @@ public interface CustomRequestDAO {
 
     public boolean addCustomRequestToDB(CustomRequest request) throws SQLException;
 
-    public boolean deleteCustomSubscriptionRequestFromDB(int id);
+    public boolean deleteCustomSubscriptionRequestFromDB(int id) throws SQLException;
 
     public List<CustomRequest> getAllRequests() throws SQLException;
 

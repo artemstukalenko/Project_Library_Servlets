@@ -68,7 +68,17 @@ public class CustomRequestController extends HttpServlet {
     }
 
     private void denyRequest(HttpServletRequest request,
-                             HttpServletResponse response) {
+                             HttpServletResponse response) throws ServletException, IOException {
+        int idForDeletion = Integer.parseInt(request.getParameter("requestId"));
+
+        try {
+            customRequestDAO.deleteCustomSubscriptionRequestFromDB(idForDeletion);
+        } catch (SQLException e) {
+            throw new ServletException(e);
+        }
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("subscription-list-page.jsp");
+        dispatcher.forward(request, response);
     }
 
     private void acceptRequest(HttpServletRequest request,
@@ -81,11 +91,13 @@ public class CustomRequestController extends HttpServlet {
             processedRequest = customRequestDAO.findRequestById(processedRequestId);
             Subscription newSubscription = new Subscription(processedRequest);
             subscriptionDAO.registerSubscriptionInDB(newSubscription);
+            bookDAO.setTaken(processedRequest.getBookId(), true);
+            customRequestDAO.deleteCustomSubscriptionRequestFromDB(processedRequestId);
         } catch (SQLException e) {
             throw new ServletException(e);
         }
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("user-subscriptions-page.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("subscription-list-page.jsp");
         dispatcher.forward(request, response);
     }
 
