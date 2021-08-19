@@ -23,9 +23,9 @@ public interface UserDAO {
 
     public boolean deleteUser(String username) throws SQLException;
 
-    public boolean makeUserLibrarian(String username) throws SQLException;
-
-    public boolean depriveLibrarianPrivileges(String username);
+//    public boolean makeUserLibrarian(String username) throws SQLException;
+//
+//    public boolean depriveLibrarianPrivileges(String username);
 
     public void updatePenaltyInfo(String username, int updateSum);
 }

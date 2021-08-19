@@ -11,6 +11,10 @@
 
 <h2>${textInfo.loggedInAs} ${currentUser.username}, ${currentUserAuthority}</h2>
 
+<br/>
+<br/>
+
+<input type="button" value="Book list" onclick="window.location.href = 'BookListController'"/>
 
 </body>
 

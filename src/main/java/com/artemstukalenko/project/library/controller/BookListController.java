@@ -1,9 +1,8 @@
 package com.artemstukalenko.project.library.controller;
 
-import com.artemstukalenko.project.library.dao.UserDAO;
-import com.artemstukalenko.project.library.dao.implementators.UserDAOImpl;
-import com.artemstukalenko.project.library.entity.User;
-import com.artemstukalenko.project.library.view.FirstView;
+import com.artemstukalenko.project.library.dao.BookDAO;
+import com.artemstukalenko.project.library.dao.implementators.BookDAOImpl;
+import com.artemstukalenko.project.library.entity.Book;
 
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -17,18 +16,18 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet("/UserListController")
-public class UserListController extends HttpServlet {
+@WebServlet("/BookListController")
+public class BookListController extends HttpServlet {
 
-    private UserDAO userDAO;
+    private BookDAO bookDAO;
 
     @Resource(name = "jdbc/library_db")
-    private DataSource userDataSource;
+    private DataSource bookDataSource;
 
     @Override
     public void init() throws ServletException {
         try {
-            userDAO = new UserDAOImpl(userDataSource);
+            bookDAO = new BookDAOImpl(bookDataSource);
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -38,16 +37,16 @@ public class UserListController extends HttpServlet {
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response) throws ServletException, IOException {
 
-        List<User> allUsers;
+        List<Book> allBooks;
 
         try {
-            allUsers = userDAO.getAllUsers();
+            allBooks = bookDAO.getAllBooks();
+            request.setAttribute("allBooks", allBooks);
         } catch (SQLException e) {
             throw new ServletException(e);
         }
-        request.setAttribute("allUsers", allUsers);
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/user-list-page.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/book-list-page.jsp");
         dispatcher.forward(request, response);
     }
 }

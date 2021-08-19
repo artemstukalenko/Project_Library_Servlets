@@ -147,29 +147,29 @@ public class UserDAOImpl implements UserDAO {
         return false;
     }
 
-    @Override
-    public boolean makeUserLibrarian(String username) throws SQLException {
-//        Connection connection = null;
-//        PreparedStatement statement = null;
+//    @Override
+//    public boolean makeUserLibrarian(String username) throws SQLException {
+////        Connection connection = null;
+////        PreparedStatement statement = null;
+////
+////        try {
+////            connection = userDataSource.getConnection();
+////            String sqlStatement = "update users set enabled=1 where username=?";
+////            statement = connection.prepareStatement(sqlStatement);
+////            statement.setString(1, username);
+////            statement.executeUpdate();
+////
+////            return true;
+////        } finally {
+////            close(connection, statement, null);
+////        }
+//        return false;
+//    }
 //
-//        try {
-//            connection = userDataSource.getConnection();
-//            String sqlStatement = "update users set enabled=1 where username=?";
-//            statement = connection.prepareStatement(sqlStatement);
-//            statement.setString(1, username);
-//            statement.executeUpdate();
-//
-//            return true;
-//        } finally {
-//            close(connection, statement, null);
-//        }
-        return false;
-    }
-
-    @Override
-    public boolean depriveLibrarianPrivileges(String username) {
-        return false;
-    }
+//    @Override
+//    public boolean depriveLibrarianPrivileges(String username) {
+//        return false;
+//    }
 
     @Override
     public void updatePenaltyInfo(String username, int updateSum) {
