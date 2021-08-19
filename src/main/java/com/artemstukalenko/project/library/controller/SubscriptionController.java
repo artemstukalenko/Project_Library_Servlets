@@ -142,6 +142,7 @@ public class SubscriptionController extends HttpServlet {
 
         try {
             subscriptionDAO.registerSubscriptionInDB(newSubscription);
+            bookDAO.setTaken(desiredBook.getBookId(), true);
         } catch (SQLException e) {
             e.printStackTrace();
         }
