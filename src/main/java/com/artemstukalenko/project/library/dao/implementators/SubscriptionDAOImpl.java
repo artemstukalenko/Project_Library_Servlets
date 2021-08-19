@@ -83,6 +83,44 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
     }
 
     @Override
+    public List<Subscription> getUserSubscriptions(String username) throws SQLException {
+        List<Subscription> userSubscriptions = new ArrayList<>();
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = subscriptionDataSource.getConnection();
+            String sqlStatement = "select * from subscriptions where username=?";
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setString(1, username);
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+//                String username = resultSet.getString("username");
+                int bookId = resultSet.getInt("book_id");
+                String bookTitle = resultSet.getString("book_title");
+                String bookAuthor = resultSet.getString("book_author");
+                LocalDate startOfThePeriod = resultSet.getDate("start_of_the_period").toLocalDate();
+                LocalDate endOfThePeriod = resultSet.getDate("end_of_the_period").toLocalDate();
+                boolean expired = resultSet.getBoolean("expired");
+                boolean fined = resultSet.getBoolean("fined");
+
+                Subscription tempSubscription = new Subscription(id, username, bookId, bookTitle, bookAuthor,
+                        startOfThePeriod, endOfThePeriod, expired, fined);
+
+                userSubscriptions.add(tempSubscription);
+            }
+
+            return userSubscriptions;
+        } finally {
+            close(connection, statement, resultSet);
+        }
+    }
+
+    @Override
     public Subscription findSubscriptionById(int id) {
         return null;
     }

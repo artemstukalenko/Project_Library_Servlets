@@ -53,6 +53,9 @@ public class SubscriptionController extends HttpServlet {
             case "ARRANGE SUBSCRIPTION":
                 registerSubscription(request, response);
                 break;
+            case "SHOW USER SUBSCRIPTIONS":
+                showUserSubscriptions(request, response);
+                break;
             default:
                 showSubscriptionList(request, response);
                 break;
@@ -60,6 +63,23 @@ public class SubscriptionController extends HttpServlet {
 
 
 
+    }
+
+    private void showUserSubscriptions(HttpServletRequest request,
+                                       HttpServletResponse response) throws ServletException, IOException {
+
+        List<Subscription> currentUserSubscriptions;
+
+        try {
+            System.out.println("USERNAME: " + request.getSession().getAttribute("currentUserUsername"));
+            currentUserSubscriptions = subscriptionDAO.getUserSubscriptions((String) request.getSession().getAttribute("currentUserUsername"));
+            request.setAttribute("currentUserSubscriptions", currentUserSubscriptions);
+        } catch (SQLException e) {
+            throw new ServletException(e);
+        }
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user-subscriptions-page.jsp");
+        dispatcher.forward(request, response);
     }
 
     private void showSubscriptionList(HttpServletRequest request,

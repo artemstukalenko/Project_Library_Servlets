@@ -17,4 +17,6 @@ public interface SubscriptionDAO {
 
     public Subscription findSubscriptionByBookId(int bookId);
 
+    public List<Subscription> getUserSubscriptions(String username) throws SQLException;
+
 }
