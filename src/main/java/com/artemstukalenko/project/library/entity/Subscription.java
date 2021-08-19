@@ -55,15 +55,15 @@ public class Subscription {
         this.fined = fined;
     }
 
-    //    public Subscription(CustomSubscriptionRequest request) {
-//        this.username = request.getUsername();
-//        this.bookId = request.getBookId();
-//        this.title = request.getTitle();
-//        this.author = request.getAuthor();
-//        this.startOfThePeriod = request.getStartOfThePeriod();
-//        this.endOfThePeriod = request.getEndOfThePeriod();
-//        this.fined = false;
-//    }
+    public Subscription(CustomRequest request) {
+        this.username = request.getUsername();
+        this.bookId = request.getBookId();
+        this.title = request.getTitle();
+        this.author = request.getAuthor();
+        this.startOfThePeriod = request.getStartOfThePeriod();
+        this.endOfThePeriod = request.getEndOfThePeriod();
+        this.fined = false;
+    }
 
     public String getUsername() {
         return username;

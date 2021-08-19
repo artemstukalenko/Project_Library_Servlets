@@ -24,6 +24,11 @@
             <c:param name="bookId" value="${book.bookId}"/>
             <c:param name="command" value="ARRANGE SUBSCRIPTION"/>
         </c:url>
+        <c:url var="arrangeCustomRequestButton" value="CustomRequestController">
+            <c:param name="bookId" value="${book.bookId}"/>
+            <c:param name="command" value="ARRANGE CUSTOM REQUEST"/>
+        </c:url>
+
 
         <tr>
             <td>${book.bookId}</td>
@@ -35,6 +40,11 @@
                     <input type="button" value="${textInfo.arrangeSubscriptionButton}"
                         <c:if test="${book.taken}"><c:out value="disabled='disabled'"/></c:if>
                            onclick="window.location.href = '${arrangeSubscriptionButton}'">
+                </c:if>
+            </td>
+            <td>
+                <c:if test="${isUser}">
+                    <input type="button" value="${textInfo.arrangeCustomRequest}" onclick="window.location.href = '${arrangeCustomRequestButton}'"
                 </c:if>
             </td>
         </tr>

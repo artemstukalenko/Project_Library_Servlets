@@ -178,8 +178,41 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
     }
 
     @Override
-    public Subscription findSubscriptionByBookId(int bookId) {
-        return null;
+    public Subscription findSubscriptionByBookId(int bookId) throws SQLException {
+        Subscription soughtSubscription;
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = subscriptionDataSource.getConnection();
+            String sqlStatement = "select * from subscriptions where book_id = ?";
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setInt(1, bookId);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                int subscriptionId = resultSet.getInt("id");
+                String username = resultSet.getString("username");
+                int bookIdSubscription = resultSet.getInt("book_id");
+                String bookTitle = resultSet.getString("book_title");
+                String bookAuthor = resultSet.getString("book_author");
+                LocalDate startOfThePeriod = resultSet.getDate("start_of_the_period").toLocalDate();
+                LocalDate endOfThePeriod = resultSet.getDate("end_of_the_period").toLocalDate();
+                boolean expired = resultSet.getBoolean("expired");
+                boolean fined = resultSet.getBoolean("fined");
+
+                soughtSubscription = new Subscription(subscriptionId, username, bookIdSubscription, bookTitle, bookAuthor,
+                        startOfThePeriod, endOfThePeriod, expired, fined);
+            } else {
+                throw new SQLException();
+            }
+
+            return soughtSubscription;
+        } finally {
+            close(connection, statement, resultSet);
+        }
     }
 
     private void close(Connection findUserConnection,
