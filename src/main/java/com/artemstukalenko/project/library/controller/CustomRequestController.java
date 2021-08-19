@@ -55,10 +55,38 @@ public class CustomRequestController extends HttpServlet {
             case "ARRANGE CUSTOM REQUEST":
                 getArrangeCustomRequestForm(request, response);
                 break;
+            case "ACCEPT REQUEST":
+                acceptRequest(request, response);
+                break;
+            case "DENY REQUEST":
+                denyRequest(request, response);
+                break;
             default:
                 showAllRequests(request, response);
                 break;
         }
+    }
+
+    private void denyRequest(HttpServletRequest request,
+                             HttpServletResponse response) {
+    }
+
+    private void acceptRequest(HttpServletRequest request,
+                               HttpServletResponse response) throws ServletException, IOException {
+        int processedRequestId = Integer.parseInt(request.getParameter("requestId"));
+
+        CustomRequest processedRequest;
+
+        try {
+            processedRequest = customRequestDAO.findRequestById(processedRequestId);
+            Subscription newSubscription = new Subscription(processedRequest);
+            subscriptionDAO.registerSubscriptionInDB(newSubscription);
+        } catch (SQLException e) {
+            throw new ServletException(e);
+        }
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user-subscriptions-page.jsp");
+        dispatcher.forward(request, response);
     }
 
     @Override
@@ -90,7 +118,7 @@ public class CustomRequestController extends HttpServlet {
             throw new ServletException(e);
         }
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("user-list-page.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user-subscriptions-page.jsp");
         dispatcher.forward(request, response);
 
     }

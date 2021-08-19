@@ -83,8 +83,37 @@ public class CustomRequestDAOImpl implements CustomRequestDAO {
     }
 
     @Override
-    public CustomRequest findRequestById(int id) {
-        return null;
+    public CustomRequest findRequestById(int id) throws SQLException {
+        CustomRequest soughtRequest;
+
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = dataSource.getConnection();
+            String sqlStatement = "select * from custom_subscription_requests where id = ?";
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setInt(1, id);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                String username = resultSet.getString("username");
+                int bookId = resultSet.getInt("book_id");
+                String bookTitle = resultSet.getString("book_title");
+                String bookAuthor = resultSet.getString("book_author");
+                LocalDate startOfThePeriod = resultSet.getDate("start_of_the_period").toLocalDate();
+                LocalDate endOfThePeriod = resultSet.getDate("end_of_the_period").toLocalDate();
+
+                soughtRequest = new CustomRequest(username, bookId, bookTitle, bookAuthor,
+                        startOfThePeriod, endOfThePeriod);
+            } else {
+                throw new SQLException();
+            }
+            return soughtRequest;
+        } finally {
+            close(connection, statement, resultSet);
+        }
     }
 
     private void close(Connection findUserConnection,

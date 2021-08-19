@@ -59,15 +59,17 @@
 
     <c:forEach var="subscriptionRequest" items="${allRequests}">
 
-        <c:url var="acceptRequestButton" value="/acceptRequest">
-            <c:param name="requestId" value="${subscriptionRequest.customSubscriptionId}"/>
+        <c:url var="acceptRequestButton" value="CustomRequestController">
+            <c:param name="requestId" value="${subscriptionRequest.customRequestId}"/>
+            <c:param name="command" value="ACCEPT REQUEST"/>
         </c:url>
-        <c:url var="denyRequestButton" value="/denyRequest">
-            <c:param name="requestId" value="${subscriptionRequest.customSubscriptionId}"/>
+        <c:url var="denyRequestButton" value="CustomRequestController">
+            <c:param name="requestId" value="${subscriptionRequest.customRequestId}"/>
+            <c:param name="command" value="DENY REQUEST"/>
         </c:url>
 
         <tr>
-            <td>${subscriptionRequest.customSubscriptionId}</td>
+            <td>${subscriptionRequest.customRequestId}</td>
             <td>${subscriptionRequest.username}</td>
             <td>${subscriptionRequest.bookId}</td>
             <td>${subscriptionRequest.title}</td>

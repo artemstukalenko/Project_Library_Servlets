@@ -13,6 +13,6 @@ public interface CustomRequestDAO {
 
     public List<CustomRequest> getAllRequests() throws SQLException;
 
-    public CustomRequest findRequestById(int id);
+    public CustomRequest findRequestById(int id) throws SQLException;
 
 }
