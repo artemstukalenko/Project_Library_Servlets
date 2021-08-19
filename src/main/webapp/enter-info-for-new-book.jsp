@@ -7,7 +7,7 @@
 </head>
 
 <body>
-
+<jsp:include page="change-language-header.jsp"/>
 <form action="BookListController" method="post">
 
         ${textInfo.bookTitle}: <input type="text" name="bookTitle"/> <br/> <br/>

@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+import static com.artemstukalenko.project.library.utility.LanguageChanger.changeLanguage;
+
 @WebServlet("/UserListController")
 public class UserListController extends HttpServlet {
 
@@ -37,7 +39,7 @@ public class UserListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response) throws ServletException, IOException {
-
+        changeLanguage(request.getParameter("lang"));
         List<User> allUsers;
 
         try {

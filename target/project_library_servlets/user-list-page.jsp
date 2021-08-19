@@ -8,6 +8,7 @@
 </head>
 
 <body>
+<jsp:include page="change-language-header.jsp"/>
 <h2>${textInfo.usersListString}</h2>
 
 

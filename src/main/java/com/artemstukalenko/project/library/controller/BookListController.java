@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+import static com.artemstukalenko.project.library.utility.LanguageChanger.changeLanguage;
+
 @WebServlet("/BookListController")
 public class BookListController extends HttpServlet {
 
@@ -37,6 +39,7 @@ public class BookListController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request,
                          HttpServletResponse response) throws ServletException, IOException {
+        changeLanguage(request.getParameter("lang"));
         String command = request.getParameter("command") == null ? "" : request.getParameter("command");
         int currentBookId = request.getParameter("bookId") == null ? -1 :
                 Integer.parseInt(request.getParameter("bookId"));

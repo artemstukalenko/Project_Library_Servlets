@@ -8,7 +8,7 @@
 </head>
 
 <body>
-
+<jsp:include page="change-language-header.jsp"/>
 <table border="1">
 
     <tr>

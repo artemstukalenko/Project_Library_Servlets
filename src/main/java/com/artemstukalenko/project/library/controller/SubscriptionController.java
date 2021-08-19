@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+import static com.artemstukalenko.project.library.utility.LanguageChanger.changeLanguage;
+
 @WebServlet("/SubscriptionController")
 public class SubscriptionController extends HttpServlet {
 
@@ -53,6 +55,7 @@ public class SubscriptionController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException {
+        changeLanguage(request.getParameter("lang"));
         String command = request.getParameter("command") == null ? "" : request.getParameter("command");
 
         switch (command) {

@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="com.artemstukalenko.project.library.view.FirstView" %>
 <!DOCTYPE html>
 <html>
 
@@ -7,11 +6,11 @@
 
 
 
-    <c:url var="uaLang" value="LoginController">
+    <c:url var="uaLang" value="${currentURL}">
         <c:param name="lang" value="ua"/>
     </c:url>
 
-    <c:url var="enLang" value="LoginController">
+    <c:url var="enLang" value="${currentURL}">
         <c:param name="lang" value="en"/>
     </c:url>
 

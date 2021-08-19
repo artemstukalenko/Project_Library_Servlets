@@ -15,6 +15,8 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
 
+import static com.artemstukalenko.project.library.utility.LanguageChanger.changeLanguage;
+
 @WebServlet("/HomepageController")
 public class HomepageController extends HttpServlet {
 
@@ -45,6 +47,8 @@ public class HomepageController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException {
+        changeLanguage(request.getParameter("lang"));
+        request.setAttribute("currentURL", request.getServletPath());
         currentUser = (User) request.getSession().getAttribute("currentUser");
         try {
             currentUserAuthority = authorityDAO.getUsersAuthority(currentUser.getUsername());

@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
+import static com.artemstukalenko.project.library.utility.LanguageChanger.changeLanguage;
 
 @WebServlet("/LoginController")
 public class LoginController extends HttpServlet {
@@ -41,23 +42,8 @@ public class LoginController extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request,
                       HttpServletResponse response) throws ServletException, IOException {
-        String desiredLanguage = request.getParameter("lang");
-
-        if (desiredLanguage == null) {
-            desiredLanguage = "en";
-        }
-
-        switch (desiredLanguage) {
-                case "en":
-                    textInfo.changeLanguageToEn();
-                    break;
-                case "ua":
-                    textInfo.changeLanguageToUa();
-                    break;
-                default:
-                    textInfo.changeLanguageToEn();
-                    break;
-            }
+        request.setAttribute("currentURL", request.getServletPath());
+        changeLanguage(request.getParameter("lang"));
 
         request.getSession().setAttribute("textInfo", textInfo);
         showLoginPage(request, response);

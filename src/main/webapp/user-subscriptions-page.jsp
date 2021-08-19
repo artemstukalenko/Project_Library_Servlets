@@ -4,7 +4,7 @@
 <html>
 
 <body>
-
+<jsp:include page="change-language-header.jsp"/>
 <h2>${textInfo.yourSubscriptions}</h2>
 
 <br><br><br>
