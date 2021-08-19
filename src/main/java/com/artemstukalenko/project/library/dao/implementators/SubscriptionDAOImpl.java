@@ -5,6 +5,8 @@ import com.artemstukalenko.project.library.entity.Subscription;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SubscriptionDAOImpl implements SubscriptionDAO {
@@ -44,8 +46,40 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
     }
 
     @Override
-    public List<Subscription> getAllSubscriptions() {
-        return null;
+    public List<Subscription> getAllSubscriptions() throws SQLException {
+        List<Subscription> allSubscriptions = new ArrayList<>();
+
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = subscriptionDataSource.getConnection();
+            String sqlStatement = "select * from subscriptions";
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(sqlStatement);
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String username = resultSet.getString("username");
+                int bookId = resultSet.getInt("book_id");
+                String bookTitle = resultSet.getString("book_title");
+                String bookAuthor = resultSet.getString("book_author");
+                LocalDate startOfThePeriod = resultSet.getDate("start_of_the_period").toLocalDate();
+                LocalDate endOfThePeriod = resultSet.getDate("end_of_the_period").toLocalDate();
+                boolean expired = resultSet.getBoolean("expired");
+                boolean fined = resultSet.getBoolean("fined");
+
+                Subscription tempSubscription = new Subscription(id, username, bookId, bookTitle, bookAuthor,
+                        startOfThePeriod, endOfThePeriod, expired, fined);
+
+                allSubscriptions.add(tempSubscription);
+            }
+
+            return allSubscriptions;
+        } finally {
+            close(connection, statement, resultSet);
+        }
     }
 
     @Override
@@ -64,7 +98,7 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
     }
 
     private void close(Connection findUserConnection,
-                       PreparedStatement findUserStatement, ResultSet findUserResultSet) {
+                       Statement findUserStatement, ResultSet findUserResultSet) {
         try {
             if (findUserConnection != null) {
                 findUserConnection.close();

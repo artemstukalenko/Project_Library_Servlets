@@ -7,13 +7,13 @@
 </head>
 
 <body>
-<h1>HOMEPAGE ADMIN</h1>
+<h1>HOMEPAGE LIBRARIAN</h1>
 
 <h2>${textInfo.loggedInAs} ${currentUser.username}, ${currentUserAuthority}</h2>
 
 <br/><br/><br/>
 
-<input type="button" value="${textInfo.seeUsersList}" onclick="window.location.href = 'UserListController'"/>
+<input type="button" value="${textInfo.seeSubscriptionsList}" onclick="window.location.href = 'SubscriptionController'"/>
 
 </body>
 

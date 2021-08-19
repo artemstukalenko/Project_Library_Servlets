@@ -60,12 +60,18 @@ public class HomepageController extends HttpServlet {
     private void getHomePage(HttpServletRequest request,
                              HttpServletResponse response) throws ServletException, IOException {
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/homepage.jsp");
+        RequestDispatcher dispatcher;
 
-        if (currentUserAuthority.equals("ROLE_ADMIN")) {
-            dispatcher = request.getRequestDispatcher("admin-homepage.jsp");
+        switch (currentUserAuthority) {
+            case "ROLE_ADMIN":
+                dispatcher = request.getRequestDispatcher("admin-homepage.jsp");
+                break;
+            case "ROLE_LIBRARIAN":
+                dispatcher = request.getRequestDispatcher("librarian-home-page.jsp");
+                break;
+            default:
+                dispatcher = request.getRequestDispatcher("homepage.jsp");
         }
-
 
         dispatcher.forward(request, response);
     }

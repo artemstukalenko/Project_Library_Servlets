@@ -22,6 +22,7 @@
 
         <c:url var="arrangeSubscriptionButton" value="SubscriptionController">
             <c:param name="bookId" value="${book.bookId}"/>
+            <c:param name="command" value="ARRANGE SUBSCRIPTION"/>
         </c:url>
 
         <tr>

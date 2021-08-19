@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet("/SubscriptionController")
 public class SubscriptionController extends HttpServlet {
@@ -46,9 +47,35 @@ public class SubscriptionController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException {
+        String command = request.getParameter("command") == null ? "" : request.getParameter("command");
 
-        registerSubscription(request, response);
+        switch (command) {
+            case "ARRANGE SUBSCRIPTION":
+                registerSubscription(request, response);
+                break;
+            default:
+                showSubscriptionList(request, response);
+                break;
+        }
 
+
+
+    }
+
+    private void showSubscriptionList(HttpServletRequest request,
+                                      HttpServletResponse response) throws ServletException, IOException {
+
+        List<Subscription> allSubscriptions;
+
+        try {
+            allSubscriptions = subscriptionDAO.getAllSubscriptions();
+            request.setAttribute("allSubscriptions", allSubscriptions);
+        } catch (SQLException e) {
+            throw new ServletException(e);
+        }
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("subscription-list-page.jsp");
+        dispatcher.forward(request, response);
     }
 
     private void registerSubscription(HttpServletRequest request,

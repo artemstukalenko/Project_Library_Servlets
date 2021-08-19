@@ -9,7 +9,7 @@ public interface SubscriptionDAO {
 
     public boolean registerSubscriptionInDB(Subscription subscriptionToRegister) throws SQLException;
 
-    public List<Subscription> getAllSubscriptions();
+    public List<Subscription> getAllSubscriptions() throws SQLException;
 
     public Subscription findSubscriptionById(int id);
 

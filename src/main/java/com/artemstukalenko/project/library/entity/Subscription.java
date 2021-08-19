@@ -42,7 +42,20 @@ public class Subscription {
         this.fined = false;
     }
 
-//    public Subscription(CustomSubscriptionRequest request) {
+    public Subscription(int subscriptionId, String username, int bookId, String title, String author,
+                        LocalDate startOfThePeriod, LocalDate endOfThePeriod, boolean expired, boolean fined) {
+        this.subscriptionId = subscriptionId;
+        this.username = username;
+        this.bookId = bookId;
+        this.title = title;
+        this.author = author;
+        this.startOfThePeriod = startOfThePeriod;
+        this.endOfThePeriod = endOfThePeriod;
+        this.expired = expired;
+        this.fined = fined;
+    }
+
+    //    public Subscription(CustomSubscriptionRequest request) {
 //        this.username = request.getUsername();
 //        this.bookId = request.getBookId();
 //        this.title = request.getTitle();
