@@ -33,7 +33,6 @@ public class SubscriptionController extends HttpServlet {
         try {
             bookDAO = new BookDAOImpl(dataSource);
             subscriptionDAO = new SubscriptionDAOImpl(dataSource);
-            System.out.println("INIT METHOD DONE WELL");
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -41,20 +40,25 @@ public class SubscriptionController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("ENTERED SUBSCRIPTION CONTROLLER DO POST");
+
     }
 
     @Override
     protected void doGet(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("ENTERED SUBSCRIPTION CONTROLLER DO GET");
+
+        registerSubscription(request, response);
+
+    }
+
+    private void registerSubscription(HttpServletRequest request,
+                                      HttpServletResponse response) throws ServletException, IOException {
         int bookId = Integer.parseInt(request.getParameter("bookId"));
         String currentUserUsername = (String) request.getSession().getAttribute("currentUserUsername");
         Book desiredBook = null;
 
         try {
             desiredBook = bookDAO.findBookById(bookId);
-            System.out.println("BOOK FOUND: " + desiredBook);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -65,7 +69,6 @@ public class SubscriptionController extends HttpServlet {
 
         try {
             subscriptionDAO.registerSubscriptionInDB(newSubscription);
-            System.out.println("SUBSCRIPTION REGISTERED: " + newSubscription);
         } catch (SQLException e) {
             e.printStackTrace();
         }

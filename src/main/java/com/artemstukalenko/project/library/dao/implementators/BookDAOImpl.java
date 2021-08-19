@@ -4,7 +4,6 @@ import com.artemstukalenko.project.library.dao.BookDAO;
 import com.artemstukalenko.project.library.entity.Book;
 
 import javax.sql.DataSource;
-import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +61,6 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public Book findBookById(int bookId) throws SQLException {
-        System.out.println("TRYING TO FIND A BOOK WITH ID = " + bookId);
         Book soughtBook = null;
 
         Connection myConnection = null;
@@ -75,11 +73,10 @@ public class BookDAOImpl implements BookDAO {
             String sqlStatement = "select * from books where id=?";
             myStatement = myConnection.prepareStatement(sqlStatement);
             myStatement.setInt(1, bookId);
-            System.out.println("ABOUT TO EXECUTE QUERY");
+
             resultSet = myStatement.executeQuery();
-            System.out.println("RESULT SET: " + resultSet);
+
             if(resultSet.next()) {
-                System.out.println("RESULT SET IS READY");
                 int id = resultSet.getInt("id");
                 String title = resultSet.getString("title");
                 String author = resultSet.getString("author");
@@ -87,7 +84,6 @@ public class BookDAOImpl implements BookDAO {
                 boolean taken = resultSet.getBoolean("taken");
 
                 soughtBook = new Book(id, title, author, yearOfPublishing, taken);
-                System.out.println("BOOK OBJECT MADE: " + soughtBook);
             } else {
                 throw new SQLException();
             }
