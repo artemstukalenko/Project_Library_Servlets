@@ -62,7 +62,7 @@ public class CustomRequestController extends HttpServlet {
                 denyRequest(request, response);
                 break;
             default:
-                showAllRequests(request, response);
+                showAllRequestsAndSubscriptions(request, response);
                 break;
         }
     }
@@ -77,8 +77,7 @@ public class CustomRequestController extends HttpServlet {
             throw new ServletException(e);
         }
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("subscription-list-page.jsp");
-        dispatcher.forward(request, response);
+        showAllRequestsAndSubscriptions(request, response);
     }
 
     private void acceptRequest(HttpServletRequest request,
@@ -97,8 +96,7 @@ public class CustomRequestController extends HttpServlet {
             throw new ServletException(e);
         }
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("subscription-list-page.jsp");
-        dispatcher.forward(request, response);
+        showAllRequestsAndSubscriptions(request, response);
     }
 
     @Override
@@ -158,14 +156,17 @@ public class CustomRequestController extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    private void showAllRequests(HttpServletRequest request,
-                                 HttpServletResponse response) throws ServletException, IOException {
+    private void showAllRequestsAndSubscriptions(HttpServletRequest request,
+                                                 HttpServletResponse response) throws ServletException, IOException {
 
         List<CustomRequest> requestList;
+        List<Subscription> subscriptionList;
 
         try {
+            subscriptionList = subscriptionDAO.getAllSubscriptions();
             requestList = customRequestDAO.getAllRequests();
             request.setAttribute("allRequests", requestList);
+            request.setAttribute("allSubscriptions", subscriptionList);
         } catch (SQLException e) {
             throw new ServletException(e);
         }
