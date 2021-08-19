@@ -61,6 +61,40 @@ public class CustomRequestController extends HttpServlet {
         }
     }
 
+    @Override
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response) throws ServletException, IOException {
+
+        registerCustomRequest(request, response);
+
+    }
+
+    private void registerCustomRequest(HttpServletRequest request,
+                                       HttpServletResponse response) throws ServletException, IOException {
+        String customersUsername = (String) request.getSession().getAttribute("currentUserUsername");
+
+        Book currentBook = (Book) request.getSession().getAttribute("currentBook");
+
+        int desiredBookId = currentBook.getBookId();
+        String desiredBookTitle = currentBook.getBookTitle();
+        String desiredBookAuthor = currentBook.getBookAuthor();
+        LocalDate startDate = LocalDate.parse(request.getParameter("startDate"));
+        LocalDate endDate = LocalDate.parse(request.getParameter("endDate"));
+
+        CustomRequest newRequest = new CustomRequest(customersUsername, desiredBookId, desiredBookTitle,
+                desiredBookAuthor, startDate, endDate);
+
+        try {
+            customRequestDAO.addCustomRequestToDB(newRequest);
+        } catch (SQLException e) {
+            throw new ServletException(e);
+        }
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user-list-page.jsp");
+        dispatcher.forward(request, response);
+
+    }
+
     private void getArrangeCustomRequestForm(HttpServletRequest request,
                                              HttpServletResponse response) throws ServletException, IOException {
 
@@ -68,11 +102,11 @@ public class CustomRequestController extends HttpServlet {
 
         try {
             currentBook = bookDAO.findBookById(Integer.parseInt(request.getParameter("bookId")));
-            request.setAttribute("currentBook", currentBook);
+            request.getSession().setAttribute("currentBook", currentBook);
 
             if (currentBook.getTaken()) {
                 Subscription currentSubscription = subscriptionDAO.findSubscriptionByBookId(currentBook.getBookId());
-                request.setAttribute("currentSubscription", currentSubscription);
+                request.getSession().setAttribute("currentSubscription", currentSubscription);
             }
         } catch (SQLException e) {
             throw new ServletException(e);

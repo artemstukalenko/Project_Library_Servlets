@@ -1,10 +1,13 @@
 package com.artemstukalenko.project.library.controller;
 
 import com.artemstukalenko.project.library.dao.BookDAO;
+import com.artemstukalenko.project.library.dao.CustomRequestDAO;
 import com.artemstukalenko.project.library.dao.SubscriptionDAO;
 import com.artemstukalenko.project.library.dao.implementators.BookDAOImpl;
+import com.artemstukalenko.project.library.dao.implementators.CustomRequestDAOImpl;
 import com.artemstukalenko.project.library.dao.implementators.SubscriptionDAOImpl;
 import com.artemstukalenko.project.library.entity.Book;
+import com.artemstukalenko.project.library.entity.CustomRequest;
 import com.artemstukalenko.project.library.entity.Subscription;
 
 import javax.annotation.Resource;
@@ -17,13 +20,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.time.Period;
 import java.util.List;
 
 @WebServlet("/SubscriptionController")
 public class SubscriptionController extends HttpServlet {
 
     private SubscriptionDAO subscriptionDAO;
+
+    private CustomRequestDAO customRequestDAO;
 
     private BookDAO bookDAO;
 
@@ -35,6 +39,7 @@ public class SubscriptionController extends HttpServlet {
         try {
             bookDAO = new BookDAOImpl(dataSource);
             subscriptionDAO = new SubscriptionDAOImpl(dataSource);
+            customRequestDAO = new CustomRequestDAOImpl(dataSource);
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -97,7 +102,6 @@ public class SubscriptionController extends HttpServlet {
         List<Subscription> currentUserSubscriptions;
 
         try {
-            System.out.println("USERNAME: " + request.getSession().getAttribute("currentUserUsername"));
             currentUserSubscriptions = subscriptionDAO.getUserSubscriptions((String) request.getSession().getAttribute("currentUserUsername"));
             request.setAttribute("currentUserSubscriptions", currentUserSubscriptions);
         } catch (SQLException e) {
@@ -112,9 +116,12 @@ public class SubscriptionController extends HttpServlet {
                                       HttpServletResponse response) throws ServletException, IOException {
 
         List<Subscription> allSubscriptions;
+        List<CustomRequest> allRequests;
 
         try {
             allSubscriptions = subscriptionDAO.getAllSubscriptions();
+            allRequests = customRequestDAO.getAllRequests();
+            request.setAttribute("allRequests", allRequests);
             request.setAttribute("allSubscriptions", allSubscriptions);
         } catch (SQLException e) {
             throw new ServletException(e);

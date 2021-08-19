@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CustomRequestDAO {
 
-    public boolean addCustomRequestToDB(CustomRequest request);
+    public boolean addCustomRequestToDB(CustomRequest request) throws SQLException;
 
     public boolean deleteCustomSubscriptionRequestFromDB(int id);
 

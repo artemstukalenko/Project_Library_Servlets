@@ -4,10 +4,7 @@ import com.artemstukalenko.project.library.dao.CustomRequestDAO;
 import com.artemstukalenko.project.library.entity.CustomRequest;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +18,28 @@ public class CustomRequestDAOImpl implements CustomRequestDAO {
     }
 
     @Override
-    public boolean addCustomRequestToDB(CustomRequest request) {
-        return false;
+    public boolean addCustomRequestToDB(CustomRequest request) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = dataSource.getConnection();
+            String sqlStatement = "insert into custom_subscription_requests (username, book_id, book_title, " +
+                    "book_author, start_of_the_period, end_of_the_period) "
+                    + "values (?, ?, ?, ?, ?, ?)";
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setString(1, request.getUsername());
+            statement.setInt(2, request.getBookId());
+            statement.setString(3, request.getTitle());
+            statement.setString(4, request.getAuthor());
+            statement.setObject(5, request.getStartOfThePeriod());
+            statement.setObject(6, request.getEndOfThePeriod());
+
+            statement.execute();
+            return true;
+        } finally {
+            close(connection, statement, null);
+        }
     }
 
     @Override
