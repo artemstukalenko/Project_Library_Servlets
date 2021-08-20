@@ -4,6 +4,7 @@ import com.artemstukalenko.project.library.dao.BookDAO;
 import com.artemstukalenko.project.library.dao.implementators.BookDAOImpl;
 import com.artemstukalenko.project.library.entity.Book;
 import com.artemstukalenko.project.library.entity.User;
+import com.artemstukalenko.project.library.utility.Searcher;
 import com.artemstukalenko.project.library.utility.Sorter;
 
 import javax.annotation.Resource;
@@ -29,14 +30,18 @@ public class BookListController extends HttpServlet {
     private DataSource bookDataSource;
 
     private Sorter sorter;
+    private Searcher searcher;
 
     private String sortMethod;
+    private String searchCriteria;
+    private String userInputForSearch;
 
     @Override
     public void init() throws ServletException {
         try {
             bookDAO = new BookDAOImpl(bookDataSource);
             sorter = new Sorter();
+            searcher = new Searcher();
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -51,6 +56,8 @@ public class BookListController extends HttpServlet {
                 Integer.parseInt(request.getParameter("bookId"));
 
         sortMethod = request.getParameter("sortMethod");
+        searchCriteria = request.getParameter("searchCriteria");
+        userInputForSearch = request.getParameter("userInputForSearch");
 
         switch (command) {
             case "DELETE BOOK":
@@ -60,7 +67,7 @@ public class BookListController extends HttpServlet {
                     e.printStackTrace();
                 }
             default:
-                showAllBooks(request, response, sortMethod);
+                showAllBooks(request, response, sortMethod, searchCriteria);
                 break;
         }
 
@@ -81,11 +88,11 @@ public class BookListController extends HttpServlet {
             throw new ServletException(e);
         }
 
-        showAllBooks(request, response, sortMethod);
+        showAllBooks(request, response, sortMethod, searchCriteria);
     }
 
     private void showAllBooks(HttpServletRequest request,
-                              HttpServletResponse response, String sortMethod) throws ServletException, IOException {
+                              HttpServletResponse response, String sortMethod, String searchCriteria) throws ServletException, IOException {
         List<Book> allBooks;
 
         try {
@@ -93,6 +100,11 @@ public class BookListController extends HttpServlet {
             if (sortMethod != null) {
                 sorter.setSortMethod(sortMethod);
                 allBooks = sorter.sortList(allBooks);
+            }
+            if (searchCriteria != null && userInputForSearch != null) {
+                searcher.setSearchCriteria(searchCriteria);
+                searcher.setUserInput(userInputForSearch);
+                allBooks = searcher.getResultOfTheBookSearch(allBooks);
             }
             request.setAttribute("allBooks", allBooks);
         } catch (SQLException e) {

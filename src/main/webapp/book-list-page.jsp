@@ -9,6 +9,18 @@
 
 <body>
 <jsp:include page="change-language-header.jsp"/>
+
+<form action="BookListController" method="get">
+    <input type="text" name="userInputForSearch"/>
+    <select name="searchCriteria">
+        <option>${textInfo.filterByTitle}</option>
+        <option>${textInfo.filterByAuthor}</option>
+        <option>${textInfo.filterByYear}</option>
+    </select>
+    <input type="submit" value="search"/>
+</form>
+
+<br/><br/>
 <table border="1">
 
     <tr>
