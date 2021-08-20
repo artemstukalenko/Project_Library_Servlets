@@ -24,6 +24,10 @@
 
 </form>
 
+<br/><br/>
+
+<a href="RegistrationController">Register</a>
+
 </body>
 
 </html>

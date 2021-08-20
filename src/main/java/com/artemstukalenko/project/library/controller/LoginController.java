@@ -19,8 +19,6 @@ import static com.artemstukalenko.project.library.utility.LanguageChanger.change
 @WebServlet("/LoginController")
 public class LoginController extends HttpServlet {
 
-    private static final long serialVersionUID = 1l;
-
     private UserDAOImpl userDAO;
 
     private FirstView textInfo = new FirstView();
