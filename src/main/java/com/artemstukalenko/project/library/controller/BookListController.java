@@ -4,6 +4,7 @@ import com.artemstukalenko.project.library.dao.BookDAO;
 import com.artemstukalenko.project.library.dao.implementators.BookDAOImpl;
 import com.artemstukalenko.project.library.entity.Book;
 import com.artemstukalenko.project.library.entity.User;
+import com.artemstukalenko.project.library.utility.Sorter;
 
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -27,10 +28,15 @@ public class BookListController extends HttpServlet {
     @Resource(name = "jdbc/library_db")
     private DataSource bookDataSource;
 
+    private Sorter sorter;
+
+    private String sortMethod;
+
     @Override
     public void init() throws ServletException {
         try {
             bookDAO = new BookDAOImpl(bookDataSource);
+            sorter = new Sorter();
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -44,6 +50,8 @@ public class BookListController extends HttpServlet {
         int currentBookId = request.getParameter("bookId") == null ? -1 :
                 Integer.parseInt(request.getParameter("bookId"));
 
+        sortMethod = request.getParameter("sortMethod");
+
         switch (command) {
             case "DELETE BOOK":
                 try {
@@ -52,7 +60,7 @@ public class BookListController extends HttpServlet {
                     e.printStackTrace();
                 }
             default:
-                showAllBooks(request, response);
+                showAllBooks(request, response, sortMethod);
                 break;
         }
 
@@ -73,15 +81,19 @@ public class BookListController extends HttpServlet {
             throw new ServletException(e);
         }
 
-        showAllBooks(request, response);
+        showAllBooks(request, response, sortMethod);
     }
 
     private void showAllBooks(HttpServletRequest request,
-                              HttpServletResponse response) throws ServletException, IOException {
+                              HttpServletResponse response, String sortMethod) throws ServletException, IOException {
         List<Book> allBooks;
 
         try {
             allBooks = bookDAO.getAllBooks();
+            if (sortMethod != null) {
+                sorter.setSortMethod(sortMethod);
+                allBooks = sorter.sortList(allBooks);
+            }
             request.setAttribute("allBooks", allBooks);
         } catch (SQLException e) {
             throw new ServletException(e);

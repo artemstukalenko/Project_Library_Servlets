@@ -16,6 +16,17 @@
         <th>${textInfo.bookTitle}</th>
         <th>${textInfo.bookAuthor}</th>
         <th>${textInfo.bookYearOfPublishing}</th>
+        <th>
+
+            <form action="BookListController" method="get">
+                <select name="sortMethod">
+                    <option>By title</option>
+                    <option>By author</option>
+                    <option>By year</option>
+                </select>
+                <input type="submit" value="sort"/>
+            </form>
+        </th>
     </tr>
 
     <c:forEach var="book" items="${allBooks}">
