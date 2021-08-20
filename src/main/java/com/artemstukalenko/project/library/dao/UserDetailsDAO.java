@@ -13,5 +13,7 @@ public interface UserDetailsDAO {
     public boolean updateAuthorityInfo(String username, String authorityString) throws SQLException;
 
     public boolean deleteUserDetails(String username) throws SQLException;
+
+    public boolean registerUserDetails(UserDetails newUserDetails) throws SQLException;
 }
 

@@ -127,6 +127,32 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
         }
     }
 
+    @Override
+    public boolean registerUserDetails(UserDetails newUserDetails) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = userDetailsDataSource.getConnection();
+            String sqlStatement = "insert into user_details (username, authority_string, first_name, last_name, email, phone_number, address, penalty) "
+                    + "values (?, ?, ?, ?, ?, ?, ?, ?)";
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setString(1, newUserDetails.getUsername());
+            statement.setString(2, newUserDetails.getAuthorityString());
+            statement.setString(3, newUserDetails.getUserFirstName());
+            statement.setString(4, newUserDetails.getUserLastName());
+            statement.setString(5, newUserDetails.getUserEmail());
+            statement.setString(6, newUserDetails.getUserPhoneNumber());
+            statement.setString(7, newUserDetails.getUserAddress());
+            statement.setInt(8, newUserDetails.getUserPenalty());
+
+            statement.executeUpdate();
+            return true;
+        } finally {
+            close(connection, statement, null);
+        }
+    }
+
     private void close(Connection findUserConnection,
                        PreparedStatement findUserStatement, ResultSet findUserResultSet) {
         try {

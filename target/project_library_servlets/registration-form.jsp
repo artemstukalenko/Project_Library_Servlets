@@ -17,7 +17,7 @@
         Last name: <input type="text" name="lastName"/> <br/>
         Email: <input type="text" name="email"/> <br/>
         Phone number: <input type="text" name="phoneNumber"/> <br/>
-        Address: <input type="text" name="address"/> <br/>
+        Address: <input type="text" name="address"/> <br/> <br/>
         <input type="submit" value="Register"/> <br/>
     </form>
 

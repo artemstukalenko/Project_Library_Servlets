@@ -1,6 +1,7 @@
 package com.artemstukalenko.project.library.dao.implementators;
 
 import com.artemstukalenko.project.library.dao.AuthorityDAO;
+import com.artemstukalenko.project.library.entity.Authority;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -91,6 +92,26 @@ public class AuthorityDAOImpl implements AuthorityDAO {
             String sqlStatement = "delete from authorities where username = ?";
             statement = connection.prepareStatement(sqlStatement);
             statement.setString(1, username);
+
+            statement.executeUpdate();
+            return true;
+        } finally {
+            close(connection, statement, null);
+        }
+    }
+
+    @Override
+    public boolean addAuthorityToDB(Authority authority) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = authorityDataSource.getConnection();
+            String sqlStatement = "insert into authorities (username, authority) " +
+                    "values (?, ?)";
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setString(1, authority.getUsername());
+            statement.setString(2, authority.getAuthority());
 
             statement.executeUpdate();
             return true;

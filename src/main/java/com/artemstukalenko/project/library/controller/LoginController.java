@@ -51,6 +51,10 @@ public class LoginController extends HttpServlet {
     protected void doPost(HttpServletRequest request,
                           HttpServletResponse response) throws ServletException, IOException {
 
+        if (request.getSession().isNew()) {
+            doGet(request, response);
+        }
+
         try {
             User currentUser = userDAO.findUserByUsername(request.getParameter("username"));
             request.getSession().setAttribute("currentUser", currentUser);

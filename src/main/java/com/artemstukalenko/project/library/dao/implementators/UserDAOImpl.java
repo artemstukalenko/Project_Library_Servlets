@@ -94,8 +94,24 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public boolean registerUser(User user) throws SQLIntegrityConstraintViolationException {
-        return false;
+    public boolean registerUser(User user) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = userDataSource.getConnection();
+            String sqlStatement = "insert into users (username, password, enabled) " +
+                    "values (?, ?, ?)";
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setString(1, user.getUsername());
+            statement.setString(2, ("{noop}" + user.getPassword()));
+            statement.setInt(3, user.getEnabled());
+
+            statement.executeUpdate();
+            return true;
+        } finally {
+            close(connection, statement, null);
+        }
     }
 
     @Override

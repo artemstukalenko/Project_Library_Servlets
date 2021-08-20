@@ -28,6 +28,17 @@ public class UserDetails {
         this.userPenalty = 0;
     }
 
+    public UserDetails(String username, String userFirstName, String userLastName, String userEmail,
+                       String userPhoneNumber, String userAddress, String authorityString) {
+        this.username = username;
+        this.userFirstName = userFirstName;
+        this.userLastName = userLastName;
+        this.userEmail = userEmail;
+        this.userPhoneNumber = userPhoneNumber;
+        this.userAddress = userAddress;
+        this.authorityString = authorityString;
+    }
+
     public UserDetails(String username, String userFirstName, String userLastName,
                        String userEmail, String userPhoneNumber, String userAddress,
                        int userPenalty, String authorityString) {

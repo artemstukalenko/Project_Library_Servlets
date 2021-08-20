@@ -15,7 +15,7 @@ public interface UserDAO {
 
     public String getUserRole(String username);
 
-    public boolean registerUser(User user) throws SQLIntegrityConstraintViolationException;
+    public boolean registerUser(User user) throws SQLException;
 
     public User findUserByUsername(String username) throws SQLException;
 
