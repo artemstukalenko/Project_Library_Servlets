@@ -68,6 +68,8 @@ public class HomepageController extends HttpServlet {
             userDetailsDAO.updatePenaltyInfo(currentUserUsername,
                     (userDetailsDAO.getDetailsByUsername(currentUserUsername).getUserPenalty()
                             + penaltyCalculator.calculateUsersPenalty(currentUserUsername)));
+            currentUser.setUserDetails(userDetailsDAO.getDetailsByUsername(currentUserUsername));
+
 
             request.setAttribute("currentUserAuthority", currentUserAuthority);
             request.getSession().setAttribute("currentUserUsername", currentUserUsername);
