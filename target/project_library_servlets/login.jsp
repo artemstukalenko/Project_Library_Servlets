@@ -26,7 +26,7 @@
 
 <br/><br/>
 
-<a href="RegistrationController">Register</a>
+<a href="RegistrationController">${textInfo.registration}</a>
 
 </body>
 

@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
 
 <head>
@@ -27,6 +28,10 @@
     <input type="submit" value="${textInfo.arrangeCustomRequest}"/>
 
 </form>
+
+<br/><br/>
+
+<input type="button" value="${textInfo.cancel}" onclick="window.location.href = 'BookListController'"/>
 
 </body>
 

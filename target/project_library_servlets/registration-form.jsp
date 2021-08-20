@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
 
 <head>
@@ -6,20 +7,24 @@
 </head>
 
 <body>
-    <h2>Register</h2>
+    <h2>${textInfo.registration}</h2>
 
     <br/><br/>
 
     <form action="RegistrationController" method="post">
-        Username: <input type="text" name="username"/> <br/>
-        Password: <input type="password" name="password"/> <br/>
-        First name: <input type="text" name="firstName"/> <br/>
-        Last name: <input type="text" name="lastName"/> <br/>
-        Email: <input type="text" name="email"/> <br/>
-        Phone number: <input type="text" name="phoneNumber"/> <br/>
-        Address: <input type="text" name="address"/> <br/> <br/>
-        <input type="submit" value="Register"/> <br/>
+            ${textInfo.loginUsername}: <input type="text" name="username"/> <br/>
+            ${textInfo.loginPassword}: <input type="password" name="password"/> <br/>
+            ${textInfo.userFirstName}: <input type="text" name="firstName"/> <br/>
+            ${textInfo.userLastName}: <input type="text" name="lastName"/> <br/>
+            ${textInfo.userEmail}: <input type="text" name="email"/> <br/>
+            ${textInfo.userPhoneNumber}: <input type="text" name="phoneNumber"/> <br/>
+            ${textInfo.userAddress}: <input type="text" name="address"/> <br/> <br/>
+        <input type="submit" value="${textInfo.registration}"/> <br/>
     </form>
+
+<br/><br/>
+
+    <input type="button" value="${textInfo.cancel}" onclick="window.location.href = 'LoginController'"/>
 
 </body>
 
