@@ -20,11 +20,11 @@
 
             <form action="BookListController" method="get">
                 <select name="sortMethod">
-                    <option>By title</option>
-                    <option>By author</option>
-                    <option>By year</option>
+                    <option>${textInfo.filterByTitle}</option>
+                    <option>${textInfo.filterByAuthor}</option>
+                    <option>${textInfo.filterByYear}</option>
                 </select>
-                <input type="submit" value="sort"/>
+                <input type="submit" value="${textInfo.sort}"/>
             </form>
         </th>
     </tr>

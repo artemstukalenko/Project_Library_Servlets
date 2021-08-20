@@ -1,6 +1,7 @@
 package com.artemstukalenko.project.library.utility;
 
 import com.artemstukalenko.project.library.entity.Book;
+import com.artemstukalenko.project.library.view.FirstView;
 
 import java.util.Comparator;
 import java.util.List;
@@ -10,6 +11,8 @@ public class Sorter {
 
     private String sortMethod;
 
+    private FirstView textInfo = new FirstView();
+
     private Comparator<Book> byTitle = (b1, b2) -> {return b1.getBookTitle().compareTo(b2.getBookTitle());};
     private Comparator<Book> byAuthor = (b1, b2) -> {return b1.getBookAuthor().compareTo(b2.getBookAuthor());};
     private Comparator<Book> byYear = (b1, b2) -> {return b1.getBookYearOfPublishing().compareTo(b2.getBookYearOfPublishing());};
@@ -17,6 +20,7 @@ public class Sorter {
     public Sorter() {}
 
     public List<Book> sortList(List<Book> listToSort) {
+        commandTranslator();
         switch (sortMethod) {
             case "By title":
                 return listToSort.stream().sorted(byTitle)
@@ -30,6 +34,17 @@ public class Sorter {
             default:
                 return listToSort.stream().sorted(byTitle)
                         .collect(Collectors.toList());
+        }
+    }
+
+
+    private void commandTranslator() {
+        if (this.sortMethod.equals(textInfo.getFilterByTitle())) {
+            sortMethod = "By title";
+        } else if (this.sortMethod.equals(textInfo.getFilterByAuthor())) {
+            sortMethod = "By author";
+        } else if (this.sortMethod.equals(textInfo.getFilterByYear())) {
+            sortMethod = "By year";
         }
     }
 

@@ -183,6 +183,10 @@ public class FirstView {
         initStringFields(bundle);
     }
 
+    public String getSort() {
+        return sort;
+    }
+
     public String getUsersListString() {return usersListString;}
 
     public String getSeeUsersList() {return seeUsersList;}
