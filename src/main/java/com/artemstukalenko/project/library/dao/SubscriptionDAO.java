@@ -21,4 +21,6 @@ public interface SubscriptionDAO {
 
     public List<Subscription> getUserSubscriptions(String username) throws SQLException;
 
+    public boolean updateFinedInfo(int subscriptionId, boolean fined) throws SQLException;
+
 }

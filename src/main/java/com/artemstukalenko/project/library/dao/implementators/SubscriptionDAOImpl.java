@@ -215,4 +215,21 @@ public class SubscriptionDAOImpl implements SubscriptionDAO, ConnectionCloser {
             close(connection, statement, resultSet);
         }
     }
+
+    @Override
+    public boolean updateFinedInfo(int subscriptionId, boolean fined) throws SQLException {
+
+        try {
+            connection = subscriptionDataSource.getConnection();
+            String sqlStatement = "update subscriptions set fined = ? where id = ?";
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setBoolean(1, fined);
+            statement.setInt(2, subscriptionId);
+
+            statement.executeUpdate();
+            return true;
+        } finally {
+            close(connection, statement, resultSet);
+        }
+    }
 }

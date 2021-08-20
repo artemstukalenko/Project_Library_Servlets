@@ -64,9 +64,10 @@ public class HomepageController extends HttpServlet {
 
         try {
             currentUserAuthority = authorityDAO.getUsersAuthority(currentUserUsername);
-            System.out.println("IN HP DO POST");
+
             userDetailsDAO.updatePenaltyInfo(currentUserUsername,
-                    penaltyCalculator.calculateUsersPenalty(currentUserUsername));
+                    (userDetailsDAO.getDetailsByUsername(currentUserUsername).getUserPenalty()
+                            + penaltyCalculator.calculateUsersPenalty(currentUserUsername)));
 
             request.setAttribute("currentUserAuthority", currentUserAuthority);
             request.getSession().setAttribute("currentUserUsername", currentUserUsername);

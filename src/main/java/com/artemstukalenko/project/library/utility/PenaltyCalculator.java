@@ -23,23 +23,24 @@ public class PenaltyCalculator {
     }
 
     public int calculateUsersPenalty(String username) {
-        System.out.println("GONNA CALCULATE PENALTY " + username);
         List<Subscription> userSubscriptions = new ArrayList<>();
-
-        System.out.println("DATA SOURCE: " + dataSource);
 
         try {
             subscriptionDAO = new SubscriptionDAOImpl(dataSource);
-            System.out.println("DAO: " + subscriptionDAO);
             userSubscriptions = subscriptionDAO.getUserSubscriptions(username);
-            System.out.println("USER SUBSCRIPTION LIST: " + userSubscriptions);
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return (int)(userSubscriptions.stream()
                 .filter(subscription -> {return subscription.getExpired() && !subscription.getFined();})
-                .peek(subscription -> {subscription.setFined(true);})
+                .peek(subscription -> {
+                    try {
+                        subscriptionDAO.updateFinedInfo(subscription.getSubscriptionId(), true);
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                })
                 .count() * 10);
     }
 

@@ -7,10 +7,10 @@
 
 <h2>${textInfo.chooseSumToPay}</h2>
 
-<form action="confirmPayment">
+<form action="PenaltyPaymentController" method="post">
 
-    <input type="number" value="0" max="${currentUser.userDetails.userPenalty}" min="0" name="userSum" id="userSum">
-    <input type="submit" value="OK">
+    <input type="number" value="0" max="${currentUser.userDetails.userPenalty}" min="0" name="userSum" id="userSum"/>
+    <input type="submit" value="${textInfo.payPenaltyButton}"/>
 
 </form>
 <br><br><br>
