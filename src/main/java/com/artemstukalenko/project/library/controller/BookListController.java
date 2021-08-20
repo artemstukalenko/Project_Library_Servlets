@@ -36,6 +36,8 @@ public class BookListController extends HttpServlet {
     private String searchCriteria;
     private String userInputForSearch;
 
+    private List<Book> filteredBookList;
+
     @Override
     public void init() throws ServletException {
         try {
@@ -55,9 +57,11 @@ public class BookListController extends HttpServlet {
         int currentBookId = request.getParameter("bookId") == null ? -1 :
                 Integer.parseInt(request.getParameter("bookId"));
 
-        sortMethod = request.getParameter("sortMethod");
-        searchCriteria = request.getParameter("searchCriteria");
-        userInputForSearch = request.getParameter("userInputForSearch");
+        initializeUserFilters(request);
+
+        if (request.getParameter("removeFilters") != null) {
+            removeFilters();
+        }
 
         switch (command) {
             case "DELETE BOOK":
@@ -67,7 +71,7 @@ public class BookListController extends HttpServlet {
                     e.printStackTrace();
                 }
             default:
-                showAllBooks(request, response, sortMethod, searchCriteria);
+                showAllBooks(request, response);
                 break;
         }
 
@@ -88,24 +92,22 @@ public class BookListController extends HttpServlet {
             throw new ServletException(e);
         }
 
-        showAllBooks(request, response, sortMethod, searchCriteria);
+        showAllBooks(request, response);
     }
 
     private void showAllBooks(HttpServletRequest request,
-                              HttpServletResponse response, String sortMethod, String searchCriteria) throws ServletException, IOException {
+                              HttpServletResponse response) throws ServletException, IOException {
         List<Book> allBooks;
+
+        if (sortMethod != null || searchCriteria != null
+                || userInputForSearch != null) {
+            showFilteredBookList(request, response);
+            return;
+        }
 
         try {
             allBooks = bookDAO.getAllBooks();
-            if (sortMethod != null) {
-                sorter.setSortMethod(sortMethod);
-                allBooks = sorter.sortList(allBooks);
-            }
-            if (searchCriteria != null && userInputForSearch != null) {
-                searcher.setSearchCriteria(searchCriteria);
-                searcher.setUserInput(userInputForSearch);
-                allBooks = searcher.getResultOfTheBookSearch(allBooks);
-            }
+            filteredBookList = allBooks;
             request.setAttribute("allBooks", allBooks);
         } catch (SQLException e) {
             throw new ServletException(e);
@@ -116,5 +118,39 @@ public class BookListController extends HttpServlet {
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/book-list-page.jsp");
         dispatcher.forward(request, response);
+    }
+
+    private void showFilteredBookList(HttpServletRequest request,
+                                      HttpServletResponse response) throws ServletException, IOException {
+
+        if (sortMethod != null) {
+            sorter.setSortMethod(sortMethod);
+            filteredBookList = sorter.sortList(filteredBookList);
+        }
+        if (searchCriteria != null && userInputForSearch != null) {
+            searcher.setSearchCriteria(searchCriteria);
+            searcher.setUserInput(userInputForSearch);
+            filteredBookList = searcher.getResultOfTheBookSearch(filteredBookList);
+        }
+        request.setAttribute("allBooks", filteredBookList);
+
+        User currentTempUser = (User) request.getSession().getAttribute("currentUser");
+        request.setAttribute("isUser", currentTempUser.getAuthorityString().equals("USER"));
+        request.setAttribute("isAdmin", currentTempUser.getAuthorityString().equals("ADMIN"));
+
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/book-list-page.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void initializeUserFilters(HttpServletRequest request) {
+        sortMethod = request.getParameter("sortMethod");
+        searchCriteria = request.getParameter("searchCriteria");
+        userInputForSearch = request.getParameter("userInputForSearch");
+    }
+
+    private void removeFilters() {
+        sortMethod = null;
+        searchCriteria = null;
+        userInputForSearch = null;
     }
 }

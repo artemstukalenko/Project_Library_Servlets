@@ -23,14 +23,16 @@ public class Searcher {
     public Searcher() {}
 
     public List<Book> getResultOfTheBookSearch(List<Book> allBooksList) {
+        commandTranslator();
+
         switch (searchCriteria) {
-            case "byTitle":
+            case "By title":
                 return allBooksList.stream().filter(searchByTitle)
                         .collect(Collectors.toList());
-            case "byAuthor":
+            case "By author":
                 return allBooksList.stream().filter(searchByAuthor)
                         .collect(Collectors.toList());
-            case "byYear":
+            case "By year":
                 return allBooksList.stream().filter(searchByYear)
                         .collect(Collectors.toList());
             default:

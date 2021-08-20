@@ -85,6 +85,14 @@
 
 <br/><br/>
 
+<c:url var="showAllBooksButton" value="BookListController">
+    <c:param name="removeFilters" value="true"/>
+</c:url>
+
+<input type="button" value="${textInfo.showAllBooksButton}" onclick="window.location.href = '${showAllBooksButton}'"/>
+
+<br/><br/>
+
 <c:if test="${isAdmin}">
     <input type="button" value="${textInfo.addNewBook}" onclick="window.location.href = 'enter-info-for-new-book.jsp'"/>
 </c:if>
