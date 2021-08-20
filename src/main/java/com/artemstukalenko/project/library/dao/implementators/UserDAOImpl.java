@@ -158,8 +158,8 @@ public class UserDAOImpl implements UserDAO, ConnectionCloser {
         }
     }
 
-    @Override
-    public void updatePenaltyInfo(String username, int updateSum) {
-
-    }
+//    @Override
+//    public void updatePenaltyInfo(String username, int updateSum) {
+//
+//    }
 }

@@ -1,8 +1,11 @@
 package com.artemstukalenko.project.library.controller;
 
 import com.artemstukalenko.project.library.dao.AuthorityDAO;
+import com.artemstukalenko.project.library.dao.UserDetailsDAO;
 import com.artemstukalenko.project.library.dao.implementators.AuthorityDAOImpl;
+import com.artemstukalenko.project.library.dao.implementators.UserDetailsDAOImpl;
 import com.artemstukalenko.project.library.entity.User;
+import com.artemstukalenko.project.library.utility.PenaltyCalculator;
 
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -22,17 +25,23 @@ public class HomepageController extends HttpServlet {
 
     private AuthorityDAO authorityDAO;
 
+    private UserDetailsDAO userDetailsDAO;
+
     private String currentUserAuthority;
 
     private User currentUser;
 
+    private PenaltyCalculator penaltyCalculator;
+
     @Resource(name = "jdbc/library_db")
-    private DataSource authorityDataSource;
+    private DataSource dataSource;
 
     @Override
     public void init() throws ServletException {
         try {
-            authorityDAO = new AuthorityDAOImpl(authorityDataSource);
+            authorityDAO = new AuthorityDAOImpl(dataSource);
+            userDetailsDAO = new UserDetailsDAOImpl(dataSource);
+            penaltyCalculator = new PenaltyCalculator(dataSource);
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -50,10 +59,17 @@ public class HomepageController extends HttpServlet {
         changeLanguage(request.getParameter("lang"));
         request.setAttribute("currentURL", request.getServletPath());
         currentUser = (User) request.getSession().getAttribute("currentUser");
+
+        String currentUserUsername = currentUser.getUsername();
+
         try {
-            currentUserAuthority = authorityDAO.getUsersAuthority(currentUser.getUsername());
+            currentUserAuthority = authorityDAO.getUsersAuthority(currentUserUsername);
+            System.out.println("IN HP DO POST");
+            userDetailsDAO.updatePenaltyInfo(currentUserUsername,
+                    penaltyCalculator.calculateUsersPenalty(currentUserUsername));
+
             request.setAttribute("currentUserAuthority", currentUserAuthority);
-            request.getSession().setAttribute("currentUserUsername", currentUser.getUsername());
+            request.getSession().setAttribute("currentUserUsername", currentUserUsername);
         } catch (SQLException e) {
             e.printStackTrace();
         }

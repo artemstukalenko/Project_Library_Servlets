@@ -144,4 +144,20 @@ public class UserDetailsDAOImpl implements UserDetailsDAO, ConnectionCloser {
             close(connection, statement, resultSet);
         }
     }
+
+    @Override
+    public void updatePenaltyInfo(String username, int updateSum) throws SQLException {
+
+        try {
+            connection = userDetailsDataSource.getConnection();
+            String sqlStatement = "update user_details set penalty = ? where username = ?";
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setInt(1, updateSum);
+            statement.setString(2, username);
+
+            statement.executeUpdate();
+        } finally {
+            close(connection, statement, resultSet);
+        }
+    }
 }

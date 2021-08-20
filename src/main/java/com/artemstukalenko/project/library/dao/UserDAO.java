@@ -27,5 +27,5 @@ public interface UserDAO {
 //
 //    public boolean depriveLibrarianPrivileges(String username);
 
-    public void updatePenaltyInfo(String username, int updateSum);
+//    public void updatePenaltyInfo(String username, int updateSum);
 }
