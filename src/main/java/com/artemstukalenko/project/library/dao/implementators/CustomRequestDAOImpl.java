@@ -2,6 +2,7 @@ package com.artemstukalenko.project.library.dao.implementators;
 
 import com.artemstukalenko.project.library.dao.CustomRequestDAO;
 import com.artemstukalenko.project.library.entity.CustomRequest;
+import com.artemstukalenko.project.library.utility.ConnectionCloser;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -9,7 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomRequestDAOImpl implements CustomRequestDAO {
+public class CustomRequestDAOImpl implements CustomRequestDAO, ConnectionCloser {
 
     private DataSource dataSource;
 
@@ -134,23 +135,6 @@ public class CustomRequestDAOImpl implements CustomRequestDAO {
             return soughtRequest;
         } finally {
             close(connection, statement, resultSet);
-        }
-    }
-
-    private void close(Connection findUserConnection,
-                       Statement findUserStatement, ResultSet findUserResultSet) {
-        try {
-            if (findUserConnection != null) {
-                findUserConnection.close();
-            }
-            if (findUserStatement != null) {
-                findUserStatement.close();
-            }
-            if (findUserResultSet != null) {
-                findUserResultSet.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

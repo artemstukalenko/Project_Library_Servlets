@@ -3,6 +3,7 @@ package com.artemstukalenko.project.library.dao.implementators;
 import com.artemstukalenko.project.library.dao.SubscriptionDAO;
 import com.artemstukalenko.project.library.entity.Book;
 import com.artemstukalenko.project.library.entity.Subscription;
+import com.artemstukalenko.project.library.utility.ConnectionCloser;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -10,7 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubscriptionDAOImpl implements SubscriptionDAO {
+public class SubscriptionDAOImpl implements SubscriptionDAO, ConnectionCloser {
 
     private DataSource subscriptionDataSource;
 
@@ -212,23 +213,6 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
             return soughtSubscription;
         } finally {
             close(connection, statement, resultSet);
-        }
-    }
-
-    private void close(Connection findUserConnection,
-                       Statement findUserStatement, ResultSet findUserResultSet) {
-        try {
-            if (findUserConnection != null) {
-                findUserConnection.close();
-            }
-            if (findUserStatement != null) {
-                findUserStatement.close();
-            }
-            if (findUserResultSet != null) {
-                findUserResultSet.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

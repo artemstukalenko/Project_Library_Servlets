@@ -2,6 +2,7 @@ package com.artemstukalenko.project.library.dao.implementators;
 
 import com.artemstukalenko.project.library.dao.AuthorityDAO;
 import com.artemstukalenko.project.library.entity.Authority;
+import com.artemstukalenko.project.library.utility.ConnectionCloser;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -9,7 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class AuthorityDAOImpl implements AuthorityDAO {
+public class AuthorityDAOImpl implements AuthorityDAO, ConnectionCloser {
 
     private DataSource authorityDataSource;
 
@@ -109,23 +110,6 @@ public class AuthorityDAOImpl implements AuthorityDAO {
             return true;
         } finally {
             close(connection, statement, resultSet);
-        }
-    }
-
-    private void close(Connection findUserConnection,
-                       PreparedStatement findUserStatement, ResultSet findUserResultSet) {
-        try {
-            if (findUserConnection != null) {
-                findUserConnection.close();
-            }
-            if (findUserStatement != null) {
-                findUserStatement.close();
-            }
-            if (findUserResultSet != null) {
-                findUserResultSet.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

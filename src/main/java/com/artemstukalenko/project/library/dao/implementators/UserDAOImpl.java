@@ -3,6 +3,7 @@ package com.artemstukalenko.project.library.dao.implementators;
 import com.artemstukalenko.project.library.dao.UserDAO;
 import com.artemstukalenko.project.library.dao.UserDetailsDAO;
 import com.artemstukalenko.project.library.entity.User;
+import com.artemstukalenko.project.library.utility.ConnectionCloser;
 import com.mysql.cj.conf.ConnectionPropertiesTransform;
 
 import javax.sql.DataSource;
@@ -10,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAOImpl implements UserDAO {
+public class UserDAOImpl implements UserDAO, ConnectionCloser {
 
     private DataSource userDataSource;
 
@@ -160,22 +161,5 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public void updatePenaltyInfo(String username, int updateSum) {
 
-    }
-
-    private void close(Connection findUserConnection,
-                       PreparedStatement findUserStatement, ResultSet findUserResultSet) {
-        try {
-            if (findUserConnection != null) {
-                findUserConnection.close();
-            }
-            if (findUserStatement != null) {
-                findUserStatement.close();
-            }
-            if (findUserResultSet != null) {
-                findUserResultSet.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

@@ -2,13 +2,14 @@ package com.artemstukalenko.project.library.dao.implementators;
 
 import com.artemstukalenko.project.library.dao.BookDAO;
 import com.artemstukalenko.project.library.entity.Book;
+import com.artemstukalenko.project.library.utility.ConnectionCloser;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookDAOImpl implements BookDAO {
+public class BookDAOImpl implements BookDAO, ConnectionCloser {
 
     private DataSource bookDataSource;
 
@@ -130,23 +131,6 @@ public class BookDAOImpl implements BookDAO {
             return taken;
         } finally {
             close(connection, statement, resultSet);
-        }
-    }
-
-    private void close(Connection findUserConnection,
-                       PreparedStatement findUserStatement, ResultSet findUserResultSet) {
-        try {
-            if (findUserConnection != null) {
-                findUserConnection.close();
-            }
-            if (findUserStatement != null) {
-                findUserStatement.close();
-            }
-            if (findUserResultSet != null) {
-                findUserResultSet.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

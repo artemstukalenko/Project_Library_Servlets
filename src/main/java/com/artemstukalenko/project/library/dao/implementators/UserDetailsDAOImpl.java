@@ -2,6 +2,7 @@ package com.artemstukalenko.project.library.dao.implementators;
 
 import com.artemstukalenko.project.library.dao.UserDetailsDAO;
 import com.artemstukalenko.project.library.entity.UserDetails;
+import com.artemstukalenko.project.library.utility.ConnectionCloser;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDetailsDAOImpl implements UserDetailsDAO {
+public class UserDetailsDAOImpl implements UserDetailsDAO, ConnectionCloser {
 
     private DataSource userDetailsDataSource;
 
@@ -141,23 +142,6 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
             return true;
         } finally {
             close(connection, statement, resultSet);
-        }
-    }
-
-    private void close(Connection findUserConnection,
-                       PreparedStatement findUserStatement, ResultSet findUserResultSet) {
-        try {
-            if (findUserConnection != null) {
-                findUserConnection.close();
-            }
-            if (findUserStatement != null) {
-                findUserStatement.close();
-            }
-            if (findUserResultSet != null) {
-                findUserResultSet.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }
