@@ -42,11 +42,11 @@
 <hr/>
 
 <input type="text" value="${textInfo.penaltyField} ${currentUser.userDetails.userPenalty}" readonly
-<c:if test="${!currentUser.userDetails.hasPenalty}"><c:out value="hidden='true'"/></c:if>>
+<c:if test="${!currentUser.userDetails.hasPenalty}"><c:out value="hidden='true'"/></c:if>/>
 
-<%--<input type="submit" value="${locale.payPenaltyButton}" onclick="window.location.href = 'payPenalty'"--%>
-<%--<c:if test="${!currentUser.userDetails.hasPenalty}"><c:out value="hidden='true'"/></c:if>>--%>
-<%--<br><br><br>--%>
+<input type="submit" value="${textInfo.payPenaltyButton}" onclick="window.location.href = 'PenaltyPaymentController'"
+<c:if test="${!currentUser.userDetails.hasPenalty}"><c:out value="hidden='true'"/></c:if>/>
+<br><br><br>
 
 <hr/>
 
