@@ -178,6 +178,24 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
     }
 
     @Override
+    public boolean deleteUsersSubscriptions(String username) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = subscriptionDataSource.getConnection();
+            String sqlStatement = "delete from subscriptions where username = ?";
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setString(1, username);
+
+            statement.executeUpdate();
+            return true;
+        } finally {
+            close(connection, statement, null);
+        }
+    }
+
+    @Override
     public Subscription findSubscriptionByBookId(int bookId) throws SQLException {
         Subscription soughtSubscription;
 

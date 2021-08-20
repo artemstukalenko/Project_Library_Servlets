@@ -137,14 +137,20 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean deleteUser(String username) throws SQLException {
-//        Connection connection = null;
-//        PreparedStatement statement = null;
-//
-//        try {
-//            connection = userDataSource.getConnection();
-//            String sqlStatement = "delete from users where username=?";
-//        }
-        return false;
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = userDataSource.getConnection();
+            String sqlStatement = "delete from users where username=?";
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setString(1, username);
+
+            statement.executeUpdate();
+            return true;
+        } finally {
+            close(connection, statement, null);
+        }
     }
 
 //    @Override

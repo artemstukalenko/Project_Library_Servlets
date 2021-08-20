@@ -15,6 +15,8 @@ public interface SubscriptionDAO {
 
     public boolean deleteSubscriptionFromDB(int id) throws SQLException;
 
+    boolean deleteUsersSubscriptions(String username) throws SQLException;
+
     public Subscription findSubscriptionByBookId(int bookId) throws SQLException;
 
     public List<Subscription> getUserSubscriptions(String username) throws SQLException;

@@ -1,10 +1,8 @@
 package com.artemstukalenko.project.library.controller;
 
-import com.artemstukalenko.project.library.dao.AuthorityDAO;
-import com.artemstukalenko.project.library.dao.UserDetailsDAO;
-import com.artemstukalenko.project.library.dao.implementators.AuthorityDAOImpl;
-import com.artemstukalenko.project.library.dao.implementators.UserDAOImpl;
-import com.artemstukalenko.project.library.dao.implementators.UserDetailsDAOImpl;
+import com.artemstukalenko.project.library.dao.*;
+import com.artemstukalenko.project.library.dao.implementators.*;
+import com.artemstukalenko.project.library.entity.Subscription;
 
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -16,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet("/UserManipulationController")
 public class UserManipulationController extends HttpServlet {
@@ -26,6 +25,12 @@ public class UserManipulationController extends HttpServlet {
 
     private UserDetailsDAO userDetailsDAO;
 
+    private SubscriptionDAO subscriptionDAO;
+
+    private CustomRequestDAO customRequestDAO;
+
+    private BookDAO bookDAO;
+
     @Resource(name = "jdbc/library_db")
     private DataSource userDataSource;
 
@@ -35,6 +40,9 @@ public class UserManipulationController extends HttpServlet {
             userDAO = new UserDAOImpl(userDataSource);
             authorityDAO = new AuthorityDAOImpl(userDataSource);
             userDetailsDAO = new UserDetailsDAOImpl(userDataSource);
+            bookDAO = new BookDAOImpl(userDataSource);
+            subscriptionDAO = new SubscriptionDAOImpl(userDataSource);
+            customRequestDAO = new CustomRequestDAOImpl(userDataSource);
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -61,6 +69,11 @@ public class UserManipulationController extends HttpServlet {
                 }
                 break;
             case "DELETE":
+                try {
+                    processUserDeletion(processedUserUsername);
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
                 break;
             case "MAKE LIBRARIAN":
                 try {
@@ -84,5 +97,20 @@ public class UserManipulationController extends HttpServlet {
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("UserListController");
         dispatcher.forward(request, response);
+    }
+
+    private void processUserDeletion(String processedUserUsername) throws SQLException {
+        customRequestDAO.deleteUsersCustomRequests(processedUserUsername);
+
+        List<Subscription> usersSubscriptions = subscriptionDAO.getUserSubscriptions(processedUserUsername);
+
+        for (Subscription currentSubscription : usersSubscriptions) {
+            bookDAO.setTaken(currentSubscription.getBookId(), false);
+        }
+
+        subscriptionDAO.deleteUsersSubscriptions(processedUserUsername);
+        authorityDAO.deleteAuthority(processedUserUsername);
+        userDetailsDAO.deleteUserDetails(processedUserUsername);
+        userDAO.deleteUser(processedUserUsername);
     }
 }

@@ -11,5 +11,7 @@ public interface UserDetailsDAO {
     public List<UserDetails> getAllDetails() throws SQLException;
 
     public boolean updateAuthorityInfo(String username, String authorityString) throws SQLException;
+
+    public boolean deleteUserDetails(String username) throws SQLException;
 }
 

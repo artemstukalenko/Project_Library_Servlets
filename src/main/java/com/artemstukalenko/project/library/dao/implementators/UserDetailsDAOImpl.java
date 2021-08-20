@@ -109,6 +109,24 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
         }
     }
 
+    @Override
+    public boolean deleteUserDetails(String username) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = userDetailsDataSource.getConnection();
+            String sqlStatement = "delete from user_details where username = ?";
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setString(1, username);
+
+            statement.executeUpdate();
+            return true;
+        } finally {
+            close(connection, statement, null);
+        }
+    }
+
     private void close(Connection findUserConnection,
                        PreparedStatement findUserStatement, ResultSet findUserResultSet) {
         try {

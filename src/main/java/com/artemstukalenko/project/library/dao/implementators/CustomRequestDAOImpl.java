@@ -61,6 +61,24 @@ public class CustomRequestDAOImpl implements CustomRequestDAO {
     }
 
     @Override
+    public boolean deleteUsersCustomRequests(String username) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = dataSource.getConnection();
+            String sqlStatement = "delete from custom_subscription_requests where username = ?";
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setString(1, username);
+
+            statement.executeUpdate();
+            return true;
+        } finally {
+            close(connection, statement, null);
+        }
+    }
+
+    @Override
     public List<CustomRequest> getAllRequests() throws SQLException {
         List<CustomRequest> allRequests = new ArrayList<>();
 

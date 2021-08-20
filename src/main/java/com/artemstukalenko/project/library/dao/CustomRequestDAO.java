@@ -11,6 +11,8 @@ public interface CustomRequestDAO {
 
     public boolean deleteCustomSubscriptionRequestFromDB(int id) throws SQLException;
 
+    public boolean deleteUsersCustomRequests(String username) throws SQLException;
+
     public List<CustomRequest> getAllRequests() throws SQLException;
 
     public CustomRequest findRequestById(int id) throws SQLException;

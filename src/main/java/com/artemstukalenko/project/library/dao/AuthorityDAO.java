@@ -8,4 +8,6 @@ public interface AuthorityDAO {
     public boolean makeUserLibrarian(String username) throws SQLException;
 
     public boolean depriveLibrarianPrivileges(String username) throws SQLException;
+
+    public boolean deleteAuthority(String username) throws SQLException;
 }
