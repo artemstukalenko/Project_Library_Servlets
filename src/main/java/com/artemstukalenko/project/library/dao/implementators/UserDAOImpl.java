@@ -16,6 +16,10 @@ public class UserDAOImpl implements UserDAO {
 
     private UserDetailsDAO userDetailsDAO;
 
+    private Connection connection;
+    private PreparedStatement statement;
+    private ResultSet resultSet;
+
     public UserDAOImpl(DataSource userDataSource) {
         this.userDataSource = userDataSource;
         this.userDetailsDAO = new UserDetailsDAOImpl(userDataSource);
@@ -24,10 +28,6 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public List<User> getAllUsers() throws SQLException {
         List<User> allUsers = new ArrayList<>();
-
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
 
         try {
             connection = userDataSource.getConnection();
@@ -54,8 +54,6 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean blockUser(String username) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
 
         try {
             connection = userDataSource.getConnection();
@@ -66,14 +64,12 @@ public class UserDAOImpl implements UserDAO {
 
             return true;
         } finally {
-            close(connection, statement, null);
+            close(connection, statement, resultSet);
         }
     }
 
     @Override
     public boolean unblockUser(String username) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
 
         try {
             connection = userDataSource.getConnection();
@@ -84,7 +80,7 @@ public class UserDAOImpl implements UserDAO {
 
             return true;
         } finally {
-            close(connection, statement, null);
+            close(connection, statement, resultSet);
         }
     }
 
@@ -95,8 +91,6 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean registerUser(User user) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
 
         try {
             connection = userDataSource.getConnection();
@@ -110,29 +104,25 @@ public class UserDAOImpl implements UserDAO {
             statement.executeUpdate();
             return true;
         } finally {
-            close(connection, statement, null);
+            close(connection, statement, resultSet);
         }
     }
 
     @Override
     public User findUserByUsername(String username) throws SQLException {
-        User soughtUser = null;
-
-        Connection findUserConnection = null;
-        PreparedStatement findUserStatement = null;
-        ResultSet findUserResultSet = null;
+        User soughtUser;
 
         try {
-            findUserConnection = userDataSource.getConnection();
+            connection = userDataSource.getConnection();
             String sqlStatement = "select * from users where username=?";
-            findUserStatement = findUserConnection.prepareStatement(sqlStatement);
-            findUserStatement.setString(1, username);
-            findUserResultSet = findUserStatement.executeQuery();
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setString(1, username);
+            resultSet = statement.executeQuery();
 
-            if(findUserResultSet.next()) {
-                String foundUsername = findUserResultSet.getString("username");
-                String foundPassword = findUserResultSet.getString("password");
-                int foundEnabledStatus = findUserResultSet.getInt("enabled");
+            if(resultSet.next()) {
+                String foundUsername = resultSet.getString("username");
+                String foundPassword = resultSet.getString("password");
+                int foundEnabledStatus = resultSet.getInt("enabled");
 
                 soughtUser = new User(foundUsername, foundPassword, foundEnabledStatus);
                 soughtUser.setUserDetails(userDetailsDAO.getDetailsByUsername(username));
@@ -142,7 +132,7 @@ public class UserDAOImpl implements UserDAO {
 
             return soughtUser;
         } finally {
-            close(findUserConnection, findUserStatement, findUserResultSet);
+            close(connection, statement, resultSet);
         }
     }
 
@@ -153,8 +143,6 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean deleteUser(String username) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
 
         try {
             connection = userDataSource.getConnection();
@@ -165,33 +153,9 @@ public class UserDAOImpl implements UserDAO {
             statement.executeUpdate();
             return true;
         } finally {
-            close(connection, statement, null);
+            close(connection, statement, resultSet);
         }
     }
-
-//    @Override
-//    public boolean makeUserLibrarian(String username) throws SQLException {
-////        Connection connection = null;
-////        PreparedStatement statement = null;
-////
-////        try {
-////            connection = userDataSource.getConnection();
-////            String sqlStatement = "update users set enabled=1 where username=?";
-////            statement = connection.prepareStatement(sqlStatement);
-////            statement.setString(1, username);
-////            statement.executeUpdate();
-////
-////            return true;
-////        } finally {
-////            close(connection, statement, null);
-////        }
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean depriveLibrarianPrivileges(String username) {
-//        return false;
-//    }
 
     @Override
     public void updatePenaltyInfo(String username, int updateSum) {

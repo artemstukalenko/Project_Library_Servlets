@@ -13,6 +13,10 @@ public class AuthorityDAOImpl implements AuthorityDAO {
 
     private DataSource authorityDataSource;
 
+    private Connection connection;
+    private PreparedStatement statement;
+    private ResultSet resultSet;
+
     public AuthorityDAOImpl(DataSource authorityDataSource) {
         this.authorityDataSource = authorityDataSource;
     }
@@ -20,36 +24,30 @@ public class AuthorityDAOImpl implements AuthorityDAO {
 
     @Override
     public String getUsersAuthority(String username) throws SQLException {
-        String realUsersAuthority = null;
-
-        Connection findAuthorityConnection = null;
-        PreparedStatement findAuthorityStatement = null;
-        ResultSet findAuthorityResultSet = null;
+        String realUsersAuthority;
 
         try {
-            findAuthorityConnection = authorityDataSource.getConnection();
+            connection = authorityDataSource.getConnection();
             String sqlStatement = "select * from authorities where username=?";
-            findAuthorityStatement = findAuthorityConnection.prepareStatement(sqlStatement);
-            findAuthorityStatement.setString(1, username);
-            findAuthorityResultSet = findAuthorityStatement.executeQuery();
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setString(1, username);
+            resultSet = statement.executeQuery();
 
-            if (findAuthorityResultSet != null) {
-                findAuthorityResultSet.next();
-                realUsersAuthority = findAuthorityResultSet.getString("authority");
+            if (resultSet != null) {
+                resultSet.next();
+                realUsersAuthority = resultSet.getString("authority");
             } else {
                 throw new SQLException();
             }
 
             return realUsersAuthority;
         } finally {
-            close(findAuthorityConnection, findAuthorityStatement, findAuthorityResultSet);
+            close(connection, statement, resultSet);
         }
     }
 
     @Override
     public boolean makeUserLibrarian(String username) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
 
         try {
             connection = authorityDataSource.getConnection();
@@ -60,14 +58,12 @@ public class AuthorityDAOImpl implements AuthorityDAO {
             statement.executeUpdate();
             return true;
         } finally {
-            close(connection, statement, null);
+            close(connection, statement, resultSet);
         }
     }
 
     @Override
     public boolean depriveLibrarianPrivileges(String username) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
 
         try {
             connection = authorityDataSource.getConnection();
@@ -78,14 +74,12 @@ public class AuthorityDAOImpl implements AuthorityDAO {
             statement.executeUpdate();
             return true;
         } finally {
-            close(connection, statement, null);
+            close(connection, statement, resultSet);
         }
     }
 
     @Override
     public boolean deleteAuthority(String username) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
 
         try {
             connection = authorityDataSource.getConnection();
@@ -96,14 +90,12 @@ public class AuthorityDAOImpl implements AuthorityDAO {
             statement.executeUpdate();
             return true;
         } finally {
-            close(connection, statement, null);
+            close(connection, statement, resultSet);
         }
     }
 
     @Override
     public boolean addAuthorityToDB(Authority authority) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
 
         try {
             connection = authorityDataSource.getConnection();
@@ -116,7 +108,7 @@ public class AuthorityDAOImpl implements AuthorityDAO {
             statement.executeUpdate();
             return true;
         } finally {
-            close(connection, statement, null);
+            close(connection, statement, resultSet);
         }
     }
 

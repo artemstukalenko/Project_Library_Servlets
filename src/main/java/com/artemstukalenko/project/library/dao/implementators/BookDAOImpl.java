@@ -12,6 +12,10 @@ public class BookDAOImpl implements BookDAO {
 
     private DataSource bookDataSource;
 
+    private Connection connection;
+    private PreparedStatement statement;
+    private ResultSet resultSet;
+
     public BookDAOImpl(DataSource bookDataSource) {
         this.bookDataSource = bookDataSource;
     }
@@ -19,10 +23,6 @@ public class BookDAOImpl implements BookDAO {
     @Override
     public List<Book> getAllBooks() throws SQLException {
         List<Book> allBooks = new ArrayList<>();
-
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
 
         try {
             connection = bookDataSource.getConnection();
@@ -51,8 +51,6 @@ public class BookDAOImpl implements BookDAO {
 
     @Override
     public boolean deleteBook(int bookId) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
 
         try {
             connection = bookDataSource.getConnection();
@@ -63,14 +61,12 @@ public class BookDAOImpl implements BookDAO {
             statement.executeUpdate();
             return true;
         } finally {
-            close(connection, statement, null);
+            close(connection, statement, resultSet);
         }
     }
 
     @Override
     public boolean addNewBook(Book bookToAdd) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
 
         try {
             connection = bookDataSource.getConnection();
@@ -85,26 +81,22 @@ public class BookDAOImpl implements BookDAO {
             statement.executeUpdate();
             return true;
         } finally {
-            close(connection, statement, null);
+            close(connection, statement, resultSet);
         }
     }
 
     @Override
     public Book findBookById(int bookId) throws SQLException {
-        Book soughtBook = null;
-
-        Connection myConnection = null;
-        PreparedStatement myStatement = null;
-        ResultSet resultSet = null;
+        Book soughtBook;
 
         try {
 
-            myConnection = bookDataSource.getConnection();
+            connection = bookDataSource.getConnection();
             String sqlStatement = "select * from books where id=?";
-            myStatement = myConnection.prepareStatement(sqlStatement);
-            myStatement.setInt(1, bookId);
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setInt(1, bookId);
 
-            resultSet = myStatement.executeQuery();
+            resultSet = statement.executeQuery();
 
             if(resultSet.next()) {
                 int id = resultSet.getInt("id");
@@ -120,14 +112,12 @@ public class BookDAOImpl implements BookDAO {
 
             return soughtBook;
         } finally {
-            close(myConnection, myStatement, resultSet);
+            close(connection, statement, resultSet);
         }
     }
 
     @Override
     public boolean setTaken(int id, boolean taken) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
 
         try {
             connection = bookDataSource.getConnection();
@@ -139,7 +129,7 @@ public class BookDAOImpl implements BookDAO {
             statement.executeUpdate();
             return taken;
         } finally {
-            close(connection, statement, null);
+            close(connection, statement, resultSet);
         }
     }
 

@@ -14,14 +14,16 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
 
     private DataSource subscriptionDataSource;
 
+    private Connection connection;
+    private PreparedStatement statement;
+    private ResultSet resultSet;
+
     public SubscriptionDAOImpl(DataSource subscriptionDataSource) {
         this.subscriptionDataSource = subscriptionDataSource;
     }
 
     @Override
     public boolean registerSubscriptionInDB(Subscription subscriptionToRegister) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
 
         try {
             connection = subscriptionDataSource.getConnection();
@@ -42,7 +44,7 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
             statement.execute();
             return true;
         } finally {
-            close(connection, statement, null);
+            close(connection, statement, resultSet);
         }
     }
 
@@ -50,14 +52,10 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
     public List<Subscription> getAllSubscriptions() throws SQLException {
         List<Subscription> allSubscriptions = new ArrayList<>();
 
-        Connection connection = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
-
         try {
             connection = subscriptionDataSource.getConnection();
             String sqlStatement = "select * from subscriptions";
-            statement = connection.createStatement();
+            statement = connection.prepareStatement(sqlStatement);
             resultSet = statement.executeQuery(sqlStatement);
 
             while (resultSet.next()) {
@@ -86,10 +84,6 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
     @Override
     public List<Subscription> getUserSubscriptions(String username) throws SQLException {
         List<Subscription> userSubscriptions = new ArrayList<>();
-
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
 
         try {
             connection = subscriptionDataSource.getConnection();
@@ -122,11 +116,7 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
 
     @Override
     public Subscription findSubscriptionById(int id) throws SQLException {
-        Subscription soughtSubscription = null;
-
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+        Subscription soughtSubscription;
 
         try {
 
@@ -161,8 +151,6 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
 
     @Override
     public boolean deleteSubscriptionFromDB(int id) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
 
         try {
             connection = subscriptionDataSource.getConnection();
@@ -173,14 +161,12 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
             statement.executeUpdate();
             return true;
         } finally {
-            close(connection, statement, null);
+            close(connection, statement, resultSet);
         }
     }
 
     @Override
     public boolean deleteUsersSubscriptions(String username) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
 
         try {
             connection = subscriptionDataSource.getConnection();
@@ -191,17 +177,13 @@ public class SubscriptionDAOImpl implements SubscriptionDAO {
             statement.executeUpdate();
             return true;
         } finally {
-            close(connection, statement, null);
+            close(connection, statement, resultSet);
         }
     }
 
     @Override
     public Subscription findSubscriptionByBookId(int bookId) throws SQLException {
         Subscription soughtSubscription;
-
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
 
         try {
             connection = subscriptionDataSource.getConnection();

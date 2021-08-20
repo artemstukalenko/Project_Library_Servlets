@@ -13,14 +13,16 @@ public class CustomRequestDAOImpl implements CustomRequestDAO {
 
     private DataSource dataSource;
 
+    private Connection connection;
+    private PreparedStatement statement;
+    private ResultSet resultSet;
+
     public CustomRequestDAOImpl(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     @Override
     public boolean addCustomRequestToDB(CustomRequest request) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
 
         try {
             connection = dataSource.getConnection();
@@ -38,14 +40,12 @@ public class CustomRequestDAOImpl implements CustomRequestDAO {
             statement.execute();
             return true;
         } finally {
-            close(connection, statement, null);
+            close(connection, statement, resultSet);
         }
     }
 
     @Override
     public boolean deleteCustomSubscriptionRequestFromDB(int id) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
 
         try {
             connection = dataSource.getConnection();
@@ -56,14 +56,12 @@ public class CustomRequestDAOImpl implements CustomRequestDAO {
             statement.executeUpdate();
             return true;
         } finally {
-            close(connection, statement, null);
+            close(connection, statement, resultSet);
         }
     }
 
     @Override
     public boolean deleteUsersCustomRequests(String username) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
 
         try {
             connection = dataSource.getConnection();
@@ -74,7 +72,7 @@ public class CustomRequestDAOImpl implements CustomRequestDAO {
             statement.executeUpdate();
             return true;
         } finally {
-            close(connection, statement, null);
+            close(connection, statement, resultSet);
         }
     }
 
@@ -82,14 +80,10 @@ public class CustomRequestDAOImpl implements CustomRequestDAO {
     public List<CustomRequest> getAllRequests() throws SQLException {
         List<CustomRequest> allRequests = new ArrayList<>();
 
-        Connection connection = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
-
         try {
             connection = dataSource.getConnection();
             String sqlStatement = "select * from custom_subscription_requests";
-            statement = connection.createStatement();
+            statement = connection.prepareStatement(sqlStatement);
             resultSet = statement.executeQuery(sqlStatement);
 
             while (resultSet.next()) {
@@ -116,10 +110,6 @@ public class CustomRequestDAOImpl implements CustomRequestDAO {
     @Override
     public CustomRequest findRequestById(int id) throws SQLException {
         CustomRequest soughtRequest;
-
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
 
         try {
             connection = dataSource.getConnection();

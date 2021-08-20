@@ -8,11 +8,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDetailsDAOImpl implements UserDetailsDAO {
 
     private DataSource userDetailsDataSource;
+
+    private Connection connection;
+    private PreparedStatement statement;
+    private ResultSet resultSet;
 
     public UserDetailsDAOImpl(DataSource userDetailsDataSource) {
         this.userDetailsDataSource = userDetailsDataSource;
@@ -20,11 +25,7 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
 
     @Override
     public List<UserDetails> getAllDetails() throws SQLException {
-        List<UserDetails> allUserInfo = null;
-
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+        List<UserDetails> allUserInfo = new ArrayList<>();
 
         try {
             connection = userDetailsDataSource.getConnection();
@@ -54,18 +55,14 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
     @Override
     public UserDetails getDetailsByUsername(String username) throws SQLException {
 
-        UserDetails soughtDetails = null;
-
-        Connection connectionForDetailsSearch = null;
-        PreparedStatement statementForDetailsSearch = null;
-        ResultSet resultSet = null;
+        UserDetails soughtDetails;
 
         try {
-            connectionForDetailsSearch = userDetailsDataSource.getConnection();
+            connection = userDetailsDataSource.getConnection();
             String sqlStatement = "select * from user_details where username=?";
-            statementForDetailsSearch = connectionForDetailsSearch.prepareStatement(sqlStatement);
-            statementForDetailsSearch.setString(1, username);
-            resultSet = statementForDetailsSearch.executeQuery();
+            statement = connection.prepareStatement(sqlStatement);
+            statement.setString(1, username);
+            resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
                 String foundUsername = resultSet.getString("username");
@@ -86,14 +83,12 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
 
             return soughtDetails;
         } finally {
-            close(connectionForDetailsSearch, statementForDetailsSearch, resultSet);
+            close(connection, statement, resultSet);
         }
     }
 
     @Override
     public boolean updateAuthorityInfo(String username, String authorityString) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
 
         try {
             connection = userDetailsDataSource.getConnection();
@@ -105,14 +100,12 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
             statement.executeUpdate();
             return true;
         } finally {
-            close(connection, statement, null);
+            close(connection, statement, resultSet);
         }
     }
 
     @Override
     public boolean deleteUserDetails(String username) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
 
         try {
             connection = userDetailsDataSource.getConnection();
@@ -123,14 +116,12 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
             statement.executeUpdate();
             return true;
         } finally {
-            close(connection, statement, null);
+            close(connection, statement, resultSet);
         }
     }
 
     @Override
     public boolean registerUserDetails(UserDetails newUserDetails) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
 
         try {
             connection = userDetailsDataSource.getConnection();
@@ -149,7 +140,7 @@ public class UserDetailsDAOImpl implements UserDetailsDAO {
             statement.executeUpdate();
             return true;
         } finally {
-            close(connection, statement, null);
+            close(connection, statement, resultSet);
         }
     }
 
