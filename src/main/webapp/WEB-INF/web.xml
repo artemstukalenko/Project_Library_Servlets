@@ -9,6 +9,16 @@
   <welcome-file-list>
     <welcome-file>LoginController</welcome-file>
   </welcome-file-list>
-  
-  
+
+  <filter>
+    <filter-name>adminFilter</filter-name>
+    <filter-class>com.artemstukalenko.project.library.filters.AdminPagesFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>adminFilter</filter-name>
+    <url-pattern>/UserListController</url-pattern>
+  </filter-mapping>
+
+
 </web-app>
