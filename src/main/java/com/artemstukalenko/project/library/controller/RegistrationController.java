@@ -68,6 +68,14 @@ public class RegistrationController extends HttpServlet {
         String address = request.getParameter("address");
 
         if (!dataIsValid(request, username, firstName, lastName, email, phoneNumber)) {
+
+            request.setAttribute("enteredUsername", username);
+            request.setAttribute("enteredFirstName", firstName);
+            request.setAttribute("enteredLastName", lastName);
+            request.setAttribute("enteredEmail", email);
+            request.setAttribute("enteredPhoneNumber", phoneNumber);
+            request.setAttribute("enteredAddress", address);
+
             doGet(request, response);
             return;
         }
@@ -106,6 +114,8 @@ public class RegistrationController extends HttpServlet {
                         request.setAttribute((mistake + "IsInvalid"), true);
                     }
             );
+
+
 
             return false;
         }
