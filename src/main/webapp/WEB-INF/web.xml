@@ -20,5 +20,14 @@
     <url-pattern>/UserListController</url-pattern>
   </filter-mapping>
 
+  <filter>
+    <filter-name>librarianAndAdminFilter</filter-name>
+    <filter-class>com.artemstukalenko.project.library.filters.LibrarianAndAdminsPageFilter</filter-class>
+  </filter>
+
+  <filter-mapping>
+    <filter-name>librarianAndAdminFilter</filter-name>
+    <url-pattern>/SubscriptionController</url-pattern>
+  </filter-mapping>
 
 </web-app>

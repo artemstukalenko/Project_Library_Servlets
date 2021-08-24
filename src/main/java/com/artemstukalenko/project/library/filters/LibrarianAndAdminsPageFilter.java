@@ -1,12 +1,13 @@
 package com.artemstukalenko.project.library.filters;
 
 import com.artemstukalenko.project.library.entity.User;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class AdminPagesFilter implements Filter {
+public class LibrarianAndAdminsPageFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest,
@@ -15,10 +16,12 @@ public class AdminPagesFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         User potentialTrespasser = (User) request.getSession().getAttribute("currentUser");
 
-        if (potentialTrespasser.getUserDetails().getAuthorityString().equals("ADMIN")) {
-            filterChain.doFilter(request, servletResponse);
-        } else {
+        String potentialTrespassersAuthority = potentialTrespasser.getUserDetails().getAuthorityString();
+
+        if (potentialTrespassersAuthority.equals("USER") && request.getParameter("command").equals("")) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "STOYAMBA");
+        } else {
+            filterChain.doFilter(request, response);
         }
     }
 
@@ -31,5 +34,4 @@ public class AdminPagesFilter implements Filter {
     public void destroy() {
 
     }
-
 }
