@@ -1,21 +1,34 @@
 package com.artemstukalenko.project.library.utility;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.artemstukalenko.project.library.utility.RegexContainer.*;
 
 public class RegistrationDataValidator {
 
-    public boolean dataIsValid(String username, String firstName, String lastName, String email,
-                               String phoneNumber, String address) {
+    public List<String> getFieldsWithMistakes(String username, String firstName, String lastName, String email,
+                                              String phoneNumber) {
 
-        if (username.matches(VALID_USERNAME) && firstName.matches(VALID_NAME)
-                && lastName.matches(VALID_SURNAME)
-                && email.matches(VALID_EMAIL)
-                && phoneNumber.matches(VALID_PHONE_NUMBER)
-                && !address.isEmpty()) {
-            return true;
+        List<String> mistakes = new ArrayList<>();
+
+        if (!username.matches(VALID_USERNAME)) {
+            mistakes.add("username");
+        }
+        if(!firstName.matches(VALID_NAME)) {
+            mistakes.add("firstName");
+        }
+        if(!lastName.matches(VALID_SURNAME)) {
+            mistakes.add("lastName");
+        }
+        if(!email.matches(VALID_EMAIL)) {
+            mistakes.add("email");
+        }
+        if(!phoneNumber.matches(VALID_PHONE_NUMBER)) {
+            mistakes.add("phoneNumber");
         }
 
-        return false;
+        return mistakes;
     }
 
 }

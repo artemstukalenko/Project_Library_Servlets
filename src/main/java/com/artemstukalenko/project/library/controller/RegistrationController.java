@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 @WebServlet("/RegistrationController")
 public class RegistrationController extends HttpServlet {
@@ -66,8 +67,7 @@ public class RegistrationController extends HttpServlet {
         String phoneNumber = request.getParameter("phoneNumber");
         String address = request.getParameter("address");
 
-        if (!validator.dataIsValid(username, firstName, lastName, email, phoneNumber, address)) {
-            request.setAttribute("dataNotValid", true);
+        if (!dataIsValid(request, username, firstName, lastName, email, phoneNumber)) {
             doGet(request, response);
             return;
         }
@@ -90,6 +90,25 @@ public class RegistrationController extends HttpServlet {
         RequestDispatcher dispatcher = request.getRequestDispatcher("LoginController");
         request.getSession().invalidate();
         dispatcher.forward(request, response);
+    }
+
+    private boolean dataIsValid(HttpServletRequest request, String username,
+                                String firstName, String lastName, String email,
+                                String phoneNumber) {
+        List<String> mistakeList = validator.getFieldsWithMistakes(username, firstName,
+                lastName, email, phoneNumber);
+
+        if (mistakeList.isEmpty()) {
+            return true;
+        } else {
+            mistakeList.stream().forEach(
+                    mistake -> {
+                        request.setAttribute((mistake + "IsInvalid"), true);
+                    }
+            );
+
+            return false;
+        }
     }
 
     private void processUserRegistration(User potentialUser) {
