@@ -98,6 +98,8 @@ public class FirstView {
     public static String librarianLabel = bundle.getString(LIBRARIAN_LABEL);
     public static String adminLabel = bundle.getString(ADMIN_LABEL);
 
+    public static String errorMessageForbidden = bundle.getString(ERROR_MESSAGE_FORBIDDEN);
+
     public static void initStringFields(ResourceBundle bundle) {
         usersListString = bundle.getString(USERS_LIST_STRING);
         seeUsersList = bundle.getString(SEE_USERS_LIST);
@@ -187,6 +189,8 @@ public class FirstView {
 
         librarianLabel = bundle.getString(LIBRARIAN_LABEL);
         adminLabel = bundle.getString(ADMIN_LABEL);
+
+        errorMessageForbidden = bundle.getString(ERROR_MESSAGE_FORBIDDEN);
     }
 
     public FirstView() {}
@@ -483,5 +487,9 @@ public class FirstView {
 
     public String getAdminLabel() {
         return adminLabel;
+    }
+
+    public String getErrorMessageForbidden() {
+        return errorMessageForbidden;
     }
 }

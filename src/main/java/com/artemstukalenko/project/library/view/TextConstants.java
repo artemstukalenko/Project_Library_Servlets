@@ -89,4 +89,6 @@ public interface TextConstants {
 
     String LIBRARIAN_LABEL = "librarian.label";
     String ADMIN_LABEL = "admin.label";
+
+    String ERROR_MESSAGE_FORBIDDEN = "error.message.forbidden";
 }
