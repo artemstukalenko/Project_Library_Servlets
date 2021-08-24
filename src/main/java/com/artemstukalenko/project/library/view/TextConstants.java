@@ -79,4 +79,11 @@ public interface TextConstants {
     String BOOK_IS_NOT_AVAILABLE = "book.is.not.available";
 
     String LOGIN_IS_TAKEN = "login.is.taken";
+
+    String USERNAME_IS_INVALID = "username.is.invalid";
+    String FIRST_NAME_IS_INVALID = "firstName.is.invalid";
+    String LAST_NAME_IS_INVALID = "lastName.is.invalid";
+    String EMAIL_IS_INVALID = "email.is.invalid";
+    String PHONE_NUMBER_IS_INVALID = "phoneNumber.is.invalid";
+    String ADDRESS_IS_INVALID = "address.is.invalid";
 }

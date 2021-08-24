@@ -16,26 +16,29 @@
     <form action="RegistrationController" method="post">
             ${textInfo.loginUsername}: <input type="text" name="username" value="${enteredUsername}"/>
                     <c:if test="${usernameIsInvalid}">
-                        Username is invalid
+                        ${textInfo.usernameIsInvalid}
                     </c:if> <br/>
             ${textInfo.loginPassword}: <input type="password" name="password"/> <br/>
             ${textInfo.userFirstName}: <input type="text" name="firstName" value="${enteredFirstName}"/>
                 <c:if test="${firstNameIsInvalid}">
-                    First name is invalid
+                    ${textInfo.firstNameIsInvalid}
                 </c:if> <br/>
             ${textInfo.userLastName}: <input type="text" name="lastName" value="${enteredLastName}"/>
                 <c:if test="${lastNameIsInvalid}">
-                    Last name is invalid
+                    ${textInfo.lastNameIsInvalid}
                 </c:if> <br/>
             ${textInfo.userEmail}: <input type="text" name="email" value="${enteredEmail}"/>
                 <c:if test="${emailIsInvalid}">
-                    Email is invalid
+                    ${textInfo.emailIsInvalid}
                 </c:if> <br/>
             ${textInfo.userPhoneNumber}: <input type="text" name="phoneNumber" value="${enteredPhoneNumber}"/>
                 <c:if test="${phoneNumberIsInvalid}">
-                    Phone number is invalid
+                    ${textInfo.phoneNumberIsInvalid}
                 </c:if> <br/>
-            ${textInfo.userAddress}: <input type="text" name="address" value="${enteredAddress}"/> <br/> <br/>
+            ${textInfo.userAddress}: <input type="text" name="address" value="${enteredAddress}"/>
+                <c:if test="${addressIsInvalid}">
+                    ${textInfo.addressIsInvalid}
+                </c:if> <br/> <br/>
         <input type="submit" value="${textInfo.registration}"/> <br/>
     </form>
 

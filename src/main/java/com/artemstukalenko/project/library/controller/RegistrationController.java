@@ -67,7 +67,7 @@ public class RegistrationController extends HttpServlet {
         String phoneNumber = request.getParameter("phoneNumber");
         String address = request.getParameter("address");
 
-        if (!dataIsValid(request, username, firstName, lastName, email, phoneNumber)) {
+        if (!dataIsValid(request, username, firstName, lastName, email, phoneNumber, address)) {
 
             request.setAttribute("enteredUsername", username);
             request.setAttribute("enteredFirstName", firstName);
@@ -102,9 +102,9 @@ public class RegistrationController extends HttpServlet {
 
     private boolean dataIsValid(HttpServletRequest request, String username,
                                 String firstName, String lastName, String email,
-                                String phoneNumber) {
+                                String phoneNumber, String address) {
         List<String> mistakeList = validator.getFieldsWithMistakes(username, firstName,
-                lastName, email, phoneNumber);
+                lastName, email, phoneNumber, address);
 
         if (mistakeList.isEmpty()) {
             return true;

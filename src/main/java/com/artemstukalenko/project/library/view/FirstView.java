@@ -88,6 +88,13 @@ public class FirstView {
 
     public static String loginIsTaken = bundle.getString(LOGIN_IS_TAKEN);
 
+    public static String usernameIsInvalid = bundle.getString(USERNAME_IS_INVALID);
+    public static String firstNameIsInvalid = bundle.getString(FIRST_NAME_IS_INVALID);
+    public static String lastNameIsInvalid = bundle.getString(LAST_NAME_IS_INVALID);
+    public static String emailIsInvalid = bundle.getString(EMAIL_IS_INVALID);
+    public static String phoneNumberIsInvalid = bundle.getString(PHONE_NUMBER_IS_INVALID);
+    public static String addressIsInvalid = bundle.getString(ADDRESS_IS_INVALID);
+
     public static void initStringFields(ResourceBundle bundle) {
         usersListString = bundle.getString(USERS_LIST_STRING);
         seeUsersList = bundle.getString(SEE_USERS_LIST);
@@ -167,6 +174,13 @@ public class FirstView {
         bookIsNotAvailable = bundle.getString(BOOK_IS_NOT_AVAILABLE);
 
         loginIsTaken = bundle.getString(LOGIN_IS_TAKEN);
+
+        usernameIsInvalid = bundle.getString(USERNAME_IS_INVALID);
+        firstNameIsInvalid = bundle.getString(FIRST_NAME_IS_INVALID);
+        lastNameIsInvalid = bundle.getString(LAST_NAME_IS_INVALID);
+        emailIsInvalid = bundle.getString(EMAIL_IS_INVALID);
+        phoneNumberIsInvalid = bundle.getString(PHONE_NUMBER_IS_INVALID);
+        addressIsInvalid = bundle.getString(ADDRESS_IS_INVALID);
     }
 
     public FirstView() {}
@@ -427,6 +441,30 @@ public class FirstView {
 
     public String getLoginIsTaken() {
         return loginIsTaken;
+    }
+
+    public String getUsernameIsInvalid() {
+        return usernameIsInvalid;
+    }
+
+    public String getFirstNameIsInvalid() {
+        return firstNameIsInvalid;
+    }
+
+    public String getLastNameIsInvalid() {
+        return lastNameIsInvalid;
+    }
+
+    public String getEmailIsInvalid() {
+        return emailIsInvalid;
+    }
+
+    public String getPhoneNumberIsInvalid() {
+        return phoneNumberIsInvalid;
+    }
+
+    public String getAddressIsInvalid() {
+        return addressIsInvalid;
     }
 
     public static ResourceBundle getBundle() {

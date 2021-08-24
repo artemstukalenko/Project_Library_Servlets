@@ -8,7 +8,7 @@ import static com.artemstukalenko.project.library.utility.RegexContainer.*;
 public class RegistrationDataValidator {
 
     public List<String> getFieldsWithMistakes(String username, String firstName, String lastName, String email,
-                                              String phoneNumber) {
+                                              String phoneNumber, String address) {
 
         List<String> mistakes = new ArrayList<>();
 
@@ -26,6 +26,9 @@ public class RegistrationDataValidator {
         }
         if(!phoneNumber.matches(VALID_PHONE_NUMBER)) {
             mistakes.add("phoneNumber");
+        }
+        if(address.isEmpty()) {
+            mistakes.add("address");
         }
 
         return mistakes;
