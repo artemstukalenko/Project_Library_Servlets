@@ -17,7 +17,7 @@
         <option>${textInfo.filterByAuthor}</option>
         <option>${textInfo.filterByYear}</option>
     </select>
-    <input type="submit" value="search"/>
+    <input type="submit" value="${textInfo.search}"/>
 </form>
 
 <br/><br/>

@@ -10,7 +10,7 @@
 <jsp:include page="change-language-header.jsp"/>
 <h1>HOMEPAGE LIBRARIAN</h1>
 
-<h2>${textInfo.loggedInAs} ${currentUser.username}, ${currentUserAuthority}</h2>
+<h2>${textInfo.loggedInAs} ${currentUser.username}, ${textInfo.librarianLabel}</h2>
 
 <table border="1">
     <tr>

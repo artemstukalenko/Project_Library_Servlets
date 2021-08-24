@@ -11,7 +11,7 @@
 <jsp:include page="change-language-header.jsp"/>
 <h1>HOMEPAGE</h1>
 
-<h2>${textInfo.loggedInAs} ${currentUser.username}, ${currentUserAuthority}</h2> <br/>
+<h2>${textInfo.loggedInAs} ${currentUser.username}</h2> <br/>
 
 <table border="1">
     <tr>

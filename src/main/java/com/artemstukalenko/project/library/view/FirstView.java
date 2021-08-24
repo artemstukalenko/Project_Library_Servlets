@@ -95,6 +95,9 @@ public class FirstView {
     public static String phoneNumberIsInvalid = bundle.getString(PHONE_NUMBER_IS_INVALID);
     public static String addressIsInvalid = bundle.getString(ADDRESS_IS_INVALID);
 
+    public static String librarianLabel = bundle.getString(LIBRARIAN_LABEL);
+    public static String adminLabel = bundle.getString(ADMIN_LABEL);
+
     public static void initStringFields(ResourceBundle bundle) {
         usersListString = bundle.getString(USERS_LIST_STRING);
         seeUsersList = bundle.getString(SEE_USERS_LIST);
@@ -181,6 +184,9 @@ public class FirstView {
         emailIsInvalid = bundle.getString(EMAIL_IS_INVALID);
         phoneNumberIsInvalid = bundle.getString(PHONE_NUMBER_IS_INVALID);
         addressIsInvalid = bundle.getString(ADDRESS_IS_INVALID);
+
+        librarianLabel = bundle.getString(LIBRARIAN_LABEL);
+        adminLabel = bundle.getString(ADMIN_LABEL);
     }
 
     public FirstView() {}
@@ -469,5 +475,13 @@ public class FirstView {
 
     public static ResourceBundle getBundle() {
         return bundle;
+    }
+
+    public String getLibrarianLabel() {
+        return librarianLabel;
+    }
+
+    public String getAdminLabel() {
+        return adminLabel;
     }
 }

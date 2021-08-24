@@ -86,4 +86,7 @@ public interface TextConstants {
     String EMAIL_IS_INVALID = "email.is.invalid";
     String PHONE_NUMBER_IS_INVALID = "phoneNumber.is.invalid";
     String ADDRESS_IS_INVALID = "address.is.invalid";
+
+    String LIBRARIAN_LABEL = "librarian.label";
+    String ADMIN_LABEL = "admin.label";
 }
