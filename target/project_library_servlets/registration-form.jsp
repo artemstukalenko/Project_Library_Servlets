@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
@@ -10,6 +11,11 @@
     <h2>${textInfo.registration}</h2>
 
     <br/><br/>
+    <c:if test="${dataNotValid}">
+        Some of the data may not be valid
+    </c:if>
+    <br/><br/>
+
 
     <form action="RegistrationController" method="post">
             ${textInfo.loginUsername}: <input type="text" name="username"/> <br/>

@@ -8,6 +8,7 @@ import com.artemstukalenko.project.library.dao.implementators.UserDetailsDAOImpl
 import com.artemstukalenko.project.library.entity.Authority;
 import com.artemstukalenko.project.library.entity.User;
 import com.artemstukalenko.project.library.entity.UserDetails;
+import com.artemstukalenko.project.library.utility.RegistrationDataValidator;
 
 import javax.annotation.Resource;
 import javax.servlet.RequestDispatcher;
@@ -19,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 
 @WebServlet("/RegistrationController")
 public class RegistrationController extends HttpServlet {
@@ -30,6 +30,8 @@ public class RegistrationController extends HttpServlet {
 
     private AuthorityDAO authorityDAO;
 
+    private RegistrationDataValidator validator;
+
     @Resource(name = "jdbc/library_db")
     private DataSource userDataSource;
 
@@ -39,6 +41,7 @@ public class RegistrationController extends HttpServlet {
             userDAO = new UserDAOImpl(userDataSource);
             userDetailsDAO = new UserDetailsDAOImpl(userDataSource);
             authorityDAO = new AuthorityDAOImpl(userDataSource);
+            validator = new RegistrationDataValidator();
         } catch (Exception e) {
             throw new ServletException(e);
         }
@@ -62,6 +65,12 @@ public class RegistrationController extends HttpServlet {
         String email = request.getParameter("email");
         String phoneNumber = request.getParameter("phoneNumber");
         String address = request.getParameter("address");
+
+        if (!validator.dataIsValid(username, firstName, lastName, email, phoneNumber, address)) {
+            request.setAttribute("dataNotValid", true);
+            doGet(request, response);
+            return;
+        }
 
         User potentialUser = new User(username, password);
         Authority potentialUsersAuthority = new Authority(username, "ROLE_USER");
