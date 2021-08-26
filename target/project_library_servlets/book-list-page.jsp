@@ -41,47 +41,67 @@
         </th>
     </tr>
 
-    <c:forEach var="book" items="${allBooks}">
 
-        <c:url var="arrangeSubscriptionButton" value="SubscriptionController">
-            <c:param name="bookId" value="${book.bookId}"/>
-            <c:param name="command" value="ARRANGE SUBSCRIPTION"/>
-        </c:url>
-        <c:url var="arrangeCustomRequestButton" value="CustomRequestController">
-            <c:param name="bookId" value="${book.bookId}"/>
-            <c:param name="command" value="ARRANGE CUSTOM REQUEST"/>
-        </c:url>
-        <c:url var="deleteBookButton" value="BookListController">
-            <c:param name="bookId" value="${book.bookId}"/>
-            <c:param name="command" value="DELETE BOOK"/>
-        </c:url>
+        <c:forEach var="book" items="${allBooks}">
 
-        <tr>
-            <td>${book.bookId}</td>
-            <td>${book.bookTitle}</td>
-            <td>${book.bookAuthor}</td>
-            <td>${book.bookYearOfPublishing}</td>
-            <td>
-                <c:if test="${isUser}">
-                    <input type="button" value="${textInfo.arrangeSubscriptionButton}"
-                        <c:if test="${book.taken}"><c:out value="disabled='disabled'"/></c:if>
-                           onclick="window.location.href = '${arrangeSubscriptionButton}'">
-                </c:if>
-            </td>
-            <td>
-                <c:if test="${isUser}">
-                    <input type="button" value="${textInfo.arrangeCustomRequest}" onclick="window.location.href = '${arrangeCustomRequestButton}'"/>
-                </c:if>
-            </td>
-            <td>
-                <c:if test="${isAdmin}">
-                    <input type="button" value="${textInfo.deleteBook}" onclick="window.location.href = '${deleteBookButton}'"/>
-                </c:if>
-            </td>
-        </tr>
-    </c:forEach>
+            <c:url var="arrangeSubscriptionButton" value="SubscriptionController">
+                <c:param name="bookId" value="${book.bookId}"/>
+                <c:param name="command" value="ARRANGE SUBSCRIPTION"/>
+            </c:url>
+            <c:url var="arrangeCustomRequestButton" value="CustomRequestController">
+                <c:param name="bookId" value="${book.bookId}"/>
+                <c:param name="command" value="ARRANGE CUSTOM REQUEST"/>
+            </c:url>
+            <c:url var="deleteBookButton" value="BookListController">
+                <c:param name="bookId" value="${book.bookId}"/>
+                <c:param name="command" value="DELETE BOOK"/>
+            </c:url>
+
+            <tr>
+                <td>${book.bookId}</td>
+                <td>${book.bookTitle}</td>
+                <td>${book.bookAuthor}</td>
+                <td>${book.bookYearOfPublishing}</td>
+                <td>
+                    <c:if test="${isUser}">
+                        <input type="button" value="${textInfo.arrangeSubscriptionButton}"
+                            <c:if test="${book.taken}"><c:out value="disabled='disabled'"/></c:if>
+                               onclick="window.location.href = '${arrangeSubscriptionButton}'">
+                    </c:if>
+                </td>
+                <td>
+                    <c:if test="${isUser}">
+                        <input type="button" value="${textInfo.arrangeCustomRequest}" onclick="window.location.href = '${arrangeCustomRequestButton}'"/>
+                    </c:if>
+                </td>
+                <td>
+                    <c:if test="${isAdmin}">
+                        <input type="button" value="${textInfo.deleteBook}" onclick="window.location.href = '${deleteBookButton}'"/>
+                    </c:if>
+                </td>
+            </tr>
+        </c:forEach>
 
 </table>
+<br/><br/>
+
+<%--<c:url var="changePageButton1" value="BookListController">--%>
+<%--    <c:param name="pageNumber" value="1"/>--%>
+<%--</c:url>--%>
+<%--<c:url var="changePageButton2" value="BookListController">--%>
+<%--    <c:param name="pageNumber" value="2"/>--%>
+<%--</c:url>--%>
+<%--<a href="${changePageButton1}">1</a>--%>
+<%--&nbsp;&nbsp;--%>
+<%--<a href="${changePageButton2}">2</a>--%>
+
+<c:forEach var="number" items="${pagesCount}">
+    <c:url var="changePageButton" value="BookListController">
+        <c:param name="pageNumber" value="${number}"/>
+    </c:url>
+    <input type="button" value="${number}" onclick="window.location.href = '${changePageButton}'"/>
+    &nbsp;&nbsp;
+</c:forEach>
 
 <br/><br/>
 

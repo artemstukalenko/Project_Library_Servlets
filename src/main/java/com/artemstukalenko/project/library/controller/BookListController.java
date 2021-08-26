@@ -122,6 +122,8 @@ public class BookListController extends HttpServlet {
                               HttpServletResponse response) throws ServletException, IOException {
         List<Book> allBooks;
 
+        int desiredPage = request.getParameter("pageNumber") == null ? 1 : Integer.parseInt(request.getParameter("pageNumber"));
+
         if (sortMethod != null || searchCriteria != null
                 || userInputForSearch != null) {
             showFilteredBookList(request, response);
@@ -131,8 +133,9 @@ public class BookListController extends HttpServlet {
         try {
             allBooks = bookDAO.getAllBooks();
             filteredBookList = allBooks;
-            getBookPages(allBooks);
-            request.setAttribute("allBooks", allBooks);
+            Map<Integer, List<Book>> allPages = getBookPages(allBooks);
+            request.setAttribute("allBooks", allPages.get(desiredPage));
+            request.setAttribute("pagesCount", allPages.keySet());
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Failed to get book list: " + e.getStackTrace());
             throw new ServletException(e);
@@ -163,10 +166,6 @@ public class BookListController extends HttpServlet {
             pages.put(pageCounter, page);
             pageCounter++;
         }
-
-//        for(Map.Entry<Integer, List<Book>> entry : pages.entrySet()) {
-//            System.out.println(entry.getKey() + " : " + entry.getValue());
-//        }
 
         return pages;
     }
