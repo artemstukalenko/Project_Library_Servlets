@@ -22,10 +22,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+import java.util.logging.*;
 
 @WebServlet("/CustomRequestController")
 public class CustomRequestController extends HttpServlet {
@@ -35,7 +32,7 @@ public class CustomRequestController extends HttpServlet {
 
     static {
         try {
-            FILE_HANDLER = new FileHandler("D:\\project_library_servlets\\src\\main\\resources\\customRequestControllerLog.log",
+            FILE_HANDLER = new FileHandler("D:\\project_library_servlets\\src\\main\\resources\\logs\\customRequestControllerLog.log",
                     true);
             FILE_HANDLER.setFormatter(new SimpleFormatter());
             FILE_HANDLER.setLevel(Level.ALL);
@@ -200,5 +197,12 @@ public class CustomRequestController extends HttpServlet {
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("subscription-list-page.jsp");
         dispatcher.forward(request, response);
+    }
+
+    @Override
+    public void destroy() {
+        for (Handler h : LOGGER.getHandlers()) {
+            h.close();
+        }
     }
 }

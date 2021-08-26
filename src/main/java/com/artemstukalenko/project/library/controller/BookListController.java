@@ -30,7 +30,7 @@ public class BookListController extends HttpServlet {
 
     static {
         try {
-            FILE_HANDLER = new FileHandler("D:\\project_library_servlets\\src\\main\\resources\\bookListControllerLog.log",
+            FILE_HANDLER = new FileHandler("D:\\project_library_servlets\\src\\main\\resources\\logs\\bookListControllerLog.log",
                     true);
             FILE_HANDLER.setFormatter(new SimpleFormatter());
             FILE_HANDLER.setLevel(Level.ALL);

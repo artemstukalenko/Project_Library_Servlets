@@ -14,10 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.logging.FileHandler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+import java.util.logging.*;
 
 import static com.artemstukalenko.project.library.utility.LanguageChanger.changeLanguage;
 
@@ -99,5 +96,12 @@ public class LoginController extends HttpServlet {
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
         dispatcher.forward(request, response);
+    }
+
+    @Override
+    public void destroy() {
+        for (Handler h : LOGGER.getHandlers()) {
+            h.close();
+        }
     }
 }
