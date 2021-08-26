@@ -15,7 +15,7 @@ public class EnsureMandatoryAuthorizationFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         User potentialTrespasser = (User) request.getSession().getAttribute("currentUser");
 
-        if (potentialTrespasser == null) {
+        if (potentialTrespasser == null && !request.getServletPath().equals("/RegistrationController")) {
             RequestDispatcher dispatcher = request.getRequestDispatcher("LoginController");
             dispatcher.forward(request, response);
         } else {
