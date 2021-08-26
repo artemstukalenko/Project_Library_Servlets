@@ -17,7 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.*;
 
 import static com.artemstukalenko.project.library.utility.LanguageChanger.changeLanguage;
@@ -128,6 +131,7 @@ public class BookListController extends HttpServlet {
         try {
             allBooks = bookDAO.getAllBooks();
             filteredBookList = allBooks;
+            getBookPages(allBooks);
             request.setAttribute("allBooks", allBooks);
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, "Failed to get book list: " + e.getStackTrace());
@@ -139,6 +143,32 @@ public class BookListController extends HttpServlet {
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/book-list-page.jsp");
         dispatcher.forward(request, response);
+    }
+
+    private Map<Integer, List<Book>> getBookPages(List<Book> allBooks) {
+        Map<Integer, List<Book>> pages = new HashMap<>();
+        int pageSizeLimit = 5;
+        int pageCounter = 1;
+        int currentBookIndex = 0;
+
+        while (pageCounter <= allBooks.size()/pageSizeLimit + 1) {
+            int countOfBooksOnThePage = 0;
+            List<Book> page = new ArrayList<>();
+            while (countOfBooksOnThePage < pageSizeLimit && currentBookIndex < allBooks.size()) {
+                page.add(allBooks.get(currentBookIndex));
+                currentBookIndex++;
+                countOfBooksOnThePage++;
+            }
+
+            pages.put(pageCounter, page);
+            pageCounter++;
+        }
+
+//        for(Map.Entry<Integer, List<Book>> entry : pages.entrySet()) {
+//            System.out.println(entry.getKey() + " : " + entry.getValue());
+//        }
+
+        return pages;
     }
 
     private void showFilteredBookList(HttpServletRequest request,
