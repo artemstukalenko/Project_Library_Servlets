@@ -21,11 +21,32 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import static com.artemstukalenko.project.library.utility.LanguageChanger.changeLanguage;
 
 @WebServlet("/SubscriptionController")
 public class SubscriptionController extends HttpServlet {
+
+    private final static Logger LOGGER;
+    private static FileHandler FILE_HANDLER;
+
+    static {
+        try {
+            FILE_HANDLER = new FileHandler("D:\\project_library_servlets\\src\\main\\resources\\subscriptionControllerLog.log",
+                    true);
+            FILE_HANDLER.setFormatter(new SimpleFormatter());
+            FILE_HANDLER.setLevel(Level.ALL);
+            FILE_HANDLER.setEncoding("UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        LOGGER = Logger.getLogger("SubscriptionController");
+        LOGGER.addHandler(FILE_HANDLER);
+    }
 
     private SubscriptionDAO subscriptionDAO;
 
@@ -43,6 +64,7 @@ public class SubscriptionController extends HttpServlet {
             subscriptionDAO = new SubscriptionDAOImpl(dataSource);
             customRequestDAO = new CustomRequestDAOImpl(dataSource);
         } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Failed to initialize: " + e.getStackTrace());
             throw new ServletException(e);
         }
     }
@@ -86,6 +108,7 @@ public class SubscriptionController extends HttpServlet {
         try {
             subscriptionForDeletion = subscriptionDAO.findSubscriptionById(subscriptionIdForDeletion);
         } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to find subscription for deletion: " + e.getStackTrace());
             throw new ServletException(e);
         }
 
@@ -93,6 +116,7 @@ public class SubscriptionController extends HttpServlet {
             subscriptionDAO.deleteSubscriptionFromDB(subscriptionIdForDeletion);
             bookDAO.setTaken(subscriptionForDeletion.getBookId(), false);
         } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to delete subscription/change book status: " + e.getStackTrace());
             throw new ServletException(e);
         }
 
@@ -108,6 +132,7 @@ public class SubscriptionController extends HttpServlet {
             currentUserSubscriptions = subscriptionDAO.getUserSubscriptions((String) request.getSession().getAttribute("currentUserUsername"));
             request.setAttribute("currentUserSubscriptions", currentUserSubscriptions);
         } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to obtain user's subscriptions: " + e.getStackTrace());
             throw new ServletException(e);
         }
 
@@ -127,6 +152,7 @@ public class SubscriptionController extends HttpServlet {
             request.setAttribute("allRequests", allRequests);
             request.setAttribute("allSubscriptions", allSubscriptions);
         } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to obtain full subscription/request list: " + e.getStackTrace());
             throw new ServletException(e);
         }
 
@@ -143,7 +169,8 @@ public class SubscriptionController extends HttpServlet {
         try {
             desiredBook = bookDAO.findBookById(bookId);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Failed to find book for new subscription: " + e.getStackTrace());
+            throw new ServletException(e);
         }
 
 
@@ -154,7 +181,8 @@ public class SubscriptionController extends HttpServlet {
             subscriptionDAO.registerSubscriptionInDB(newSubscription);
             bookDAO.setTaken(desiredBook.getBookId(), true);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Failed to register subscription/change book status: " + e.getStackTrace());
+            throw new ServletException(e);
         }
 
         RequestDispatcher dispatcher = request.getRequestDispatcher("/HomepageController");

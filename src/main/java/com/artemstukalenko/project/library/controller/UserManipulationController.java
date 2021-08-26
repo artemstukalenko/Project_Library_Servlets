@@ -15,9 +15,30 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 @WebServlet("/UserManipulationController")
 public class UserManipulationController extends HttpServlet {
+
+    private final static Logger LOGGER;
+    private static FileHandler FILE_HANDLER;
+
+    static {
+        try {
+            FILE_HANDLER = new FileHandler("D:\\project_library_servlets\\src\\main\\resources\\userManipulationControllerLog.log",
+                    true);
+            FILE_HANDLER.setFormatter(new SimpleFormatter());
+            FILE_HANDLER.setLevel(Level.ALL);
+            FILE_HANDLER.setEncoding("UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        LOGGER = Logger.getLogger("UserManipulationController");
+        LOGGER.addHandler(FILE_HANDLER);
+    }
 
     private UserDAOImpl userDAO;
 
@@ -44,6 +65,7 @@ public class UserManipulationController extends HttpServlet {
             subscriptionDAO = new SubscriptionDAOImpl(userDataSource);
             customRequestDAO = new CustomRequestDAOImpl(userDataSource);
         } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Failed to initialize: " + e.getStackTrace());
             throw new ServletException(e);
         }
     }
@@ -58,21 +80,24 @@ public class UserManipulationController extends HttpServlet {
                 try {
                     userDAO.blockUser(processedUserUsername);
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    LOGGER.log(Level.SEVERE, "Failed to block user's account: " + e.getStackTrace());
+                    throw new ServletException(e);
                 }
                 break;
             case "UNBLOCK":
                 try {
                     userDAO.unblockUser(processedUserUsername);
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    LOGGER.log(Level.SEVERE, "Failed to unblock user's account: " + e.getStackTrace());
+                    throw new ServletException(e);
                 }
                 break;
             case "DELETE":
                 try {
                     processUserDeletion(processedUserUsername);
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    LOGGER.log(Level.SEVERE, "Failed to delete user's account: " + e.getStackTrace());
+                    throw new ServletException(e);
                 }
                 break;
             case "MAKE LIBRARIAN":
@@ -80,7 +105,8 @@ public class UserManipulationController extends HttpServlet {
                     authorityDAO.makeUserLibrarian(processedUserUsername);
                     userDetailsDAO.updateAuthorityInfo(processedUserUsername, "LIBRARIAN");
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    LOGGER.log(Level.SEVERE, "Failed to make user librarian: " + e.getStackTrace());
+                    throw new ServletException(e);
                 }
                 break;
             case "MAKE NOT LIBRARIAN":
@@ -88,7 +114,8 @@ public class UserManipulationController extends HttpServlet {
                     authorityDAO.depriveLibrarianPrivileges(processedUserUsername);
                     userDetailsDAO.updateAuthorityInfo(processedUserUsername, "USER");
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    LOGGER.log(Level.SEVERE, "Failed to deprive librarian privileges: " + e.getStackTrace());
+                    throw new ServletException(e);
                 }
                 break;
         }

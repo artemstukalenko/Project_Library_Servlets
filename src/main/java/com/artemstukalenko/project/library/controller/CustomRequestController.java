@@ -22,9 +22,30 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 @WebServlet("/CustomRequestController")
 public class CustomRequestController extends HttpServlet {
+
+    private final static Logger LOGGER;
+    private static FileHandler FILE_HANDLER;
+
+    static {
+        try {
+            FILE_HANDLER = new FileHandler("D:\\project_library_servlets\\src\\main\\resources\\customRequestControllerLog.log",
+                    true);
+            FILE_HANDLER.setFormatter(new SimpleFormatter());
+            FILE_HANDLER.setLevel(Level.ALL);
+            FILE_HANDLER.setEncoding("UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        LOGGER = Logger.getLogger("CustomRequestController");
+        LOGGER.addHandler(FILE_HANDLER);
+    }
 
     private BookDAO bookDAO;
 
@@ -42,6 +63,7 @@ public class CustomRequestController extends HttpServlet {
             customRequestDAO = new CustomRequestDAOImpl(dataSource);
             subscriptionDAO = new SubscriptionDAOImpl(dataSource);
         } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Failed to initialize: " + e.getStackTrace());
             throw new ServletException(e);
         }
     }
@@ -74,6 +96,7 @@ public class CustomRequestController extends HttpServlet {
         try {
             customRequestDAO.deleteCustomSubscriptionRequestFromDB(idForDeletion);
         } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to deny request: " + e.getStackTrace());
             throw new ServletException(e);
         }
 
@@ -93,6 +116,7 @@ public class CustomRequestController extends HttpServlet {
             bookDAO.setTaken(processedRequest.getBookId(), true);
             customRequestDAO.deleteCustomSubscriptionRequestFromDB(processedRequestId);
         } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to accept request: " + e.getStackTrace());
             throw new ServletException(e);
         }
 
@@ -125,6 +149,7 @@ public class CustomRequestController extends HttpServlet {
         try {
             customRequestDAO.addCustomRequestToDB(newRequest);
         } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to register request: " + e.getStackTrace());
             throw new ServletException(e);
         }
 
@@ -147,6 +172,7 @@ public class CustomRequestController extends HttpServlet {
                 request.getSession().setAttribute("currentSubscription", currentSubscription);
             }
         } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to find book information: " + e.getStackTrace());
             throw new ServletException(e);
         }
 
@@ -168,6 +194,7 @@ public class CustomRequestController extends HttpServlet {
             request.setAttribute("allRequests", requestList);
             request.setAttribute("allSubscriptions", subscriptionList);
         } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to obtain request/subscription list: " + e.getStackTrace());
             throw new ServletException(e);
         }
 

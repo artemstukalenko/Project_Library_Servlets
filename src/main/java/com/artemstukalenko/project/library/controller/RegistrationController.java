@@ -21,9 +21,30 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 @WebServlet("/RegistrationController")
 public class RegistrationController extends HttpServlet {
+
+    private final static Logger LOGGER;
+    private static FileHandler FILE_HANDLER;
+
+    static {
+        try {
+            FILE_HANDLER = new FileHandler("D:\\project_library_servlets\\src\\main\\resources\\registrationControllerLog.log",
+                    true);
+            FILE_HANDLER.setFormatter(new SimpleFormatter());
+            FILE_HANDLER.setLevel(Level.ALL);
+            FILE_HANDLER.setEncoding("UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        LOGGER = Logger.getLogger("RegistrationController");
+        LOGGER.addHandler(FILE_HANDLER);
+    }
 
     private UserDAOImpl userDAO;
 
@@ -44,6 +65,7 @@ public class RegistrationController extends HttpServlet {
             authorityDAO = new AuthorityDAOImpl(userDataSource);
             validator = new RegistrationDataValidator();
         } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Failed to initialize: " + e.getStackTrace());
             throw new ServletException(e);
         }
     }
@@ -125,7 +147,7 @@ public class RegistrationController extends HttpServlet {
         try {
             userDAO.registerUser(potentialUser);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Failed to register user info: " + e.getStackTrace());
         }
     }
 
@@ -133,7 +155,7 @@ public class RegistrationController extends HttpServlet {
         try {
             authorityDAO.addAuthorityToDB(authorityToRegister);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Failed to register authority info: " + e.getStackTrace());
         }
     }
 
@@ -142,7 +164,7 @@ public class RegistrationController extends HttpServlet {
         try {
             userDetailsDAO.registerUserDetails(potentialUsersDetails);
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Failed to register user details info: " + e.getStackTrace());
         }
     }
 }

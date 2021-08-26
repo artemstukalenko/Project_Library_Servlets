@@ -18,11 +18,32 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import static com.artemstukalenko.project.library.utility.LanguageChanger.changeLanguage;
 
 @WebServlet("/BookListController")
 public class BookListController extends HttpServlet {
+
+    private final static Logger LOGGER;
+    private static FileHandler FILE_HANDLER;
+
+    static {
+        try {
+            FILE_HANDLER = new FileHandler("D:\\project_library_servlets\\src\\main\\resources\\bookListControllerLog.log",
+                    true);
+            FILE_HANDLER.setFormatter(new SimpleFormatter());
+            FILE_HANDLER.setLevel(Level.ALL);
+            FILE_HANDLER.setEncoding("UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        LOGGER = Logger.getLogger("BookListController");
+        LOGGER.addHandler(FILE_HANDLER);
+    }
 
     private BookDAO bookDAO;
 
@@ -45,6 +66,7 @@ public class BookListController extends HttpServlet {
             sorter = new Sorter();
             searcher = new Searcher();
         } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Failed to initialize: " + e.getStackTrace());
             throw new ServletException(e);
         }
     }
@@ -68,7 +90,7 @@ public class BookListController extends HttpServlet {
                 try {
                     bookDAO.deleteBook(currentBookId);
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    LOGGER.log(Level.SEVERE, "Failed to delete book: " + e.getStackTrace());
                 }
             default:
                 showAllBooks(request, response);
@@ -89,6 +111,7 @@ public class BookListController extends HttpServlet {
         try {
             bookDAO.addNewBook(newBook);
         } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to add book: " + e.getStackTrace());
             throw new ServletException(e);
         }
 
@@ -110,6 +133,7 @@ public class BookListController extends HttpServlet {
             filteredBookList = allBooks;
             request.setAttribute("allBooks", allBooks);
         } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to get book list: " + e.getStackTrace());
             throw new ServletException(e);
         }
         User currentTempUser = (User) request.getSession().getAttribute("currentUser");
