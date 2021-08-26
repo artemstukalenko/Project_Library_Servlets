@@ -57,6 +57,7 @@ public class BookListController extends HttpServlet {
     private String searchCriteria;
     private String userInputForSearch;
 
+    private List<Book> allBooksList;
     private List<Book> filteredBookList;
 
     @Override
@@ -65,6 +66,7 @@ public class BookListController extends HttpServlet {
             bookDAO = new BookDAOImpl(bookDataSource);
             sorter = new Sorter();
             searcher = new Searcher();
+            allBooksList = bookDAO.getAllBooks();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Failed to initialize: " + e.getStackTrace());
             throw new ServletException(e);
@@ -120,7 +122,8 @@ public class BookListController extends HttpServlet {
 
     private void showAllBooks(HttpServletRequest request,
                               HttpServletResponse response) throws ServletException, IOException {
-        List<Book> allBooks;
+
+        allBooksList.stream().forEach(System.out::println);
 
         int desiredPage = request.getParameter("pageNumber") == null ? 1 : Integer.parseInt(request.getParameter("pageNumber"));
 
@@ -130,16 +133,11 @@ public class BookListController extends HttpServlet {
             return;
         }
 
-        try {
-            allBooks = bookDAO.getAllBooks();
-            Map<Integer, List<Book>> allPages = getBookPages(allBooks);
-            filteredBookList = allPages.get(desiredPage);
+            Map<Integer, List<Book>> allPages = getBookPages(allBooksList);
+            filteredBookList = allBooksList;
             request.setAttribute("allBooks", allPages.get(desiredPage));
             request.setAttribute("pagesCount", allPages.keySet());
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Failed to get book list: " + e.getStackTrace());
-            throw new ServletException(e);
-        }
+
         User currentTempUser = (User) request.getSession().getAttribute("currentUser");
         request.setAttribute("isUser", currentTempUser.getAuthorityString().equals("USER"));
         request.setAttribute("isAdmin", currentTempUser.getAuthorityString().equals("ADMIN"));
@@ -177,13 +175,15 @@ public class BookListController extends HttpServlet {
 
         if (sortMethod != null) {
             sorter.setSortMethod(sortMethod);
-            filteredBookList = sorter.sortList(filteredBookList);
+            filteredBookList = sorter.sortList(allBooksList);
+            allBooksList = filteredBookList;
         }
         if (searchCriteria != null && userInputForSearch != null) {
             searcher.setSearchCriteria(searchCriteria);
             searcher.setUserInput(userInputForSearch);
             try {
                 filteredBookList = searcher.getResultOfTheBookSearch(bookDAO.getAllBooks());
+                allBooksList = filteredBookList;
             } catch (SQLException e) {
                 LOGGER.log(Level.SEVERE, "Failed to obtain all books list: " + e.getStackTrace());
             }
@@ -218,5 +218,10 @@ public class BookListController extends HttpServlet {
         sortMethod = null;
         searchCriteria = null;
         userInputForSearch = null;
+        try {
+            allBooksList = bookDAO.getAllBooks();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to obtain all books list: " + e.getStackTrace());
+        }
     }
 }
