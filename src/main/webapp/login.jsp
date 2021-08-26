@@ -10,23 +10,28 @@
 
 <jsp:include page="change-language-header.jsp"/>
 
-<h2>${textInfo.loginWelcome}</h2>
 
-<br/><br/><br/>
 
-<form action="LoginController" method="post">
+<center>
 
-    ${textInfo.loginUsername}: <input type="text" name="username"/>
-        <br/>
+    <h2>${textInfo.loginWelcome}</h2>
+
+    <br/><br/><br/>
+
+    <form action="LoginController" method="post">
+
+        ${textInfo.loginUsername}: <input type="text" name="username"/>
+        <br/><br/>
         ${textInfo.loginPassword}: <input type="password" name="password"/>
+        <br/><br/>
+        <input type="submit" value="${textInfo.loginButton}">
+
+    </form>
+
     <br/><br/>
-    <input type="submit" value="${textInfo.loginButton}">
 
-</form>
-
-<br/><br/>
-
-<a href="RegistrationController">${textInfo.registration}</a>
+    <a href="RegistrationController">${textInfo.registration}</a>
+</center>
 
 </body>
 

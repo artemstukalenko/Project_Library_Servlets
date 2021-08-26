@@ -8,7 +8,6 @@
 
 <body>
 <jsp:include page="change-language-header.jsp"/>
-<h1>HOMEPAGE ADMIN</h1>
 
 <h2>${textInfo.loggedInAs} ${currentUser.username}, ${textInfo.adminLabel}</h2>
 

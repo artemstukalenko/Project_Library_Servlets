@@ -8,7 +8,7 @@
 </head>
 
 <body>
-
+<center>
 <h2>${textInfo.bookTitle}: ${currentBook.bookTitle}</h2>
 <h2>${textInfo.bookAuthor}: ${currentBook.bookAuthor}</h2>
 <h3>${textInfo.requestChoosePeriod}</h3>
@@ -32,7 +32,7 @@
 <br/><br/>
 
 <input type="button" value="${textInfo.cancel}" onclick="window.location.href = 'BookListController'"/>
-
+</center>
 </body>
 
 </html>

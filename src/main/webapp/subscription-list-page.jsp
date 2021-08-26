@@ -5,6 +5,7 @@
 
 <body>
 <jsp:include page="change-language-header.jsp"/>
+<center>
 <h2>${textInfo.subscriptionsListString}</h2>
 
 <br><br><br>
@@ -86,7 +87,7 @@
     </c:forEach>
 
 </table>
-
+</center>
 <br/><br/>
 
 <input type="button" value="${textInfo.toHomePage}" onclick="window.location.href = 'HomepageController'"/>

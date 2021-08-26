@@ -10,36 +10,37 @@
 <body>
 <jsp:include page="change-language-header.jsp"/>
 
-<form action="BookListController" method="get">
-    <input type="text" name="userInputForSearch"/>
-    <select name="searchCriteria">
-        <option>${textInfo.filterByTitle}</option>
-        <option>${textInfo.filterByAuthor}</option>
-        <option>${textInfo.filterByYear}</option>
-    </select>
-    <input type="submit" value="${textInfo.search}"/>
-</form>
+<center>
+    <form action="BookListController" method="get">
+        <input type="text" name="userInputForSearch"/>
+        <select name="searchCriteria">
+            <option>${textInfo.filterByTitle}</option>
+            <option>${textInfo.filterByAuthor}</option>
+            <option>${textInfo.filterByYear}</option>
+        </select>
+        <input type="submit" value="${textInfo.search}"/>
+    </form>
 
-<br/><br/>
-<table border="1">
+    <br/><br/>
+    <table border="1">
 
-    <tr>
-        <th>${textInfo.bookId}</th>
-        <th>${textInfo.bookTitle}</th>
-        <th>${textInfo.bookAuthor}</th>
-        <th>${textInfo.bookYearOfPublishing}</th>
-        <th>
+        <tr>
+            <th>${textInfo.bookId}</th>
+            <th>${textInfo.bookTitle}</th>
+            <th>${textInfo.bookAuthor}</th>
+            <th>${textInfo.bookYearOfPublishing}</th>
+            <th>
 
-            <form action="BookListController" method="get">
-                <select name="sortMethod">
-                    <option>${textInfo.filterByTitle}</option>
-                    <option>${textInfo.filterByAuthor}</option>
-                    <option>${textInfo.filterByYear}</option>
-                </select>
-                <input type="submit" value="${textInfo.sort}"/>
-            </form>
-        </th>
-    </tr>
+                <form action="BookListController" method="get">
+                    <select name="sortMethod">
+                        <option>${textInfo.filterByTitle}</option>
+                        <option>${textInfo.filterByAuthor}</option>
+                        <option>${textInfo.filterByYear}</option>
+                    </select>
+                    <input type="submit" value="${textInfo.sort}"/>
+                </form>
+            </th>
+        </tr>
 
 
         <c:forEach var="book" items="${allBooks}">
@@ -82,19 +83,22 @@
             </tr>
         </c:forEach>
 
-</table>
-<br/><br/>
+    </table>
+    <br/><br/>
 
-${textInfo.pagesLabel} &nbsp;
-<c:forEach var="number" items="${pagesCount}">
-    <c:url var="changePageButton" value="BookListController">
-        <c:param name="pageNumber" value="${number}"/>
-    </c:url>
-    <input type="button" value="${number}" onclick="window.location.href = '${changePageButton}'"/>
-    &nbsp;&nbsp;
-</c:forEach>
+    ${textInfo.pagesLabel} &nbsp;
+    <c:forEach var="number" items="${pagesCount}">
+        <c:url var="changePageButton" value="BookListController">
+            <c:param name="pageNumber" value="${number}"/>
+        </c:url>
+        <input type="button" value="${number}" onclick="window.location.href = '${changePageButton}'"/>
+        &nbsp;&nbsp;
+    </c:forEach>
 
-<br/><br/>
+    <br/><br/>
+</center>
+
+
 
 <c:url var="showAllBooksButton" value="BookListController">
     <c:param name="removeFilters" value="true"/>

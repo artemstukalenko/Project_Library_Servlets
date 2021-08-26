@@ -7,6 +7,9 @@
 </head>
 
 <body>
+<center>
+
+    <h2>${textInfo.addNewBook}</h2>
 
 <form action="BookListController" method="post">
 
@@ -21,7 +24,7 @@
 <br/><br/>
 
 <input type="button" value="${textInfo.cancel}" onclick="window.location.href = 'BookListController'"/>
-
+</center>
 </body>
 
 </html>
