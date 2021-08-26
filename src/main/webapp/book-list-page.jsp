@@ -85,16 +85,6 @@
 </table>
 <br/><br/>
 
-<%--<c:url var="changePageButton1" value="BookListController">--%>
-<%--    <c:param name="pageNumber" value="1"/>--%>
-<%--</c:url>--%>
-<%--<c:url var="changePageButton2" value="BookListController">--%>
-<%--    <c:param name="pageNumber" value="2"/>--%>
-<%--</c:url>--%>
-<%--<a href="${changePageButton1}">1</a>--%>
-<%--&nbsp;&nbsp;--%>
-<%--<a href="${changePageButton2}">2</a>--%>
-
 ${textInfo.pagesLabel} &nbsp;
 <c:forEach var="number" items="${pagesCount}">
     <c:url var="changePageButton" value="BookListController">

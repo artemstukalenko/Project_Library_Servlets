@@ -150,7 +150,7 @@ public class CustomRequestController extends HttpServlet {
             throw new ServletException(e);
         }
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("user-subscriptions-page.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("HomepageController");
         dispatcher.forward(request, response);
 
     }
