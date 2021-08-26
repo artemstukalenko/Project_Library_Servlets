@@ -132,8 +132,8 @@ public class BookListController extends HttpServlet {
 
         try {
             allBooks = bookDAO.getAllBooks();
-            filteredBookList = allBooks;
             Map<Integer, List<Book>> allPages = getBookPages(allBooks);
+            filteredBookList = allPages.get(desiredPage);
             request.setAttribute("allBooks", allPages.get(desiredPage));
             request.setAttribute("pagesCount", allPages.keySet());
         } catch (SQLException e) {
@@ -173,6 +173,8 @@ public class BookListController extends HttpServlet {
     private void showFilteredBookList(HttpServletRequest request,
                                       HttpServletResponse response) throws ServletException, IOException {
 
+        int desiredPage = request.getParameter("pageNumber") == null ? 1 : Integer.parseInt(request.getParameter("pageNumber"));
+
         if (sortMethod != null) {
             sorter.setSortMethod(sortMethod);
             filteredBookList = sorter.sortList(filteredBookList);
@@ -180,9 +182,16 @@ public class BookListController extends HttpServlet {
         if (searchCriteria != null && userInputForSearch != null) {
             searcher.setSearchCriteria(searchCriteria);
             searcher.setUserInput(userInputForSearch);
-            filteredBookList = searcher.getResultOfTheBookSearch(filteredBookList);
+            try {
+                filteredBookList = searcher.getResultOfTheBookSearch(bookDAO.getAllBooks());
+            } catch (SQLException e) {
+                LOGGER.log(Level.SEVERE, "Failed to obtain all books list: " + e.getStackTrace());
+            }
         }
-        request.setAttribute("allBooks", filteredBookList);
+        Map<Integer, List<Book>> allPages = getBookPages(filteredBookList);
+
+        request.setAttribute("allBooks", allPages.get(desiredPage));
+        request.setAttribute("pagesCount", allPages.keySet());
 
         User currentTempUser = (User) request.getSession().getAttribute("currentUser");
         request.setAttribute("isUser", currentTempUser.getAuthorityString().equals("USER"));

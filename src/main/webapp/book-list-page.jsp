@@ -95,6 +95,7 @@
 <%--&nbsp;&nbsp;--%>
 <%--<a href="${changePageButton2}">2</a>--%>
 
+${textInfo.pagesLabel} &nbsp;
 <c:forEach var="number" items="${pagesCount}">
     <c:url var="changePageButton" value="BookListController">
         <c:param name="pageNumber" value="${number}"/>
@@ -109,7 +110,7 @@
     <c:param name="removeFilters" value="true"/>
 </c:url>
 
-<input type="button" value="${textInfo.showAllBooksButton}" onclick="window.location.href = '${showAllBooksButton}'"/>
+<input type="button" value="${textInfo.removeFiltersButton}" onclick="window.location.href = '${showAllBooksButton}'"/>
 
 <br/><br/>
 

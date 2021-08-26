@@ -41,6 +41,8 @@ public class FirstView {
     public static String addNewBook = bundle.getString(ADD_NEW_BOOK);
     public static String deleteBook = bundle.getString(DELETE_BOOK);
     public static String showAllBooksButton = bundle.getString(SHOW_ALL_BOOKS_BUTTON);
+    public static String removeFiltersButton = bundle.getString(REMOVE_FILTERS_BUTTON);
+    public static String pagesLabel = bundle.getString(PAGES_LABEL);
 
     public static String loginUsername = bundle.getString(LOGIN_USERNAME);
     public static String loginPassword = bundle.getString(LOGIN_PASSWORD);
@@ -133,6 +135,8 @@ public class FirstView {
         addNewBook = bundle.getString(ADD_NEW_BOOK);
         deleteBook = bundle.getString(DELETE_BOOK);
         showAllBooksButton = bundle.getString(SHOW_ALL_BOOKS_BUTTON);
+        removeFiltersButton = bundle.getString(REMOVE_FILTERS_BUTTON);
+        pagesLabel = bundle.getString(PAGES_LABEL);
 
         loginUsername = bundle.getString(LOGIN_USERNAME);
         loginPassword = bundle.getString(LOGIN_PASSWORD);
@@ -239,6 +243,10 @@ public class FirstView {
 
     public String getStatusTableHeader() {
         return statusTableHeader;
+    }
+
+    public String getRemoveFiltersButton() {
+        return removeFiltersButton;
     }
 
     public String getUserBlocked() {
@@ -491,5 +499,9 @@ public class FirstView {
 
     public String getErrorMessageForbidden() {
         return errorMessageForbidden;
+    }
+
+    public String getPagesLabel() {
+        return pagesLabel;
     }
 }
