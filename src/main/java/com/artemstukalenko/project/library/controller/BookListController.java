@@ -66,7 +66,7 @@ public class BookListController extends HttpServlet {
             bookDAO = new BookDAOImpl(bookDataSource);
             sorter = new Sorter();
             searcher = new Searcher();
-            allBooksList = bookDAO.getAllBooks();
+            updateBookList();
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Failed to initialize: " + e.getStackTrace());
             throw new ServletException(e);
@@ -91,9 +91,9 @@ public class BookListController extends HttpServlet {
             case "DELETE BOOK":
                 try {
                     bookDAO.deleteBook(currentBookId);
-                    allBooksList = bookDAO.getAllBooks();
+                    updateBookList();
                 } catch (SQLException e) {
-                    LOGGER.log(Level.SEVERE, "Failed to delete book/get book list: " + e.getStackTrace());
+                    LOGGER.log(Level.SEVERE, "Failed to delete book: " + e.getStackTrace());
                 }
             default:
                 showAllBooks(request, response);
@@ -125,11 +125,8 @@ public class BookListController extends HttpServlet {
             throw new ServletException(e);
         }
 
-        try {
-            allBooksList = bookDAO.getAllBooks();
-        } catch (SQLException e) {
-            LOGGER.log(Level.SEVERE, "Failed to obtain all books list: " + e.getStackTrace());
-        }
+        updateBookList();
+
         showAllBooks(request, response);
     }
 
@@ -235,6 +232,10 @@ public class BookListController extends HttpServlet {
         sortMethod = null;
         searchCriteria = null;
         userInputForSearch = null;
+        updateBookList();
+    }
+
+    private void updateBookList() {
         try {
             allBooksList = bookDAO.getAllBooks();
         } catch (SQLException e) {
