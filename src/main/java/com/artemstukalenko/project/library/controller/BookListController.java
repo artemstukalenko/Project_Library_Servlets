@@ -91,8 +91,9 @@ public class BookListController extends HttpServlet {
             case "DELETE BOOK":
                 try {
                     bookDAO.deleteBook(currentBookId);
+                    allBooksList = bookDAO.getAllBooks();
                 } catch (SQLException e) {
-                    LOGGER.log(Level.SEVERE, "Failed to delete book: " + e.getStackTrace());
+                    LOGGER.log(Level.SEVERE, "Failed to delete book/get book list: " + e.getStackTrace());
                 }
             default:
                 showAllBooks(request, response);
@@ -124,6 +125,11 @@ public class BookListController extends HttpServlet {
             throw new ServletException(e);
         }
 
+        try {
+            allBooksList = bookDAO.getAllBooks();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to obtain all books list: " + e.getStackTrace());
+        }
         showAllBooks(request, response);
     }
 
