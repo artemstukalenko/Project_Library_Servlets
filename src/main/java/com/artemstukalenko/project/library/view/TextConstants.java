@@ -35,6 +35,7 @@ public interface TextConstants {
     String SHOW_ALL_BOOKS_BUTTON = "show.all.books.button";
     String REMOVE_FILTERS_BUTTON = "remove.filters.button";
     String PAGES_LABEL = "pages";
+    String ENTER_FULL_BOOK_INFO_LABEL = "enter.full.book.info.label";
 
     String LOGIN_USERNAME = "login.username";
     String LOGIN_PASSWORD = "login.password";

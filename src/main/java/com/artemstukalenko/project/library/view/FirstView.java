@@ -43,6 +43,7 @@ public class FirstView {
     public static String showAllBooksButton = bundle.getString(SHOW_ALL_BOOKS_BUTTON);
     public static String removeFiltersButton = bundle.getString(REMOVE_FILTERS_BUTTON);
     public static String pagesLabel = bundle.getString(PAGES_LABEL);
+    public static String enterFullBookInfoLabel = bundle.getString(ENTER_FULL_BOOK_INFO_LABEL);
 
     public static String loginUsername = bundle.getString(LOGIN_USERNAME);
     public static String loginPassword = bundle.getString(LOGIN_PASSWORD);
@@ -137,6 +138,7 @@ public class FirstView {
         showAllBooksButton = bundle.getString(SHOW_ALL_BOOKS_BUTTON);
         removeFiltersButton = bundle.getString(REMOVE_FILTERS_BUTTON);
         pagesLabel = bundle.getString(PAGES_LABEL);
+        enterFullBookInfoLabel = bundle.getString(ENTER_FULL_BOOK_INFO_LABEL);
 
         loginUsername = bundle.getString(LOGIN_USERNAME);
         loginPassword = bundle.getString(LOGIN_PASSWORD);
@@ -275,6 +277,10 @@ public class FirstView {
 
     public String getUserAddress() {
         return userAddress;
+    }
+
+    public String getEnterFullBookInfoLabel() {
+        return enterFullBookInfoLabel;
     }
 
     public String getBookId() {

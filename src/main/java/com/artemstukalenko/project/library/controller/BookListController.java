@@ -108,6 +108,13 @@ public class BookListController extends HttpServlet {
         String newBookAuthor = request.getParameter("bookAuthor");
         String newBookYear = request.getParameter("bookYearOfPublishing");
 
+        if (newBookTitle.trim().equals("") || newBookAuthor.trim().equals("")
+                || newBookYear.trim().equals(""))  {
+            request.setAttribute("inputIsNotFull", true);
+            getEnterInfoForNewBookPage(request, response);
+            return;
+        }
+
         Book newBook = new Book(newBookTitle, newBookAuthor, newBookYear);
 
         try {
@@ -122,8 +129,6 @@ public class BookListController extends HttpServlet {
 
     private void showAllBooks(HttpServletRequest request,
                               HttpServletResponse response) throws ServletException, IOException {
-
-        allBooksList.stream().forEach(System.out::println);
 
         int desiredPage = request.getParameter("pageNumber") == null ? 1 : Integer.parseInt(request.getParameter("pageNumber"));
 
@@ -206,6 +211,12 @@ public class BookListController extends HttpServlet {
         for (Handler h : LOGGER.getHandlers()) {
             h.close();
         }
+    }
+
+    private void getEnterInfoForNewBookPage(HttpServletRequest request,
+                                            HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("enter-info-for-new-book.jsp");
+        dispatcher.forward(request, response);
     }
 
     private void initializeUserFilters(HttpServletRequest request) {
